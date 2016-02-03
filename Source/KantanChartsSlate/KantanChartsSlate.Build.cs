@@ -1,12 +1,13 @@
 // Copyright (C) 2015 Cameron Angus. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class KantanChartsSlate : ModuleRules
 {
 	public KantanChartsSlate(TargetInfo Target)
 	{
-        PrivateIncludePaths.Add("KantanChartsSlate/Private");
+        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicDependencyModuleNames.AddRange(
             new string[] {
