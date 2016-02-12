@@ -52,9 +52,7 @@ FVector2D SKantanChartLegend::ComputeDesiredSize(float) const
 		return FVector2D(150, 30);
 	}
 
-//	auto ChartStyle = Chart->GetChartStyle();
 	auto FontInfo = GetLegendFont();
-
 	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 
 	auto const& Snapshot = Chart->GetCurrentSnapshot();
@@ -100,7 +98,7 @@ int32 SKantanChartLegend::OnPaint(const FPaintArgs& Args, const FGeometry& Allot
 	auto Brush = BackgroundOverride;
 	if(Brush == nullptr)
 	{
-		// @TODO: Use chart background brush
+		Brush = &ChartStyle->Background;
 	}
 	FSlateDrawElement::MakeBox(
 		OutDrawElements,

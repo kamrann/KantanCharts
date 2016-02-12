@@ -16,6 +16,7 @@ const FKantanBarChartStyle& FKantanBarChartStyle::GetDefault()
 		Default.Reset(new FKantanBarChartStyle());
 		// @TODO: This should be specified through base class FKantanChartStyle
 		// Perhaps just make the constructors assign these defaults, would be simpler
+		Default->TitleFontSize = 24;
 		Default->Background.TintColor = FLinearColor::Black.CopyWithNewOpacity(0.3f);
 		Default->ChartLineColor = FLinearColor::White.CopyWithNewOpacity(0.6f);
 	}
@@ -35,6 +36,7 @@ const FKantanCartesianChartStyle& FKantanCartesianChartStyle::GetDefault()
 		Default.Reset(new FKantanCartesianChartStyle());
 		// @TODO: This should be specified through base class FKantanChartStyle
 		// Perhaps just make the constructors assign these defaults, would be simpler
+		Default->TitleFontSize = 24;
 		Default->Background.TintColor = FLinearColor::Black.CopyWithNewOpacity(0.3f);
 		Default->ChartLineColor = FLinearColor::White.CopyWithNewOpacity(0.6f);
 	}
