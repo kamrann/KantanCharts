@@ -1,6 +1,8 @@
 
 #include "KantanChartsSlate.h"
 #include "KantanChartsStyleSet.h"
+#include "KantanBarChartStyle.h"
+#include "KantanCartesianChartStyle.h"
 #include "SlateGameResources.h"
 
 
@@ -49,6 +51,35 @@ TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 		ScopePath,
 		BasePath
 		);
+
+	// Store some default chart styles
+
+	// For default game style, use the built in defaults, which are white lines overlaid on transparent background.
+	FKantanBarChartStyle GameBarChartStyle = FKantanBarChartStyle::GetDefault();
+	Style->Set("BarChart.DefaultGame", GameBarChartStyle);
+	
+	FKantanCartesianChartStyle GameCartesianChartStyle = FKantanCartesianChartStyle::GetDefault();
+	Style->Set("CartesianChart.DefaultGame", GameCartesianChartStyle);
+
+	// For default editor style, we use a white background with black lines and text.
+	FSlateColorBrush EdBgBrush = FSlateColorBrush{ FLinearColor::White };
+	FLinearColor EdLineCol = FLinearColor::Black;
+	FLinearColor EdTextCol = FLinearColor::Black;
+
+	FKantanBarChartStyle EditorBarChartStyle = FKantanBarChartStyle::GetDefault();
+	EditorBarChartStyle.Background = EdBgBrush;
+	EditorBarChartStyle.ChartLineColor = EdLineCol;
+	EditorBarChartStyle.FontColor = EdTextCol;
+	EditorBarChartStyle.BarOpacity = 1.0f;
+	EditorBarChartStyle.BarOutlineOpacity = 1.0f;
+	Style->Set("BarChart.DefaultEditor", EditorBarChartStyle);
+	
+	FKantanCartesianChartStyle EditorCartesianChartStyle = FKantanCartesianChartStyle::GetDefault();
+	EditorCartesianChartStyle.Background = EdBgBrush;
+	EditorCartesianChartStyle.ChartLineColor = EdLineCol;
+	EditorCartesianChartStyle.FontColor = EdTextCol;
+	EditorCartesianChartStyle.DataOpacity = 1.0f;
+	Style->Set("CartesianChart.DefaultEditor", EditorCartesianChartStyle);
 
 	// @NOTE: These currently unused I believe, using assets instead.
 	// @TODO: Perhaps this should live in a separate, editor-only style set?
