@@ -7,13 +7,7 @@
 #include "FloatRoundingLevel.h"
 #include "SlateRotatedRect.h"
 #include "AxisUtility.h"
-
-
-auto const AxisMarkerLength = 5.0f;
-auto const AxisMarkerLabelGap = 2.0f;	// Size of gap to leave between the end of a marker line and the start of the label text
-
-// @NOTE: Needed to avoid clipping lines along extreme edges of the chart.
-FMargin const ChartClipRectExtension = FMargin{ 0.0f, 0.0f, 1.0f, 1.0f };
+#include "ChartConstants.h"
 
 
 class FDataSeriesElement : public ICustomSlateElement
@@ -273,10 +267,10 @@ FKantanSeriesStyle const& SKantanCartesianChart::GetSeriesStyle(FName SeriesId) 
 		auto CfgEntry = SeriesConfig.Find(SeriesId);
 		if (CfgEntry && CfgEntry->SeriesStyleId.IsNone() == false)
 		{
-			auto Style = FindSeriesStyle(CfgEntry->SeriesStyleId);
-			if (Style)
+			auto SeriesStyle = FindSeriesStyle(CfgEntry->SeriesStyleId);
+			if (SeriesStyle)
 			{
-				return *Style;
+				return *SeriesStyle;
 			}
 		}
 	}
@@ -356,12 +350,12 @@ FName SKantanCartesianChart::GetNextSeriesStyle() const
 		return false;
 	};
 
-	for (auto const& Style : SeriesStyles)
+	for (auto const& SeriesStyle : SeriesStyles)
 	{
-		if (IsStyleUsed(Style.StyleId) == false)
+		if (IsStyleUsed(SeriesStyle.StyleId) == false)
 		{
 			// This style currently not being used
-			return Style.StyleId;
+			return SeriesStyle.StyleId;
 		}
 	}
 
@@ -442,8 +436,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X),
 				XAxisCfg.LeftBottomAxis.bShowMarkers,
 				XAxisCfg.LeftBottomAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -461,8 +455,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X),
 				XAxisCfg.RightTopAxis.bShowMarkers,
 				XAxisCfg.RightTopAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -480,8 +474,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y),
 				YAxisCfg.LeftBottomAxis.bShowMarkers,
 				YAxisCfg.LeftBottomAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -499,8 +493,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y),
 				YAxisCfg.RightTopAxis.bShowMarkers,
 				YAxisCfg.RightTopAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -542,10 +536,10 @@ int32 SKantanCartesianChart::DrawChartArea(
 			}
 
 			auto Points = GetSeriesDatapoints(Idx);
-			auto const& Style = GetSeriesStyle(SeriesId);
+			auto const& SeriesStyle = GetSeriesStyle(SeriesId);
 
 			// @TODO: Sort out layers, maybe need to separate out DrawAxes into DrawAxisLines and DrawAxisLabels
-			DrawSeries(PlotSpaceGeometry, SnappedClippingRect, OutDrawElements, AxisLayer + 1, SeriesId, Points, Style);
+			DrawSeries(PlotSpaceGeometry, SnappedClippingRect, OutDrawElements, AxisLayer + 1, SeriesId, Points, SeriesStyle);
 		}
 	}
 	break;
@@ -610,8 +604,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 			MarkerData.XAxis,
 			XAxisCfg.LeftBottomAxis.bShowMarkers,
 			XAxisCfg.LeftBottomAxis.bShowLabels,
-			AxisMarkerLength,
-			AxisMarkerLabelGap
+			ChartConstants::AxisMarkerLength,
+			ChartConstants::AxisMarkerLabelGap
 			);
 	}
 
@@ -633,8 +627,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 			MarkerData.XAxis,
 			XAxisCfg.RightTopAxis.bShowMarkers,
 			XAxisCfg.RightTopAxis.bShowLabels,
-			AxisMarkerLength,
-			AxisMarkerLabelGap
+			ChartConstants::AxisMarkerLength,
+			ChartConstants::AxisMarkerLabelGap
 			);
 	}
 
@@ -656,8 +650,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 			MarkerData.YAxis,
 			YAxisCfg.LeftBottomAxis.bShowMarkers,
 			YAxisCfg.LeftBottomAxis.bShowLabels,
-			AxisMarkerLength,
-			AxisMarkerLabelGap
+			ChartConstants::AxisMarkerLength,
+			ChartConstants::AxisMarkerLabelGap
 			);
 	}
 
@@ -679,8 +673,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 			MarkerData.YAxis,
 			YAxisCfg.RightTopAxis.bShowMarkers,
 			YAxisCfg.RightTopAxis.bShowLabels,
-			AxisMarkerLength,
-			AxisMarkerLabelGap
+			ChartConstants::AxisMarkerLength,
+			ChartConstants::AxisMarkerLabelGap
 			);
 	}
 
@@ -1056,7 +1050,7 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 			LayerId,
 			PlotSpaceGeometry.ToPaintGeometry(),
 			SegmentPoints,//DrawPoints,
-			ClipRect.ExtendBy(ChartClipRectExtension),
+			ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 			ESlateDrawEffect::None,
 			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
 			bAntialiasDataLines
@@ -1107,25 +1101,28 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 	if (XAxisCfg.FloatingAxis.bEnabled)
 	{
 		const float Y0 = FMath::Clamp(LocalOrigin.Y, 0.0f, PlotSize.Y);
-		TArray< FVector2D > Points;
-		Points.Add(FVector2D(
-			0.0f,
-			Y0
-			));
-		Points.Add(FVector2D(
-			PlotSize.X,
-			Y0
-			));
 
-		FSlateDrawElement::MakeLines(
-			OutDrawElements,
-			AxisLayerId,
-			PlotSpaceGeometry.ToPaintGeometry(),
-			Points,
-			ClipRect,
-			ESlateDrawEffect::None,
-			ChartStyle->ChartLineColor,
-			false);
+		{
+			TArray< FVector2D > Points;
+			Points.Add(FVector2D(
+				0.0f,
+				Y0
+				));
+			Points.Add(FVector2D(
+				PlotSize.X,
+				Y0
+				));
+
+			FSlateDrawElement::MakeLines(
+				OutDrawElements,
+				AxisLayerId,
+				PlotSpaceGeometry.ToPaintGeometry(),
+				Points,
+				ClipRect,
+				ESlateDrawEffect::None,
+				ChartStyle->ChartLineColor,
+				false);
+		}
 
 		auto XRounding = MarkerData.XAxis.RL;
 
@@ -1165,7 +1162,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			}
 
 			auto MarkerX = RoundedMarkerX.GetFloatValue();
-			auto const MarkerYOffset = bFitsBelow ? AxisMarkerLength : -AxisMarkerLength;
+			auto const MarkerYOffset = bFitsBelow ? ChartConstants::AxisMarkerLength : -ChartConstants::AxisMarkerLength;
 			auto const LabelYOffset = bFitsBelow ? 0.0f : -LabelMaxExtents.Y;
 
 			TArray< FVector2D > Points;
@@ -1224,25 +1221,28 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 	if (YAxisCfg.FloatingAxis.bEnabled)
 	{
 		const float X0 = FMath::Clamp(LocalOrigin.X, 0.0f, PlotSize.X);
-		TArray< FVector2D > Points;
-		Points.Add(FVector2D(
-			X0,
-			0.0f
-			));
-		Points.Add(FVector2D(
-			X0,
-			PlotSize.Y
-			));
+		
+		{
+			TArray< FVector2D > Points;
+			Points.Add(FVector2D(
+				X0,
+				0.0f
+				));
+			Points.Add(FVector2D(
+				X0,
+				PlotSize.Y
+				));
 
-		FSlateDrawElement::MakeLines(
-			OutDrawElements,
-			AxisLayerId,
-			PlotSpaceGeometry.ToPaintGeometry(),
-			Points,
-			ClipRect,
-			ESlateDrawEffect::None,
-			ChartStyle->ChartLineColor,
-			false);
+			FSlateDrawElement::MakeLines(
+				OutDrawElements,
+				AxisLayerId,
+				PlotSpaceGeometry.ToPaintGeometry(),
+				Points,
+				ClipRect,
+				ESlateDrawEffect::None,
+				ChartStyle->ChartLineColor,
+				false);
+		}
 
 		auto YRounding = MarkerData.YAxis.RL;
 
@@ -1318,7 +1318,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			}
 
 			auto MarkerY = RoundedMarkerY.GetFloatValue();
-			auto const MarkerXOffset = bFitsLeft ? -AxisMarkerLength : AxisMarkerLength;
+			auto const MarkerXOffset = bFitsLeft ? -ChartConstants::AxisMarkerLength : ChartConstants::AxisMarkerLength;
 
 			TArray< FVector2D > Points;
 			auto MarkerYPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(0.0f, MarkerY)).Y;
@@ -1387,13 +1387,13 @@ float SKantanCartesianChart::GetChartAreaSize(EChartContentArea::Type Area, EAxi
 	case EChartContentArea::YAxisRightTitle:
 		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled && YAxisCfg.RightTopAxis.bShowTitle ? DetermineAxisTitleSize(YAxisCfg, EAxis::Y).X : 0.0f;
 	case EChartContentArea::XAxisBottom:
-		return ReqComp == EAxis::Y && XAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::Y && XAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
 	case EChartContentArea::XAxisTop:
-		return ReqComp == EAxis::Y && XAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::Y && XAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
 	case EChartContentArea::YAxisLeft:
-		return ReqComp == EAxis::X && YAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::X && YAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
 	case EChartContentArea::YAxisRight:
-		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
 
 	default:
 		return 0.0f;

@@ -112,9 +112,9 @@ protected:
 
 	inline const FKantanSeriesStyle* FindSeriesStyle(FName SeriesStyleId) const
 	{
-		return SeriesStyles.FindByPredicate([SeriesStyleId](FKantanSeriesStyle const& Style)
+		return SeriesStyles.FindByPredicate([SeriesStyleId](FKantanSeriesStyle const& SeriesStyle)
 		{
-			return Style.StyleId == SeriesStyleId;
+			return SeriesStyle.StyleId == SeriesStyleId;
 		});
 	}
 

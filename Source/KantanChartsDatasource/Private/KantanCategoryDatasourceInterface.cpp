@@ -1,16 +1,8 @@
 // Copyright (C) 2015 Cameron Angus. All Rights Reserved.
 
-#pragma once
-
 #include "KantanChartsDatasource.h"
 #include "KantanCategoryDatasourceInterface.h"
 
-
-UKantanCategoryDatasourceInterface::UKantanCategoryDatasourceInterface(FObjectInitializer const& OI) :
-Super(OI)
-{
-
-}
 
 int32 IKantanCategoryDatasourceInterface::GetNumCategories_Implementation() const
 {

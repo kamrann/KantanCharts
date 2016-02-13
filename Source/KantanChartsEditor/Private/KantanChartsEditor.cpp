@@ -114,19 +114,19 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 			PropertyModule.UnregisterCustomPropertyTypeLayout("SeriesStyleManualMapping");
 		}
 
-		if (PreviewCategoryDatasource)
+		if (PreviewCategoryDatasource.IsValid())
 		{
 			PreviewCategoryDatasource->RemoveFromRoot();
 			PreviewCategoryDatasource = nullptr;
 		}
 
-		if (PreviewCartesianPlotDatasource)
+		if (PreviewCartesianPlotDatasource.IsValid())
 		{
 			PreviewCartesianPlotDatasource->RemoveFromRoot();
 			PreviewCartesianPlotDatasource = nullptr;
 		}
 
-		if (PreviewTimeSeriesPlotDatasource)
+		if (PreviewTimeSeriesPlotDatasource.IsValid())
 		{
 			PreviewTimeSeriesPlotDatasource->RemoveFromRoot();
 			PreviewTimeSeriesPlotDatasource = nullptr;
@@ -211,9 +211,13 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 		}
 	}
 
-	UKantanSimpleCategoryDatasource* PreviewCategoryDatasource;
+/*	UKantanSimpleCategoryDatasource* PreviewCategoryDatasource;
 	UKantanSimpleCartesianDatasource* PreviewCartesianPlotDatasource;
 	UKantanSimpleCartesianDatasource* PreviewTimeSeriesPlotDatasource;
+	*/
+	TWeakObjectPtr< UKantanSimpleCategoryDatasource > PreviewCategoryDatasource;
+	TWeakObjectPtr< UKantanSimpleCartesianDatasource > PreviewCartesianPlotDatasource;
+	TWeakObjectPtr< UKantanSimpleCartesianDatasource > PreviewTimeSeriesPlotDatasource;
 
 public:
 	FKantanChartsEditorModule() :

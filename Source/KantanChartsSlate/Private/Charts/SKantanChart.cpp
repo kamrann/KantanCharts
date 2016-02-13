@@ -400,7 +400,7 @@ int32 SKantanChart::DrawFixedAxis(
 	auto ValueFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisMarkerLabel);
 	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 
-	auto AxisStart = 0.0f; FVector2D::ZeroVector;
+	auto AxisStart = 0.0f;
 	auto AxisEnd = Geometry.GetLocalSize()[AxisIdx];
 	auto CartesianRange = FCartesianAxisRange(
 		ValueToChartAxisTransform.Inverse().MapPoint(AxisStart),
@@ -414,23 +414,25 @@ int32 SKantanChart::DrawFixedAxis(
 		AxisPosition == EChartAxisPosition::LeftBottom && Axis == EAxis::Y;
 	auto const FixedCompBase = bIsReversed ? Geometry.GetLocalSize()[OtherAxisIdx] : 0.0f;
 
-	// Draw the axis line
-	TArray< FVector2D > Points;
-	Points.Init(FVector2D::ZeroVector, 2);
-	Points[0][AxisIdx] = 0.0f;
-	Points[0][OtherAxisIdx] = FixedCompBase;
-	Points[1][AxisIdx] = Geometry.GetLocalSize()[AxisIdx];
-	Points[1][OtherAxisIdx] = FixedCompBase;
+	{
+		// Draw the axis line
+		TArray< FVector2D > Points;
+		Points.Init(FVector2D::ZeroVector, 2);
+		Points[0][AxisIdx] = 0.0f;
+		Points[0][OtherAxisIdx] = FixedCompBase;
+		Points[1][AxisIdx] = Geometry.GetLocalSize()[AxisIdx];
+		Points[1][OtherAxisIdx] = FixedCompBase;
 
-	FSlateDrawElement::MakeLines(
-		OutDrawElements,
-		LayerId,
-		Geometry.ToPaintGeometry(),
-		Points,
-		ClipRect,
-		ESlateDrawEffect::None,
-		ChartStyle->ChartLineColor,
-		false);
+		FSlateDrawElement::MakeLines(
+			OutDrawElements,
+			LayerId,
+			Geometry.ToPaintGeometry(),
+			Points,
+			ClipRect,
+			ESlateDrawEffect::None,
+			ChartStyle->ChartLineColor,
+			false);
+	}
 
 
 	auto const& Rounding = MarkerData.RL;

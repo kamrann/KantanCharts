@@ -9,13 +9,13 @@
 UINTERFACE(Blueprintable, MinimalAPI)
 class UKantanCategoryDatasourceInterface : public UInterface
 {
-	GENERATED_UINTERFACE_BODY()
+	GENERATED_BODY()
 };
 
 
 class KANTANCHARTSDATASOURCE_API IKantanCategoryDatasourceInterface
 {
-	GENERATED_IINTERFACE_BODY()
+	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Category Datasource")

@@ -10,13 +10,13 @@
 UINTERFACE(Blueprintable, MinimalAPI)
 class UKantanCartesianDatasourceInterface : public UInterface
 {
-	GENERATED_UINTERFACE_BODY()
+	GENERATED_BODY()
 };
 
 
 class KANTANCHARTSDATASOURCE_API IKantanCartesianDatasourceInterface
 {
-	GENERATED_IINTERFACE_BODY()
+	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Cartesian Datasource")

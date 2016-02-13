@@ -1,16 +1,8 @@
 // Copyright (C) 2015 Cameron Angus. All Rights Reserved.
 
-#pragma once
-
 #include "KantanChartsDatasource.h"
 #include "KantanCartesianDatasourceInterface.h"
 
-
-UKantanCartesianDatasourceInterface::UKantanCartesianDatasourceInterface(FObjectInitializer const& OI) :
-Super(OI)
-{
-
-}
 
 int32 IKantanCartesianDatasourceInterface::GetNumSeries_Implementation() const
 {

@@ -3,19 +3,7 @@
 #include "KantanChartsSlate.h"
 #include "SKantanBarChart.h"
 #include "KantanCartesianTypes.h"
-
-
-float const AxisMarkerLength = 5.0f;
-float const AxisMarkerLabelGap = 3.0f;
-float const AxisCategoryLabelGap = 0.0f;
-
-// @NOTE: Workaround to avoid clipping lines along extreme edges of the chart.
-// Look into why this is needed.
-FMargin const ChartClipRectExtension = FMargin{ 0.0f, 0.0f, 1.0f, 1.0f };
-
-// @NOTE: Slate clipping appears to be unable to adjust to rotated text. Various AnswerHub posts
-// plus PM exchange, but no resolution.
-FSlateRect const RotatedTextClipRect = FSlateRect{ 0.0f, 0.0f, 10000.0f, 10000.0f };
+#include "ChartConstants.h"
 
 
 void SKantanBarChart::Construct(const FArguments& InArgs)
@@ -202,7 +190,7 @@ void SKantanBarChart::DetermineCategoryLabelRequirements(float InBarWidth, float
 	}
 
 	// Add on the desired gap between axis line and category labels.
-	ReqSize = RequiredLabelSize + AxisCategoryLabelGap;
+	ReqSize = RequiredLabelSize + ChartConstants::AxisCategoryLabelGap;
 	Rotation = LabelRotation;
 }
 
@@ -252,7 +240,7 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.LeftBottomAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
 			}
 			else if (Orientation == EKantanBarChartOrientation::Horizontal)
 			{
@@ -270,7 +258,7 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.RightTopAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
 			}
 		}
 		break;
@@ -279,7 +267,7 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.LeftBottomAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
 			}
 			else if (Orientation == EKantanBarChartOrientation::Vertical)
 			{
@@ -294,7 +282,7 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.RightTopAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, AxisMarkerLength, AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
 			}
 		}
 		break;
@@ -395,7 +383,7 @@ void SKantanBarChart::DrawCategoryAxis(
 			FVector2D LabelTranslation = FVector2D::ZeroVector;
 			LabelTranslation[ChartXComp] = BarWidth * Idx + GapWidth * (0.5f + Idx) + (BarWidth - RotatedLabelExtent[ChartXComp]) * 0.5f;
 			LabelTranslation[ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ?
-				(LabelBase + AxisCategoryLabelGap) :
+				(LabelBase + ChartConstants::AxisCategoryLabelGap) :
 				0.0f;
 			auto RotationTransform = FSlateRenderTransform(FQuat2D(-LabelRotation));
 
@@ -429,7 +417,7 @@ void SKantanBarChart::DrawCategoryAxis(
 				LabelGeom.ToPaintGeometry(),
 				Label,
 				FontInfo,
-				RotatedTextClipRect,
+				ChartConstants::RotatedTextClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 
@@ -437,7 +425,7 @@ void SKantanBarChart::DrawCategoryAxis(
 			{
 				if (bDrawCategoryBoundaries)
 				{
-					for (int32 Idx = 0; Idx < NumBars; ++Idx)
+//					for (int32 Idx = 0; Idx < NumBars; ++Idx)
 					{
 						// @TODO: This is an attempt to align the marker flush with the edge of the bar, but not working consistently
 						auto const TruncationOffset = 1.0f;
@@ -447,7 +435,7 @@ void SKantanBarChart::DrawCategoryAxis(
 						Points.Add(MapChartToLocal(FVector2D(BarWidth * Idx + GapWidth * (0.5f + Idx), 0.0f), FVector2D::ZeroVector, AvailableSize));
 						Points[0][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? 0.0f : Geometry.GetLocalSize().X;
 						//Points[0][ChartXComp] = FMath::TruncToFloat(Points[0][ChartXComp] + TruncationOffset);
-						Points[1][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? AxisMarkerLength : (Geometry.GetLocalSize().X - AxisMarkerLength);
+						Points[1][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? ChartConstants::AxisMarkerLength : (Geometry.GetLocalSize().X - ChartConstants::AxisMarkerLength);
 						//Points[1][ChartXComp] = FMath::TruncToFloat(Points[1][ChartXComp] + TruncationOffset);
 
 						FSlateDrawElement::MakeLines(
@@ -464,7 +452,7 @@ void SKantanBarChart::DrawCategoryAxis(
 						Points.Add(MapChartToLocal(FVector2D(BarWidth * (Idx + 1) + GapWidth * (0.5f + Idx), 0.0f), FVector2D::ZeroVector, AvailableSize));
 						Points.Add(MapChartToLocal(FVector2D(BarWidth * (Idx + 1) + GapWidth * (0.5f + Idx), 0.0f), FVector2D::ZeroVector, AvailableSize));
 						Points[0][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? 0.0f : Geometry.GetLocalSize().X;
-						Points[1][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? AxisMarkerLength : (Geometry.GetLocalSize().X - AxisMarkerLength);
+						Points[1][ChartYComp] = Orientation == EKantanBarChartOrientation::Vertical ? ChartConstants::AxisMarkerLength : (Geometry.GetLocalSize().X - ChartConstants::AxisMarkerLength);
 
 						FSlateDrawElement::MakeLines(
 							OutDrawElements,
@@ -544,8 +532,8 @@ int32 SKantanBarChart::DrawChartArea(
 				DetermineValueAxisMarkerData(PlotSpaceGeometry),
 				ValueAxisCfg.LeftBottomAxis.bShowMarkers,
 				ValueAxisCfg.LeftBottomAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		else if (Orientation == EKantanBarChartOrientation::Horizontal && LabelPosition == EKantanBarLabelPosition::Standard)
@@ -578,8 +566,8 @@ int32 SKantanBarChart::DrawChartArea(
 				DetermineValueAxisMarkerData(PlotSpaceGeometry),
 				ValueAxisCfg.RightTopAxis.bShowMarkers,
 				ValueAxisCfg.RightTopAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -598,8 +586,8 @@ int32 SKantanBarChart::DrawChartArea(
 				DetermineValueAxisMarkerData(PlotSpaceGeometry),
 				ValueAxisCfg.LeftBottomAxis.bShowMarkers,
 				ValueAxisCfg.LeftBottomAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		else if (Orientation == EKantanBarChartOrientation::Vertical && LabelPosition == EKantanBarLabelPosition::Standard)
@@ -632,8 +620,8 @@ int32 SKantanBarChart::DrawChartArea(
 				DetermineValueAxisMarkerData(PlotSpaceGeometry),
 				ValueAxisCfg.RightTopAxis.bShowMarkers,
 				ValueAxisCfg.RightTopAxis.bShowLabels,
-				AxisMarkerLength,
-				AxisMarkerLabelGap
+				ChartConstants::AxisMarkerLength,
+				ChartConstants::AxisMarkerLabelGap
 				);
 		}
 		break;
@@ -722,7 +710,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::ZeroLine,
 				Geometry.ToPaintGeometry(),
 				Points,
-				SnappedClippingRect.ExtendBy(ChartClipRectExtension),
+				SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
@@ -739,7 +727,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::MaxValueLine,
 				Geometry.ToPaintGeometry(),
 				Points,
-				SnappedClippingRect.ExtendBy(ChartClipRectExtension),
+				SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
