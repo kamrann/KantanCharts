@@ -211,10 +211,8 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 		}
 	}
 
-/*	UKantanSimpleCategoryDatasource* PreviewCategoryDatasource;
-	UKantanSimpleCartesianDatasource* PreviewCartesianPlotDatasource;
-	UKantanSimpleCartesianDatasource* PreviewTimeSeriesPlotDatasource;
-	*/
+	// @NOTE: Using weak pointers since even though these get added to the root, it appears during shutdown process they can get released before
+	// our own module shuts down. Weak pointer nulling still seems to work however.
 	TWeakObjectPtr< UKantanSimpleCategoryDatasource > PreviewCategoryDatasource;
 	TWeakObjectPtr< UKantanSimpleCartesianDatasource > PreviewCartesianPlotDatasource;
 	TWeakObjectPtr< UKantanSimpleCartesianDatasource > PreviewTimeSeriesPlotDatasource;

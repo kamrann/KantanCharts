@@ -12,7 +12,6 @@ public:
 
 	static const class ISlateStyle& Get();
 
-	static FString InContent(const FString& RelativePath, const TCHAR* Extension);
 	static FName GetStyleSetName();
 
 private:

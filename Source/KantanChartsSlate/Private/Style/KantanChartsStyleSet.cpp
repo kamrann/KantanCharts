@@ -106,14 +106,14 @@ void FKantanChartsStyleSet::ReloadTextures()
 
 const ISlateStyle& FKantanChartsStyleSet::Get()
 {
-	/*/ @TODO: Temp workaround for monolithic build initialization order issue.
+	// @TODO: Temp workaround for monolithic build initialization order issue.
 	// UObject CDOs are getting constructed before a module that their own module has a 
 	// dependency on is initialized... 
 	if (!StyleInstance.IsValid())
 	{
 		Initialize();
 	}
-	/*/
+	//
 
 	return *StyleInstance;
 }
