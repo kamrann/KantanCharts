@@ -410,8 +410,8 @@ int32 SKantanChart::DrawFixedAxis(
 
 	// Flag denoting if perpendicular coordinate in geometry space is reversed (ie. going away from plot area is negative)
 	auto const bIsReversed =
-		AxisPosition == EChartAxisPosition::RightTop && Axis == EAxis::X ||
-		AxisPosition == EChartAxisPosition::LeftBottom && Axis == EAxis::Y;
+		(AxisPosition == EChartAxisPosition::RightTop && Axis == EAxis::X) ||
+		(AxisPosition == EChartAxisPosition::LeftBottom && Axis == EAxis::Y);
 	auto const FixedCompBase = bIsReversed ? Geometry.GetLocalSize()[OtherAxisIdx] : 0.0f;
 
 	{

@@ -30,9 +30,10 @@ public:
 
 		SLATE_STYLE_ARGUMENT(FKantanCartesianChartStyle, Style)
 
+		SLATE_ARGUMENT(class UObject*, Datasource)
+		
 		/** Rate at which this widget is ticked when sleeping in seconds */
 		SLATE_ARGUMENT(float, UpdateTickRate)
-		SLATE_ARGUMENT(class UObject*, Datasource)
 
 		SLATE_ARGUMENT(FKantanCartesianPlotScale, PlotScale)
 

@@ -12,7 +12,7 @@ class KANTANCHARTSSLATE_API SKantanTimeSeriesPlot : public SKantanCartesianChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanTimeSeriesPlot) :
-		// @TODO:
+		// @TODO: TimeSeriesPlot dedicated style
 		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("KantanCartesianChartStyle_Default"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
@@ -20,9 +20,10 @@ public:
 
 		SLATE_STYLE_ARGUMENT(FKantanCartesianChartStyle, Style)
 
+		SLATE_ARGUMENT(class UObject*, Datasource)
+
 		/** Rate at which this widget is ticked when sleeping in seconds */
 		SLATE_ARGUMENT(float, UpdateTickRate)
-		SLATE_ARGUMENT(class UObject*, Datasource)
 
 	SLATE_END_ARGS()
 

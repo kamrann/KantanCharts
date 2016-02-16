@@ -12,8 +12,8 @@ class KANTANCHARTSSLATE_API SKantanCategoryChart : public SKantanChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanCategoryChart):
-		_UpdateTickRate(0.0f)
-		, _Datasource(nullptr)
+		_Datasource(nullptr)
+		, _UpdateTickRate(0.0f)
 		{}
 
 		SLATE_ARGUMENT(class UObject*, Datasource)
