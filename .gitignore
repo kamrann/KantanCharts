@@ -231,7 +231,10 @@ $RECYCLE.BIN/
 *.lnk
 
 # Unreal Engine-specific
-Binaries/
+# For plugins, don't ignore binaries folder, and allow dlls
+#Binaries/
+!Binaries/**/*.dll
+Binaries/**/*.modules
 Intermediate/
 DerivedDataCache/
 Saved/
