@@ -14,7 +14,7 @@ struct KANTANCHARTSSLATE_API FKantanCartesianChartStyle : public FKantanChartSty
 	/*
 	Opacity for rendering data points and lines.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	float DataOpacity;
 
 	FKantanCartesianChartStyle() :
@@ -35,7 +35,7 @@ class UKantanCartesianChartWidgetStyle : public USlateWidgetStyleContainerBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FKantanCartesianChartStyle ChartStyle;
 
 public:

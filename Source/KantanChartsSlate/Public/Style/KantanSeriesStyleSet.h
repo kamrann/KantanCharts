@@ -16,7 +16,7 @@ public:
 	/*
 	List of series styles in this style set.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	TArray < FKantanSeriesStyle > Styles;
 };
 

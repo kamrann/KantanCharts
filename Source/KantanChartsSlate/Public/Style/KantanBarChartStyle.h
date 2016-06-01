@@ -14,13 +14,13 @@ struct KANTANCHARTSSLATE_API FKantanBarChartStyle : public FKantanChartStyle
 	/*
 	Bar opacity: 1.0 = Fully opaque, 0.0 = Fully transparent.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	float BarOpacity;
 
 	/*
 	Outline opacity.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	float BarOutlineOpacity;
 
 	FKantanBarChartStyle() :
@@ -42,7 +42,7 @@ class UKantanBarChartWidgetStyle : public USlateWidgetStyleContainerBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FKantanBarChartStyle ChartStyle;
 
 public:

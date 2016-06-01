@@ -16,10 +16,10 @@ struct FCategoryStyleManualMapping
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FName CategoryId;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FKantanCategoryStyle Style;
 
 	FCategoryStyleManualMapping() :

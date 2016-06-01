@@ -21,16 +21,16 @@ struct FCartesianAxisInstanceConfig
 	/*
 	Is the axis shown?
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	bool bEnabled;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	bool bShowTitle;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	bool bShowMarkers;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	bool bShowLabels;
 
 	FCartesianAxisInstanceConfig() :
@@ -49,34 +49,34 @@ struct FCartesianAxisConfig
 	/*
 	Axis title.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	FText Title;
 
 	/*
 	Optional unit string for the axis.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	FText Unit;
 
 	/*
 	Controls the density of markers along the axis.
 	*/
-	UPROPERTY(EditAnywhere, Meta = (ClampMin = "0.1", ClampMax = "10"))
+	UPROPERTY(EditAnywhere, Category = "Axis", Meta = (ClampMin = "0.1", ClampMax = "10"))
 	float MarkerSpacing;
 
 	/*
 	Specifies the maximum number of digits which can be displayed on an axis marker.
 	*/
-	UPROPERTY(EditAnywhere, Meta = (ClampMin = "1", ClampMax = "10"))
+	UPROPERTY(EditAnywhere, Category = "Axis", Meta = (ClampMin = "1", ClampMax = "10"))
 	int32 MaxValueDigits;
 
-	UPROPERTY(EditAnywhere, Meta = (DisplayName = "Left/Bottom Axis"))
+	UPROPERTY(EditAnywhere, Category = "Axis", Meta = (DisplayName = "Left/Bottom Axis"))
 	FCartesianAxisInstanceConfig LeftBottomAxis;
 
-	UPROPERTY(EditAnywhere, Meta = (DisplayName = "Right/Top Axis"))
+	UPROPERTY(EditAnywhere, Category = "Axis", Meta = (DisplayName = "Right/Top Axis"))
 	FCartesianAxisInstanceConfig RightTopAxis;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	FCartesianAxisInstanceConfig FloatingAxis;
 
 	FCartesianAxisConfig() :

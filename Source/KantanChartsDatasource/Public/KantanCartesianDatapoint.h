@@ -10,7 +10,7 @@ struct FKantanCartesianDatapoint
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	FVector2D Coords;
 };
 

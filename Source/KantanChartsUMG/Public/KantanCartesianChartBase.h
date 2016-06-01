@@ -18,10 +18,10 @@ struct FSeriesStyleManualMapping
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FName SeriesId;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FKantanSeriesStyle Style;
 
 	FSeriesStyleManualMapping() :

@@ -15,14 +15,14 @@ public:
 	/*
 	Texture providing datapoint image in different sizes.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	UTexture2D* DataPointTexture;
 
 	/*
 	Pixel (x, y) offsets into the texture for each point size.
 	The image sections should be 5x5, 7x7 and 9x9 respectively.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FIntPoint PointSizeTextureOffsets[KantanDataPointSizeCount];
 
 public:
@@ -46,19 +46,19 @@ struct FKantanSeriesStyle
 	/*
 	Unique ID for the series.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FName StyleId;
 
 	/*
 	Point style asset.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	UKantanPointStyle* PointStyle;
 
 	/*
 	Color to use when drawing the series.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FLinearColor Color;
 
 	FKantanSeriesStyle() :

@@ -14,16 +14,16 @@ struct FKantanCategoryStyle
 	/*
 	Unique ID for the style.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FName CategoryStyleId;
 
 	/*
 	Color to draw the category.
 	*/
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FLinearColor Color;
 
-//	UPROPERTY(EditAnywhere)
+//	UPROPERTY(EditAnywhere, Category = "Style")
 //	FSlateBrush Brush;
 
 	FKantanCategoryStyle() :

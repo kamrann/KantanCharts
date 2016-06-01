@@ -21,10 +21,10 @@ struct FCartesianAxisRange
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	float Min;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Axis")
 	float Max;
 
 	FCartesianAxisRange() :
@@ -114,17 +114,17 @@ struct FKantanCartesianPlotScale
 	*/
 
 	// The scaling type used
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Plot")
 	ECartesianScalingType Type;
 
 	/* Fixed scale and focus */
 
 	// Fixed scale multiplier between widget space and cartesian space
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Plot")
 	FVector2D Scale;
 
 	// Coordinates in cartesian space on which plot should be centered
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Plot")
 	FVector2D FocalCoordinates;
 
 	/**/
@@ -132,11 +132,11 @@ struct FKantanCartesianPlotScale
 	/* Fixed cartesian range for each axis */
 
 	// X-axis range to be plotted
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Plot")
 	FCartesianAxisRange RangeX;
 
 	// Y-axis range to be plotted
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Plot")
 	FCartesianAxisRange RangeY;
 
 	/**/
@@ -268,11 +268,11 @@ struct FCartesianRangeBound
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Range")
 	ECartesianRangeBoundType Type;
 
 	// Fixed value for the bound
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Range")
 	float FixedBoundValue;
 
 	FCartesianRangeBound():

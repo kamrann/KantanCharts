@@ -16,43 +16,43 @@ struct KANTANCHARTSSLATE_API FKantanChartStyle : public FSlateWidgetStyle
 	/*
 	Chart background brush.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	FSlateBrush Background;
 
 	/*
 	Color used to draw lines of the chart itself (e.g. axis lines).
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	FLinearColor ChartLineColor;
 
 	/*
 	The default font used for chart text.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	FSlateFontInfo BaseFont;
 
 	/*
 	Font size override for chart title.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	int32 TitleFontSize;
 
 	/*
 	Font size override for axis titles.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	int32 AxisDescriptionFontSize;
 
 	/*
 	Font size override for axis values/labels.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	int32 AxisValueFontSize;
 
 	/*
 	Color used for chart text.
 	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	FLinearColor FontColor;
 
 	FKantanChartStyle() :
@@ -98,7 +98,7 @@ class UKantanChartWidgetStyle : public USlateWidgetStyleContainerBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Style")
 	FKantanChartStyle ChartStyle;
 
 public:
