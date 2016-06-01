@@ -13,7 +13,8 @@ class KANTANCHARTSSLATE_API SKantanTimeSeriesPlot : public SKantanCartesianChart
 public:
 	SLATE_BEGIN_ARGS(SKantanTimeSeriesPlot) :
 		// @TODO: TimeSeriesPlot dedicated style
-		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("KantanCartesianChartStyle_Default"))
+		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("ChartStyles/KantanCartesianChartStyle_Default"))
+		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("CartesianChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
 		{}

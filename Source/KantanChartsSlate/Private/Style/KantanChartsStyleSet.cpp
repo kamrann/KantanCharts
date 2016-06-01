@@ -4,6 +4,7 @@
 #include "KantanBarChartStyle.h"
 #include "KantanCartesianChartStyle.h"
 #include "SlateGameResources.h"
+#include "IPluginManager.h"
 
 
 TSharedPtr< FSlateStyleSet > FKantanChartsStyleSet::StyleInstance = nullptr;
@@ -44,7 +45,8 @@ const FVector2D Icon40x40(40.0f, 40.0f);
 
 TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 {
-	FString BasePath = TEXT("/KantanCharts/Style/ChartStyles");
+	FString BasePath = IPluginManager::Get().FindPlugin(TEXT("KantanCharts"))->GetContentDir() / TEXT("Style");
+	//FString BasePath = TEXT("/KantanCharts/Style");
 	FString ScopePath = BasePath;
 	TSharedRef<FSlateStyleSet> Style = FSlateGameResources::New(
 		FKantanChartsStyleSet::GetStyleSetName(),
@@ -81,13 +83,12 @@ TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 	EditorCartesianChartStyle.DataOpacity = 1.0f;
 	Style->Set("CartesianChart.DefaultEditor", EditorCartesianChartStyle);
 
-	// @NOTE: These currently unused I believe, using assets instead.
 	// @TODO: Perhaps this should live in a separate, editor-only style set?
-	// regardless not working, displaying blank icon, currently working around by using asset for image and slate brush
-	Style->Set("Widget.KantanBarChart", new IMAGE_BRUSH(TEXT("icon_umg_kantanbarchart_16x"), Icon16x16));
-	Style->Set("Widget.KantanPieChart", new IMAGE_BRUSH(TEXT("icon_umg_kantanpiechart_16x"), Icon16x16));
-	Style->Set("Widget.KantanCartesianChart", new IMAGE_BRUSH(TEXT("icon_umg_kantancartesianchart_16x"), Icon16x16));
-	Style->Set("Widget.KantanCartesianChart", new IMAGE_BRUSH(TEXT("icon_umg_kantantimeseriesplot_16x"), Icon16x16));
+	Style->Set("Widget.KantanBarChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanbarchart_16x"), Icon16x16));
+	Style->Set("Widget.KantanPieChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanpiechart_16x"), Icon16x16));
+	Style->Set("Widget.KantanCartesianChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantancartesianchart_16x"), Icon16x16));
+	Style->Set("Widget.KantanTimeSeriesPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantantimeseriesplot_16x"), Icon16x16));
+	Style->Set("Widget.KantanChartLegend", new IMAGE_BRUSH(TEXT("editor/icon_umg_chartlegend_16x"), Icon16x16));
 
 	return Style;
 }

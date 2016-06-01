@@ -33,7 +33,8 @@ class KANTANCHARTSSLATE_API SKantanBarChart : public SKantanCategoryChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanBarChart) :
-		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanBarChartStyle >("KantanBarChartStyle_Default"))
+		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanBarChartStyle >("ChartStyles/KantanBarChartStyle_Default"))
+		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanBarChartStyle >("BarChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
 		, _Orientation(EKantanBarChartOrientation::Vertical)

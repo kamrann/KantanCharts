@@ -21,7 +21,8 @@ public:
 	~SKantanCartesianChart();
 
 	SLATE_BEGIN_ARGS(SKantanCartesianChart):
-		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("KantanCartesianChartStyle_Default"))
+		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("ChartStyles/KantanCartesianChartStyle_Default"))
+		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("CartesianChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
 		, _PlotScale()
