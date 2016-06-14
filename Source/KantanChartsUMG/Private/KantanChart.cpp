@@ -75,12 +75,12 @@ void UKantanChart::ReleaseSlateResources(bool bReleaseChildren)
 #if WITH_EDITOR
 
 #include "UMGStyle.h"
-
+/*
 const FSlateBrush* UKantanChart::GetEditorIcon()
 {
 	return FUMGStyle::Get().GetBrush("Widget.Image");
 }
-
+*/
 const FText UKantanChart::GetPaletteCategory()
 {
 	return LOCTEXT("KantanChartsWidgetPaletteCategory", "Kantan Charts");

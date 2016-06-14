@@ -62,12 +62,12 @@ float USimpleBarChart::GetCategoryValue_Implementation(int32 CatIdx) const
 
 
 #if WITH_EDITOR
-
+/*
 const FSlateBrush* USimpleBarChart::GetEditorIcon()
 {
 	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanBarChart");
 }
-
+*/
 #endif
 
 

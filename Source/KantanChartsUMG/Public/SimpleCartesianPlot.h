@@ -76,7 +76,7 @@ protected:
 
 public:
 	// UWidget interface
-	virtual const FSlateBrush* GetEditorIcon() override;
+//	virtual const FSlateBrush* GetEditorIcon() override;
 	// End UWidget interface
 #endif
 };

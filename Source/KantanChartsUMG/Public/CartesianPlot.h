@@ -41,7 +41,7 @@ public:
 	virtual void PostEditChangeProperty(FPropertyChangedEvent & PropertyChangedEvent) override;
 
 	// UWidget interface
-	virtual const FSlateBrush* GetEditorIcon() override;
+//	virtual const FSlateBrush* GetEditorIcon() override;
 	// End UWidget interface
 #endif
 

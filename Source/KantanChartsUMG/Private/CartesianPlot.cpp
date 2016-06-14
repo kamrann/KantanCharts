@@ -48,12 +48,12 @@ void UCartesianPlot::PostEditChangeProperty(FPropertyChangedEvent& PropertyChang
 
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 }
-
+/*
 const FSlateBrush* UCartesianPlot::GetEditorIcon()
 {
 	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanCartesianChart");
 }
-
+*/
 #endif
 
 

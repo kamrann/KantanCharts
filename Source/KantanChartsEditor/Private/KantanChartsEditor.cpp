@@ -9,6 +9,8 @@
 #include "CartesianAxisConfigCustomization.h"
 #include "CategoryStyleManualMappingCustomization.h"
 #include "SeriesStyleManualMappingCustomization.h"
+#include "ClassIconFinder.h"
+#include "KantanChartsStyleSet.h"
 
 //
 #include "KantanSimpleCategoryDatasource.h"
@@ -78,16 +80,13 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 				FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FSeriesStyleManualMappingCustomization::MakeInstance)
 				);
 
-			/*
-			PropertyModule.RegisterCustomPropertyTypeLayout(
-			"StaticCategoryBinding",
-			FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FKantanCategoryChartStaticBindingCustomization::MakeInstance)
-			);
-			*/
-
 			PropertyModule.NotifyCustomizationModuleChanged();
 		}
 
+		// Editor icons
+		FClassIconFinder::RegisterIconSource(&FKantanChartsStyleSet::Get());
+
+		// Chart preview data
 		CreatePreviewDatasources();
 	}
 
@@ -113,6 +112,8 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 			PropertyModule.UnregisterCustomPropertyTypeLayout("CategoryStyleManualMapping");
 			PropertyModule.UnregisterCustomPropertyTypeLayout("SeriesStyleManualMapping");
 		}
+
+		FClassIconFinder::UnregisterIconSource(&FKantanChartsStyleSet::Get());
 
 		if (PreviewCategoryDatasource.IsValid())
 		{

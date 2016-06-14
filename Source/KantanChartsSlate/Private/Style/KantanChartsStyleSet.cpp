@@ -84,11 +84,15 @@ TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 	Style->Set("CartesianChart.DefaultEditor", EditorCartesianChartStyle);
 
 	// @TODO: Perhaps this should live in a separate, editor-only style set?
-	Style->Set("Widget.KantanBarChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanbarchart_16x"), Icon16x16));
-	Style->Set("Widget.KantanPieChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanpiechart_16x"), Icon16x16));
-	Style->Set("Widget.KantanCartesianChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantancartesianchart_16x"), Icon16x16));
-	Style->Set("Widget.KantanTimeSeriesPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantantimeseriesplot_16x"), Icon16x16));
-	Style->Set("Widget.KantanChartLegend", new IMAGE_BRUSH(TEXT("editor/icon_umg_chartlegend_16x"), Icon16x16));
+	Style->Set("ClassIcon.BarChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanbarchart_16x"), Icon16x16));
+	Style->Set("ClassIcon.SimpleBarChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanbarchart_16x"), Icon16x16));
+	//Style->Set("ClassIcon.PieChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanpiechart_16x"), Icon16x16));
+	//Style->Set("ClassIcon.SimplePieChart", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantanpiechart_16x"), Icon16x16));
+	Style->Set("ClassIcon.CartesianPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantancartesianchart_16x"), Icon16x16));
+	Style->Set("ClassIcon.SimpleCartesianPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantancartesianchart_16x"), Icon16x16));
+	Style->Set("ClassIcon.TimeSeriesPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantantimeseriesplot_16x"), Icon16x16));
+	Style->Set("ClassIcon.SimpleTimeSeriesPlot", new IMAGE_BRUSH(TEXT("editor/icon_umg_kantantimeseriesplot_16x"), Icon16x16));
+	Style->Set("ClassIcon.KantanChartLegend", new IMAGE_BRUSH(TEXT("editor/icon_umg_chartlegend_16x"), Icon16x16));
 
 	return Style;
 }

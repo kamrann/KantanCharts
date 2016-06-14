@@ -104,12 +104,12 @@ TSharedRef< SWidget > UKantanChartLegend::RebuildWidget()
 #if WITH_EDITOR
 
 #include "UMGStyle.h"
-
+/*
 const FSlateBrush* UKantanChartLegend::GetEditorIcon()
 {
 	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanChartLegend");
 }
-
+*/
 const FText UKantanChartLegend::GetPaletteCategory()
 {
 	return LOCTEXT("KantanChartsWidgetPaletteCategory", "Kantan Charts");

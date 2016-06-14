@@ -111,7 +111,7 @@ protected:
 #if WITH_EDITOR
 public:
 	// UWidget interface
-	virtual const FSlateBrush* GetEditorIcon() override;
+//	virtual const FSlateBrush* GetEditorIcon() override;
 	virtual const FText GetPaletteCategory() override;
 	// End UWidget interface
 #endif
