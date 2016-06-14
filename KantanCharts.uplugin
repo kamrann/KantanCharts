@@ -1,10 +1,11 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.0.1",
 	"FriendlyName": "Kantan Charts",
 	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
 	"Category": "Kantan Dev",
+	"EngineVersion" : "4.11.0",
 	"CreatedBy": "Kantan Dev",
 	"CreatedByURL": "",
 	"DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
@@ -32,7 +33,7 @@
 			"LoadingPhase": "Default"
 		}
 	],
-	"EnabledByDefault": true,
+	"EnabledByDefault": false,
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"Installed": false
