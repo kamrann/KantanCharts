@@ -45,12 +45,7 @@ void UBarChart::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEve
 
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 }
-/*
-const FSlateBrush* UBarChart::GetEditorIcon()
-{
-	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanBarChart");
-}
-*/
+
 #endif
 
 

@@ -77,15 +77,6 @@ TArray< FKantanCartesianDatapoint > USimpleCartesianPlot::GetSeriesDatapoints_Im
 }
 
 
-#if WITH_EDITOR
-/*
-const FSlateBrush* USimpleCartesianPlot::GetEditorIcon()
-{
-	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanCartesianChart");
-}
-*/
-#endif
-
 
 #undef LOCTEXT_NAMESPACE
 

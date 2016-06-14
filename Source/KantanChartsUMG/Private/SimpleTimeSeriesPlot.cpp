@@ -87,16 +87,6 @@ TArray< FKantanCartesianDatapoint > USimpleTimeSeriesPlot::GetSeriesDatapoints_I
 }
 
 
-#if WITH_EDITOR
-/*
-const FSlateBrush* USimpleTimeSeriesPlot::GetEditorIcon()
-{
-	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanTimeSeriesPlot");
-}
-*/
-#endif
-
-
 
 #undef LOCTEXT_NAMESPACE
 

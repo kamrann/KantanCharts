@@ -47,12 +47,7 @@ void UTimeSeriesPlot::PostEditChangeProperty(FPropertyChangedEvent& PropertyChan
 
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 }
-/*
-const FSlateBrush* UTimeSeriesPlot::GetEditorIcon()
-{
-	return FKantanChartsStyleSet::Get().GetBrush("Widget.KantanTimeSeriesPlot");
-}
-*/
+
 #endif
 
 

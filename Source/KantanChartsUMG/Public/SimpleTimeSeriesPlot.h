@@ -79,11 +79,6 @@ protected:
 		// Never use our own datasource at design time, as it is runtime configured only
 		return false;
 	}
-
-public:
-	// UWidget interface
-//	virtual const FSlateBrush* GetEditorIcon() override;
-	// End UWidget interface
 #endif
 };
 
