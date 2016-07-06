@@ -40,6 +40,12 @@ namespace AxisUtil {
 		{
 			return FAxisTransform{ ::Inverse(Xform), AxisIdx };
 		}
+
+		// Tests to make sure there are no NAN values in the transform
+		inline bool CheckValidity() const
+		{
+			return !FMath::IsNaN(Xform.GetMatrix().Determinant()) && !Xform.GetTranslation().ContainsNaN();
+		}
 	};
 
 	/*
