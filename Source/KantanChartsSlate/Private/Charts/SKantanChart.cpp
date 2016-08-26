@@ -637,11 +637,11 @@ int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 		auto Extents = FontMeasureService->Measure(Label, LabelFont);
 		auto AvailableSize = Geometry.GetLocalSize();
 
-		auto const RenderTransform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(Extents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
+		auto const RenderXform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(Extents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
 		auto RotatedGeometry = Geometry.MakeChild(
 			Extents,
 			FSlateLayoutTransform(FVector2D(0.0f, (AvailableSize.Y - Extents.X) * 0.5f)),
-			RenderTransform,
+			RenderXform,
 			FVector2D(0.0f, 0.0f)
 			);
 		FSlateRect BaseClipRect(
@@ -652,7 +652,7 @@ int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 		auto TransformedClipRect = TransformRect(
 			Concatenate(
 			Inverse(RotatedGeometry.GetAccumulatedLayoutTransform()),
-			Inverse(RenderTransform),
+			Inverse(RenderXform),
 			RotatedGeometry.GetAccumulatedLayoutTransform()
 			),
 			FSlateRotatedRect2(IntersectedClipRect)

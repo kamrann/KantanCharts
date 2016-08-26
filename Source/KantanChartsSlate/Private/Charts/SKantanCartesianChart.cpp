@@ -1257,11 +1257,11 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				FText::FromString(YRounding.ExponentAsString())
 				);
 			auto UnitExtents = FontMeasureService->Measure(UnitText, AxisMarkerFont);
-			auto const RenderTransform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(UnitExtents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
+			auto const RenderXform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(UnitExtents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
 			auto UnitGeometry = PlotSpaceGeometry.MakeChild(
 				UnitExtents,
 				FSlateLayoutTransform(FVector2D(X0, 0)),
-				RenderTransform,
+				RenderXform,
 				FVector2D(0.0f, 0.0f)
 				);
 			FSlateRect BaseUnitClipRect1(
@@ -1282,7 +1282,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			auto TransformedUnitClipRect1 = TransformRect(
 				Concatenate(
 				Inverse(UnitGeometry.GetAccumulatedLayoutTransform()),
-				Inverse(RenderTransform),
+				Inverse(RenderXform),
 				UnitGeometry.GetAccumulatedLayoutTransform()
 				),
 				FSlateRotatedRect2(IntersectedUnitClipRect1)
@@ -1290,7 +1290,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			auto TransformedUnitClipRect2 = TransformRect(
 				Concatenate(
 				Inverse(UnitGeometry.GetAccumulatedLayoutTransform()),
-				Inverse(RenderTransform),
+				Inverse(RenderXform),
 				UnitGeometry.GetAccumulatedLayoutTransform()
 				),
 				FSlateRotatedRect2(PretransformUnitClipRect2)
