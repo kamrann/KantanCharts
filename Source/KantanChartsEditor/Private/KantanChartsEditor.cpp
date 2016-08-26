@@ -83,9 +83,6 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 			PropertyModule.NotifyCustomizationModuleChanged();
 		}
 
-		// Editor icons
-		FClassIconFinder::RegisterIconSource(&FKantanChartsStyleSet::Get());
-
 		// Chart preview data
 		CreatePreviewDatasources();
 	}
@@ -112,8 +109,6 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 			PropertyModule.UnregisterCustomPropertyTypeLayout("CategoryStyleManualMapping");
 			PropertyModule.UnregisterCustomPropertyTypeLayout("SeriesStyleManualMapping");
 		}
-
-		FClassIconFinder::UnregisterIconSource(&FKantanChartsStyleSet::Get());
 
 		if (PreviewCategoryDatasource.IsValid())
 		{
