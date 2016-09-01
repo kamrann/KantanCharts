@@ -1,15 +1,15 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.1.1",
+	"Version": 2,
+	"VersionName": "1.2",
 	"FriendlyName": "Kantan Charts",
 	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
 	"Category": "Kantan Dev",
-	"EngineVersion" : "4.12.0",
+	"EngineVersion" : "4.12",
 	"CreatedBy": "Kantan Dev",
-	"CreatedByURL": "",
+	"CreatedByURL": "http://kantandev.com",
 	"DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/offers/89bd18db011b4bd19606db2e31020f13",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/kantan-charts",
 	"SupportURL": "mailto:kantandev@gmail.com",
 	"Modules": [
 		{
