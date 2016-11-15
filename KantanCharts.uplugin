@@ -5,7 +5,7 @@
 	"FriendlyName": "Kantan Charts",
 	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
 	"Category": "Kantan Dev",
-	"EngineVersion" : "4.13.0",
+	"EngineVersion" : "4.14.0",
 	"CreatedBy": "Kantan Dev",
 	"CreatedByURL": "http://kantandev.com",
 	"DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
