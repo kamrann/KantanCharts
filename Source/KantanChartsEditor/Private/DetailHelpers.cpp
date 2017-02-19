@@ -4,6 +4,7 @@
 #include "DetailHelpers.h"
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
+#include "IContentBrowserSingleton.h"
 
 
 namespace DetailHelpers {
