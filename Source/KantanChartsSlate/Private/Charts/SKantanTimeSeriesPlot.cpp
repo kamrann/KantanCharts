@@ -5,6 +5,8 @@
 #include "FloatRoundingLevel.h"
 
 #include <algorithm>
+#include <cmath>
+#include <limits>
 
 
 void SKantanTimeSeriesPlot::Construct(const FArguments& InArgs)
@@ -164,8 +166,49 @@ FCartesianAxisRange SKantanTimeSeriesPlot::ValidateAxisDisplayRange(FCartesianAx
 	// Disallow zero sized range
 	if (InRange.IsZero())
 	{
-		//InRange.Min -= 1.0f;
-		InRange.Max += 1.0f;
+		if(InRange.Max == 0.0f)
+		{
+			InRange.Min = -1.0f;
+			InRange.Max = 1.0f;
+		}
+		else
+		{
+			// Incr max
+			{
+				int n = (int)std::floor(std::log10(std::abs(InRange.Max)));
+				// Loop until we find an incremented value that is representable as a value distinct from Max
+				auto NewMax = InRange.Max;
+				for(; NewMax == InRange.Max && (NewMax == 0.0f || std::isnormal(NewMax)); ++n)
+				{
+					auto Incr = std::pow(10.0f, n);
+					NewMax = InRange.Max + Incr;
+				}
+
+				if(std::isnormal(NewMax))
+				{
+					InRange.Max = NewMax;
+				}
+			}
+
+			// Decr min
+			{
+				int n = (int)std::floor(std::log10(std::abs(InRange.Min)));
+				// Loop until we find an incremented value that is representable as a value distinct from Max
+				auto NewMin = InRange.Min;
+				for(; NewMin == InRange.Min && (NewMin == 0.0f || std::isnormal(NewMin)); ++n)
+				{
+					auto Decr = std::pow(10.0f, n);
+					NewMin = InRange.Min - Decr;
+				}
+
+				if(std::isnormal(NewMin))
+				{
+					InRange.Min = NewMin;
+				}
+			}
+
+			ensure(InRange.IsZero() == false);
+		}
 	}
 
 	return InRange;
