@@ -1,14 +1,17 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "SKantanChart.h"
 #include "CategoryData.h"
 #include "KantanCategoryStyle.h"
+#include "ICategoryChart.h"
 
 
 /** A base class for category chart widgets. */
-class KANTANCHARTSSLATE_API SKantanCategoryChart : public SKantanChart
+class KANTANCHARTSSLATE_API SKantanCategoryChart:
+	public SKantanChart
+	, public virtual KantanCharts::ICategoryChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanCategoryChart):
@@ -33,11 +36,12 @@ public:
 	virtual FVector2D ComputeDesiredSize(float) const override;
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 
-	bool SetDatasource(UObject* InDatasource);
-	void SetUseAutoPerCategoryStyles(bool bEnabled);
-	void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles);
-	void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings);
-	void ResetCategoryStyleMappings();
+	virtual bool SetDatasource(UObject* InDatasource) override;
+	virtual void SetUseAutoPerCategoryStyles(bool bEnabled) override;
+	virtual void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles) override;
+	virtual void LoadCategoryStylesList(const FStringAssetReference& Styles) override;
+	virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) override;
+	virtual void ResetCategoryStyleMappings() override;
 
 	int32 GetNumCategories() const;
 	FName GetCategoryId(int32 Index) const;

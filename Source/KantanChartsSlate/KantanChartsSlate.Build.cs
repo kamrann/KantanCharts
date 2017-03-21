@@ -7,7 +7,9 @@ public class KantanChartsSlate : ModuleRules
 {
 	public KantanChartsSlate(TargetInfo Target)
 	{
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicDependencyModuleNames.AddRange(
             new string[] {

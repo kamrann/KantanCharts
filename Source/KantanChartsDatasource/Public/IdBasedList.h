@@ -1,6 +1,8 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
+
+#include "CoreMinimal.h"
 
 
 // @TODO: Since no longer reflected, should just reimplement this using TMap< FName, ElementType >

@@ -1,9 +1,9 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsSlate.h"
 #include "SKantanBarChart.h"
 #include "KantanCartesianTypes.h"
 #include "ChartConstants.h"
+#include "SlateApplication.h"
 
 
 void SKantanBarChart::Construct(const FArguments& InArgs)
@@ -29,6 +29,14 @@ void SKantanBarChart::Construct(const FArguments& InArgs)
 void SKantanBarChart::SetStyle(const FKantanBarChartStyle* InStyle)
 {
 	Style = InStyle;
+}
+
+void SKantanBarChart::SetStyleFromAsset(USlateWidgetStyleContainerBase* InStyleAsset)
+{
+	if(auto Asset = Cast< UKantanBarChartWidgetStyle >(InStyleAsset))
+	{
+		Style = &Asset->ChartStyle;
+	}
 }
 
 void SKantanBarChart::SetOrientation(EKantanBarChartOrientation InOrientation)

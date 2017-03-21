@@ -1,39 +1,21 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "SKantanCategoryChart.h"
 #include "KantanBarChartStyle.h"
 #include "KantanChartsStyleSet.h"
-
-
-UENUM(BlueprintType)
-enum class EKantanBarChartOrientation : uint8 {
-	Vertical,
-	Horizontal,
-};
-
-UENUM(BlueprintType)
-enum class EKantanBarLabelPosition : uint8 {
-	NoLabels,
-	Standard,
-	Overlaid,
-};
-
-UENUM(BlueprintType)
-enum class EKantanBarValueExtents : uint8 {
-	NoValueLines,
-	ZeroLineOnly,
-	ZeroAndMaxLines,
-};
+#include "KantanCategoryTypes.h"
+#include "IBarChart.h"
 
 
 /** A bar chart widget. */
-class KANTANCHARTSSLATE_API SKantanBarChart : public SKantanCategoryChart
+class KANTANCHARTSSLATE_API SKantanBarChart:
+	public SKantanCategoryChart
+	, public virtual KantanCharts::IBarChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanBarChart) :
-		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanBarChartStyle >("ChartStyles/KantanBarChartStyle_Default"))
 		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanBarChartStyle >("BarChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
@@ -66,14 +48,15 @@ public:
 	 */
 	void Construct(const FArguments& InArgs);
 
-	void SetStyle(const FKantanBarChartStyle* InStyle);
-	void SetOrientation(EKantanBarChartOrientation InOrientation);
-	void SetMaxBarValue(float InMax);
-	void SetLabelPosition(EKantanBarLabelPosition InPosition);
-	void SetBarToGapRatio(float InRatio);
-	void SetDrawCategoryBoundaries(bool InDraw);
-	void SetValueExtentsDisplay(EKantanBarValueExtents InExtents);
-	void SetValueAxisConfig(FCartesianAxisConfig const& InConfig);
+	virtual void SetStyle(const FKantanBarChartStyle* InStyle) override;
+	virtual void SetStyleFromAsset(USlateWidgetStyleContainerBase* InStyleAsset) override;
+	virtual void SetOrientation(EKantanBarChartOrientation InOrientation) override;
+	virtual void SetMaxBarValue(float InMax) override;
+	virtual void SetLabelPosition(EKantanBarLabelPosition InPosition) override;
+	virtual void SetBarToGapRatio(float InRatio) override;
+	virtual void SetDrawCategoryBoundaries(bool InDraw) override;
+	virtual void SetValueExtentsDisplay(EKantanBarValueExtents InExtents) override;
+	virtual void SetValueAxisConfig(FCartesianAxisConfig const& InConfig) override;
 
 protected:
 	// Map a box origin from chart space (x across categories, y up bars) to local widget geometry space (x right, y down)

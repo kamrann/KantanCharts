@@ -1,9 +1,13 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "SimpleCategoryDatasourceImpl.h"
 #include "KantanCategoryDatasourceInterface.h"
+#include "UObject/Object.h"
+#include "UObject/ObjectMacros.h"
+#include "UObject/ScriptMacros.h"
+#include "UObject/TextProperty.h"
 #include "KantanSimpleCategoryDatasource.generated.h"
 
 

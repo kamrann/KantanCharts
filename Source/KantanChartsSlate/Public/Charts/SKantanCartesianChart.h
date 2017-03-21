@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
@@ -12,16 +12,18 @@
 #include "KantanChartsStyleSet.h"
 #include "FloatRoundingLevel.h"
 #include "AxisUtility.h"
+#include "ICartesianChart.h"
 
 
 /** A widget class implementing a cartesian chart. */
-class KANTANCHARTSSLATE_API SKantanCartesianChart : public SKantanChart
+class KANTANCHARTSSLATE_API SKantanCartesianChart:
+	public SKantanChart
+	, public virtual KantanCharts::ICartesianChart
 {
 public:
 	~SKantanCartesianChart();
 
 	SLATE_BEGIN_ARGS(SKantanCartesianChart):
-		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("ChartStyles/KantanCartesianChartStyle_Default"))
 		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("CartesianChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
@@ -52,26 +54,28 @@ public:
 	virtual FVector2D ComputeDesiredSize(float) const override;
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 
-	void SetStyle(const FKantanCartesianChartStyle* InStyle);
-	bool SetDatasource(UObject* InDatasource);
-	void SetUseAutoPerSeriesStyles(bool bEnabled);
-	void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles);
-	void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings);
-	void SetPlotScale(FKantanCartesianPlotScale const& Scaling);
-	void SetDataPointSize(EKantanDataPointSize::Type InSize);
-	void SetXAxisConfig(FCartesianAxisConfig const& InConfig);
-	void SetYAxisConfig(FCartesianAxisConfig const& InConfig);
-	void SetAxisTitlePadding(FMargin const& InPadding);
-	void SetAntialiasDataLines(bool bEnable);
+	virtual void SetStyle(const FKantanCartesianChartStyle* InStyle) override;
+	virtual void SetStyleFromAsset(USlateWidgetStyleContainerBase* InStyleAsset) override;
+	virtual bool SetDatasource(UObject* InDatasource) override;
+	virtual void SetUseAutoPerSeriesStyles(bool bEnabled) override;
+	virtual void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles) override;
+	virtual void LoadSeriesStylesList(const FStringAssetReference& Styles) override;
+	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override;
+	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override;
+	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override;
+	virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) override;
+	virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) override;
+	virtual void SetAxisTitlePadding(FMargin const& InPadding) override;
+	virtual void SetAntialiasDataLines(bool bEnable) override;
 
-	void EnableSeries(FName Id, bool bEnable);
-	void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines);
-	void SetSeriesStyle(FName Id, FName StyleId);
-	void ResetSeries(FName Id = NAME_None);
+	virtual void EnableSeries(FName Id, bool bEnable) override;
+	virtual void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines) override;
+	virtual void SetSeriesStyle(FName Id, FName StyleId) override;
+	virtual void ResetSeries(FName Id = NAME_None) override;
 
-	bool IsSeriesEnabled(FName Id) const;
-	bool IsSeriesShowingLines(FName Id) const;
-	bool IsSeriesShowingPoints(FName Id) const;
+	virtual bool IsSeriesEnabled(FName Id) const override;
+	virtual bool IsSeriesShowingLines(FName Id) const override;
+	virtual bool IsSeriesShowingPoints(FName Id) const override;
 
 	int32 GetNumSeries() const;
 	FName GetSeriesId(int32 Index) const;

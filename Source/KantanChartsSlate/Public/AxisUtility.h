@@ -1,8 +1,9 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "FloatRoundingLevel.h"
+#include "TransformCalculus2D.h"
 
 
 struct FCartesianAxisRange;

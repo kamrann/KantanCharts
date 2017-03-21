@@ -1,9 +1,9 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsSlate.h"
 #include "SKantanChart.h"
 #include "KantanCartesianTypes.h"	// @TODO: refactor to avoid cartesian specific includes
 #include "SlateRotatedRect.h"
+#include "SlateApplication.h"
 
 
 void SKantanChart::Construct(const FArguments& InArgs)
@@ -12,6 +12,11 @@ void SKantanChart::Construct(const FArguments& InArgs)
 	SetChartTitle(InArgs._ChartTitle);
 	SetChartTitlePadding(FMargin(0.0f, 5.0f));
 	SetUpdateTickRate(InArgs._UpdateTickRate);
+}
+
+TSharedRef< SWidget > SKantanChart::AsWidget()
+{
+	return SharedThis(this);
 }
 
 void SKantanChart::SetMargins(FMargin const& InMargins)

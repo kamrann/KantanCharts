@@ -1,6 +1,5 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsSlate.h"
 #include "SKantanCartesianChart.h"
 #include "KantanCartesianDatasourceInterface.h"
 #include "SimpleRenderTarget.h"
@@ -8,6 +7,13 @@
 #include "SlateRotatedRect.h"
 #include "AxisUtility.h"
 #include "ChartConstants.h"
+#include "SlateApplication.h"
+#include "RenderingThread.h"
+#include "Engine/Texture2D.h"
+#include "RenderUtils.h"
+#include "CanvasTypes.h"
+#include "CanvasItem.h"
+#include "KantanSeriesStyleSet.h"
 
 
 class FDataSeriesElement : public ICustomSlateElement
@@ -93,6 +99,14 @@ void SKantanCartesianChart::SetStyle(const FKantanCartesianChartStyle* InStyle)
 	Style = InStyle;
 }
 
+void SKantanCartesianChart::SetStyleFromAsset(USlateWidgetStyleContainerBase* InStyleAsset)
+{
+	if(auto Asset = Cast< UKantanCartesianChartWidgetStyle >(InStyleAsset))
+	{
+		Style = &Asset->ChartStyle;
+	}
+}
+
 bool SKantanCartesianChart::SetDatasource(UObject* InDatasource)
 {
 	if (IsNullOrValidDatasource(InDatasource) == false)
@@ -129,6 +143,15 @@ void SKantanCartesianChart::SetUseAutoPerSeriesStyles(bool bEnable)
 void SKantanCartesianChart::SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles)
 {
 	SeriesStyles = Styles;
+}
+
+void SKantanCartesianChart::LoadSeriesStylesList(const FStringAssetReference& Styles)
+{
+	auto SeriesStyleSet = Cast< UKantanSeriesStyleSet >(Styles.TryLoad());
+	if(SeriesStyleSet)
+	{
+		SetSeriesStylesList(SeriesStyleSet->Styles);
+	}
 }
 
 void SKantanCartesianChart::SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings)

@@ -1,10 +1,10 @@
 
-#include "KantanChartsSlate.h"
 #include "KantanChartsStyleSet.h"
 #include "KantanBarChartStyle.h"
 #include "KantanCartesianChartStyle.h"
 #include "SlateGameResources.h"
 #include "IPluginManager.h"
+#include "SlateApplication.h"
 
 
 TSharedPtr< FSlateStyleSet > FKantanChartsStyleSet::StyleInstance = nullptr;

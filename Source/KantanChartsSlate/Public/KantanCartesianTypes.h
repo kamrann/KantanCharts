@@ -1,7 +1,9 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
+#include "UObject/ObjectMacros.h"
+#include "CoreMinimal.h"
 #include "KantanCartesianTypes.generated.h"
 
 

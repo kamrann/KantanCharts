@@ -1,9 +1,10 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "IdBasedList.h"
 #include "CategoryData.h"
+#include "CoreMinimal.h"
 
 
 struct KANTANCHARTSDATASOURCE_API FKantanCategoryDataList :

@@ -6,6 +6,8 @@ public class KantanChartsDatasource : ModuleRules
 {
 	public KantanChartsDatasource(TargetInfo Target)
 	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
 		PublicDependencyModuleNames.AddRange(
             new string[] {
                 "Core",

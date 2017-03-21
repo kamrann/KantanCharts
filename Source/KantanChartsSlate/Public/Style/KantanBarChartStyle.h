@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
@@ -30,7 +30,7 @@ struct KANTANCHARTSSLATE_API FKantanBarChartStyle : public FKantanChartStyle
 	{}
 
 	static const FName TypeName;
-	virtual const FName GetTypeName() const override { return TypeName; };
+	virtual const FName GetTypeName() const override;// { return TypeName; };
 
 	static const FKantanBarChartStyle& GetDefault();
 };

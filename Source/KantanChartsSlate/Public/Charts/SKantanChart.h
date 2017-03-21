@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include "KantanChartStyle.h"
 #include "AxisUtility.h"
 #include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
+#include "IChartBase.h"
 
 
 enum class EKantanChartLabelClass : uint8 {
@@ -18,6 +19,7 @@ enum class EKantanChartLabelClass : uint8 {
 class KANTANCHARTSSLATE_API SKantanChart :
 	public SLeafWidget
 	, public FGCObject
+	, public virtual KantanCharts::IChartBase
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanChart):
@@ -42,10 +44,12 @@ public:
 
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 
-	void SetMargins(FMargin const& InMargins);
-	void SetChartTitle(FText const& InTitle);
-	void SetChartTitlePadding(FMargin const& InPadding);
-	void SetUpdateTickRate(float InRate);
+	virtual TSharedRef< SWidget > AsWidget() override;
+
+	virtual void SetMargins(FMargin const& InMargins) override;
+	virtual void SetChartTitle(FText const& InTitle) override;
+	virtual void SetChartTitlePadding(FMargin const& InPadding) override;
+	virtual void SetUpdateTickRate(float InRate) override;
 
 	virtual const FKantanChartStyle* GetChartStyle() const = 0;
 

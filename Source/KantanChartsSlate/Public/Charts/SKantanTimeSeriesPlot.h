@@ -1,19 +1,21 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
 #include "SKantanCartesianChart.h"
 //#include "KantanTimeSeriesPlotStyle.h"
 #include "KantanChartsStyleSet.h"
+#include "ITimeSeriesChart.h"
 
 
 /** A widget class implementing a cartesian chart specialized for plotting time-varying series. */
-class KANTANCHARTSSLATE_API SKantanTimeSeriesPlot : public SKantanCartesianChart
+class KANTANCHARTSSLATE_API SKantanTimeSeriesPlot:
+	public SKantanCartesianChart
+	, public virtual KantanCharts::ITimeSeriesChart
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanTimeSeriesPlot) :
 		// @TODO: TimeSeriesPlot dedicated style
-		//_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("ChartStyles/KantanCartesianChartStyle_Default"))
 		_Style(&FKantanChartsStyleSet::Get().GetWidgetStyle< FKantanCartesianChartStyle >("CartesianChart.DefaultGame"))
 		, _Datasource(nullptr)
 		, _UpdateTickRate(0.0f)
@@ -38,10 +40,10 @@ public:
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 
 //	void SetStyle(const FKantanCartesianChartStyle* InStyle);
-	void SetDisplayTimeRange(float InRange);
-	void SetRoundTimeRange(bool bInRound);
-	void SetLowerValueBound(FCartesianRangeBound const& InBound);
-	void SetUpperValueBound(FCartesianRangeBound const& InBound);
+	virtual void SetDisplayTimeRange(float InRange) override;
+	virtual void SetRoundTimeRange(bool bInRound) override;
+	virtual void SetLowerValueBound(FCartesianRangeBound const& InBound) override;
+	virtual void SetUpperValueBound(FCartesianRangeBound const& InBound) override;
 
 protected:
 	virtual void OnActiveTick(double InCurrentTime, float InDeltaTime) override;

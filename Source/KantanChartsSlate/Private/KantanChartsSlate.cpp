@@ -1,25 +1,38 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
 #include "KantanChartsSlate.h"
 #include "KantanChartsStyleSet.h"
+#include "KantanChartsImpl.h"
+#include "SlateStyleRegistry.h"
 
 
-class FKantanChartsSlateModule : public FDefaultModuleImpl
-{
-	virtual void StartupModule() override
+namespace KantanCharts {
+
+	void FKantanChartsSlateModule::StartupModule()
 	{
 		// Hot reload hack
 		FSlateStyleRegistry::UnRegisterSlateStyle(FKantanChartsStyleSet::GetStyleSetName());
 		FKantanChartsStyleSet::Initialize();
+
+		KC_Interface = MakeUnique< FKantanChartsImpl >();
 	}
 
-	virtual void ShutdownModule() override
+	void FKantanChartsSlateModule::ShutdownModule()
 	{
+		KC_Interface.Reset();
+
 		FKantanChartsStyleSet::Shutdown();
 	}
-};
+
+	const IKantanCharts& FKantanChartsSlateModule::GetKantanChartsInterface() const
+	{
+		check(KC_Interface.IsValid());
+		return *KC_Interface;
+	}
+
+}
 
 
-IMPLEMENT_MODULE(FKantanChartsSlateModule, KantanChartsSlate);
+IMPLEMENT_MODULE(KantanCharts::FKantanChartsSlateModule, KantanChartsSlate);
 
 

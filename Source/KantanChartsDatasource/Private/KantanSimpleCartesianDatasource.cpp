@@ -1,7 +1,7 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsDatasource.h"
 #include "KantanSimpleCartesianDatasource.h"
+#include "UObject/Package.h"
 
 
 // @TODO: Should really be in separate cpp file
@@ -10,7 +10,7 @@ const FString FKantanSeriesDataList::SeriesIdPrefix = TEXT("KantanSimpleSeries")
 
 UKantanSimpleCartesianDatasource* UKantanSimpleCartesianDatasource::NewSimpleCartesianDatasource()
 {
-	return NewObject< UKantanSimpleCartesianDatasource >(GetTransientPackage(), UKantanSimpleCartesianDatasource::StaticClass());
+	return NewObject< UKantanSimpleCartesianDatasource >(GetTransientPackage());
 }
 
 

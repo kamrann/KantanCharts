@@ -1,7 +1,7 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsDatasource.h"
 #include "KantanSimpleCategoryDatasource.h"
+#include "UObject/Package.h"
 
 
 // @TODO: Should really be in separate cpp file
@@ -10,7 +10,7 @@ const FString FKantanCategoryDataList::CategoryIdPrefix = TEXT("KantanSimpleCate
 
 UKantanSimpleCategoryDatasource* UKantanSimpleCategoryDatasource::NewSimpleCategoryDatasource()
 {
-	return NewObject< UKantanSimpleCategoryDatasource >(GetTransientPackage(), UKantanSimpleCategoryDatasource::StaticClass());
+	return NewObject< UKantanSimpleCategoryDatasource >(GetTransientPackage());
 }
 
 

@@ -1,10 +1,23 @@
 #pragma once
 
-#include "Core.h"
-#include "CoreUObject.h"
-#include "Engine.h"
+#include "IKantanChartsSlateModule.h"
+#include "UniquePtr.h"
 
-#include "SlateBasics.h"
-#include "SLeafWidget.h"
 
+namespace KantanCharts {
+
+	class FKantanChartsSlateModule: public IKantanChartsSlateModule
+	{
+	public:
+		virtual void StartupModule() override;
+		virtual void ShutdownModule() override;
+
+	public:
+		virtual const IKantanCharts& GetKantanChartsInterface() const override;
+
+	protected:
+		TUniquePtr< IKantanCharts > KC_Interface;
+	};
+
+}
 

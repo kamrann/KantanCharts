@@ -1,6 +1,5 @@
-// Copyright (C) 2015 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsSlate.h"
 #include "SKantanTimeSeriesPlot.h"
 #include "FloatRoundingLevel.h"
 
