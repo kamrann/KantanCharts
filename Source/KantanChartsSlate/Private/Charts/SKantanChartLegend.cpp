@@ -14,9 +14,9 @@ void SKantanChartLegend::Construct(const FArguments& InArgs)
 	SetFontSizeOverride(InArgs._FontSizeOverride);
 }
 
-void SKantanChartLegend::SetChart(TSharedPtr< SKantanCartesianChart > InChart)
+void SKantanChartLegend::SetChart(const TSharedPtr< KantanCharts::ICartesianChart >& InChart)
 {
-	ChartPtr = InChart;
+	ChartPtr = InChart; //StaticCastSharedPtr< SKantanCartesianChart >(InChart);
 }
 
 void SKantanChartLegend::SetMargins(FMargin const& InMargins)

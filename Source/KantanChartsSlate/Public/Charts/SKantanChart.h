@@ -51,7 +51,7 @@ public:
 	virtual void SetChartTitlePadding(FMargin const& InPadding) override;
 	virtual void SetUpdateTickRate(float InRate) override;
 
-	virtual const FKantanChartStyle* GetChartStyle() const = 0;
+	//virtual const FKantanChartStyle* GetChartStyle() const = 0;
 
 	static FSlateFontInfo GetLabelFont(const FKantanChartStyle* ChartStyle, EKantanChartLabelClass LabelClass);
 

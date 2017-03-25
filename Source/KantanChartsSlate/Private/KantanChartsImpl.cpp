@@ -4,6 +4,7 @@
 #include "SKantanCartesianChart.h"
 #include "SKantanTimeSeriesPlot.h"
 #include "SKantanBarChart.h"
+#include "SKantanChartLegend.h"
 #include "KantanChartsStyleSet.h"
 #include "KantanSimpleCartesianDatasource.h"
 #include "KantanSimpleCategoryDatasource.h"
@@ -24,6 +25,11 @@ namespace KantanCharts {
 	TSharedRef< IBarChart > FKantanChartsImpl::CreateBarChart() const
 	{
 		return SNew(SKantanBarChart);
+	}
+
+	TSharedRef< IChartLegend > FKantanChartsImpl::CreateCartesianLegend() const
+	{
+		return SNew(SKantanChartLegend);
 	}
 
 	UKantanSimpleCartesianDatasource* FKantanChartsImpl::CreateSimpleCartesianDatasource(UObject* Outer) const

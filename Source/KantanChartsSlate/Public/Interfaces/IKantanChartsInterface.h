@@ -17,6 +17,7 @@ namespace KantanCharts {
 	class ICartesianChart;
 	class ITimeSeriesChart;
 	class IBarChart;
+	class IChartLegend;
 
 	/**
 	* The public interface to Kantan Charts functionality usable with dynamic loading.
@@ -44,6 +45,8 @@ namespace KantanCharts {
 		virtual TSharedRef< ICartesianChart > CreateCartesianChart() const = 0;
 		virtual TSharedRef< ITimeSeriesChart > CreateTimeSeriesChart() const = 0;
 		virtual TSharedRef< IBarChart > CreateBarChart() const = 0;
+
+		virtual TSharedRef< IChartLegend > CreateCartesianLegend() const = 0;
 
 		virtual UKantanSimpleCartesianDatasource* CreateSimpleCartesianDatasource(UObject* Outer) const = 0;
 		virtual UKantanSimpleCategoryDatasource* CreateSimpleCategoryDatasource(UObject* Outer) const = 0;

@@ -10,6 +10,7 @@ struct FKantanCartesianChartStyle;
 struct FKantanSeriesStyle;
 struct FKantanCartesianPlotScale;
 struct FCartesianAxisConfig;
+struct FCartesianDataSnapshot;
 
 namespace KantanCharts {
 
@@ -38,6 +39,9 @@ namespace KantanCharts {
 		virtual bool IsSeriesEnabled(FName Id) const = 0;
 		virtual bool IsSeriesShowingLines(FName Id) const = 0;
 		virtual bool IsSeriesShowingPoints(FName Id) const = 0;
+
+		virtual FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const = 0;
+		virtual FCartesianDataSnapshot const& GetCurrentSnapshot() const = 0;
 	};
 
 }

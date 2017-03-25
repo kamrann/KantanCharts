@@ -87,9 +87,9 @@ public:
 		return static_cast<const FKantanCartesianChartStyle*>(Style);
 	}
 
-	FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const;
+	virtual FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const override;
 
-	FCartesianDataSnapshot const& GetCurrentSnapshot() const
+	virtual FCartesianDataSnapshot const& GetCurrentSnapshot() const override
 	{
 		return DataSnapshot;
 	}

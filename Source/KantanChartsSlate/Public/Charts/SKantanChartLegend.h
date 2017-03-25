@@ -3,6 +3,7 @@
 #pragma once
 
 #include "SLeafWidget.h"
+#include "Interfaces/IChartLegend.h"
 #include "KantanChartStyle.h"
 
 
@@ -12,6 +13,7 @@ class SKantanCartesianChart;
 /** A simple widget to display a chart legend. */
 class KANTANCHARTSSLATE_API SKantanChartLegend :
 	public SLeafWidget
+	, public KantanCharts::IChartLegend
 {
 public:
 	SLATE_BEGIN_ARGS(SKantanChartLegend):
@@ -39,12 +41,12 @@ public:
 	virtual FVector2D ComputeDesiredSize(float) const override;
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 
-	void SetChart(TSharedPtr< SKantanCartesianChart > InChart);
-	void SetMargins(FMargin const& InMargins);
-	void SetSeriesPadding(FMargin const& InPadding);
-	void SetShowDataStyle(bool bShow);
-	void SetBackgroundOverride(const FSlateBrush* Background);
-	void SetFontSizeOverride(int32 FontSize);
+	virtual void SetChart(const TSharedPtr< KantanCharts::ICartesianChart >& InChart) override;
+	virtual void SetMargins(FMargin const& InMargins) override;
+	virtual void SetSeriesPadding(FMargin const& InPadding) override;
+	virtual void SetShowDataStyle(bool bShow) override;
+	virtual void SetBackgroundOverride(const FSlateBrush* Background) override;
+	virtual void SetFontSizeOverride(int32 FontSize) override;
 
 protected:
 	FSlateFontInfo GetLegendFont() const;
@@ -56,6 +58,7 @@ protected:
 	const FSlateBrush* BackgroundOverride;
 	int32 FontSizeOverride;
 
-	TWeakPtr< SKantanCartesianChart > ChartPtr;
+	//TWeakPtr< SKantanCartesianChart > ChartPtr;
+	TWeakPtr< KantanCharts::ICartesianChart > ChartPtr;
 };
 

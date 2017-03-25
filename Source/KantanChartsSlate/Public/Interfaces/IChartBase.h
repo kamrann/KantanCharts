@@ -11,6 +11,8 @@ Also, apparently should be suppressable in code via 'using base::method;', but t
 #include "CoreMinimal.h"
 
 
+struct FKantanChartStyle;
+
 class SWidget;
 
 namespace KantanCharts {
@@ -25,6 +27,8 @@ namespace KantanCharts {
 		virtual void SetChartTitle(FText const& InTitle) = 0;
 		virtual void SetChartTitlePadding(FMargin const& InPadding) = 0;
 		virtual void SetUpdateTickRate(float InRate) = 0;
+
+		virtual const FKantanChartStyle* GetChartStyle() const = 0;
 
 	public:
 		virtual ~IChartBase() {}

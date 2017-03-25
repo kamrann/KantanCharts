@@ -12,6 +12,8 @@ namespace KantanCharts {
 		virtual TSharedRef< ITimeSeriesChart > CreateTimeSeriesChart() const override;
 		virtual TSharedRef< IBarChart > CreateBarChart() const override;
 
+		virtual TSharedRef< IChartLegend > CreateCartesianLegend() const override;
+
 		virtual UKantanSimpleCartesianDatasource* CreateSimpleCartesianDatasource(UObject* Outer) const override;
 		virtual UKantanSimpleCategoryDatasource* CreateSimpleCategoryDatasource(UObject* Outer) const override;
 
