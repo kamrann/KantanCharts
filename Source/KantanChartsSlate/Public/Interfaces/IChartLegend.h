@@ -10,6 +10,9 @@ namespace KantanCharts {
 	class IChartLegend
 	{
 	public:
+		virtual TSharedRef< SWidget > AsWidget() = 0;
+
+	public:
 		virtual void SetChart(const TSharedPtr< ICartesianChart >& InChart) = 0;
 		virtual void SetMargins(FMargin const& InMargins) = 0;
 		virtual void SetSeriesPadding(FMargin const& InPadding) = 0;

@@ -41,6 +41,8 @@ public:
 	virtual FVector2D ComputeDesiredSize(float) const override;
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 
+	virtual TSharedRef< SWidget > AsWidget() override;
+
 	virtual void SetChart(const TSharedPtr< KantanCharts::ICartesianChart >& InChart) override;
 	virtual void SetMargins(FMargin const& InMargins) override;
 	virtual void SetSeriesPadding(FMargin const& InPadding) override;

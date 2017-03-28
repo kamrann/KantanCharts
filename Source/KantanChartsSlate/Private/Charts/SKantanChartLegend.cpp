@@ -14,6 +14,11 @@ void SKantanChartLegend::Construct(const FArguments& InArgs)
 	SetFontSizeOverride(InArgs._FontSizeOverride);
 }
 
+TSharedRef< SWidget > SKantanChartLegend::AsWidget()
+{
+	return SharedThis(this);
+}
+
 void SKantanChartLegend::SetChart(const TSharedPtr< KantanCharts::ICartesianChart >& InChart)
 {
 	ChartPtr = InChart; //StaticCastSharedPtr< SKantanCartesianChart >(InChart);
