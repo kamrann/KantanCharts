@@ -39,6 +39,11 @@ struct FCartesianAxisRange
 		Max(InMax)
 	{}
 
+	FCartesianAxisRange(const FFloatInterval& InInterval):
+		Min(InInterval.Min),
+		Max(InInterval.Max)
+	{}
+
 	inline void Set(float InMin, float InMax)
 	{
 		Min = InMin;
@@ -53,6 +58,11 @@ struct FCartesianAxisRange
 	inline bool IsInfinite() const
 	{
 		return Min == -FLT_MAX && Max == FLT_MAX;
+	}
+
+	inline bool ContainsNaNOrInf() const
+	{
+		return FMath::IsNaN(Min) || FMath::IsNaN(Max) || !FMath::IsFinite(Min) || !FMath::IsFinite(Max);
 	}
 
 	inline bool IsInversed() const
@@ -254,6 +264,9 @@ struct FKantanCartesianPlotScale
 		}
 	}
 };
+
+struct FCartesianDataSnapshot;
+DECLARE_DELEGATE_RetVal_TwoParams(FKantanCartesianPlotScale, FOnUpdatePlotScale, const FCartesianDataSnapshot& /* Data snapshot */, const TArray< int32 >& /* Enabled series */);
 
 
 UENUM(BlueprintType)

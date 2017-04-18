@@ -6,6 +6,7 @@
 #include "KantanCartesianDatapoint.h"
 #include "KantanCartesianDatasourceInterface.h"
 #include "UnrealType.h"
+#include "Math/Interval.h"
 
 
 struct FKantanSeriesData
@@ -37,6 +38,46 @@ struct FCartesianDataSnapshot :
 			Series.Points = IKantanCartesianDatasourceInterface::Execute_GetSeriesDatapoints(Datasource, Idx);
 			Elements.Add(Series);
 		}
+	}
+
+	/* Is bIsAscending is true, it means we can assume that subsequent values are >= previous, and therefore avoid iterating over all datapoints. */
+	FFloatInterval GetSeriesRange(int32 Index, EAxis::Type Axis, bool bIsAscending) const
+	{
+		auto& Series = Elements[Index];
+
+		FFloatInterval Range(0, 0);
+		if(Series.Points.Num() > 0)
+		{
+			const int32 ComponentIdx = Axis == EAxis::X ? 0 : 1;
+			if(bIsAscending)
+			{
+				Range.Min = Series.Points[0].Coords.Component(ComponentIdx);
+				Range.Max = Series.Points.Last().Coords.Component(ComponentIdx);
+			}
+			else
+			{
+				Range = FFloatInterval(FLT_MAX, -FLT_MAX);
+				for(auto& Pnt : Series.Points)
+				{
+					Range.Min = FMath::Min(Range.Min, Pnt.Coords.Component(ComponentIdx));
+					Range.Max = FMath::Max(Range.Max, Pnt.Coords.Component(ComponentIdx));
+				}
+			}
+		}
+
+		return Range;
+	}
+
+	FFloatInterval GetDataRange(EAxis::Type Axis, bool bIsAscending, const TArray< int32 >& SeriesToInclude) const
+	{
+		FFloatInterval Range(0, 0);
+		for(auto& SeriesIdx : SeriesToInclude)
+		{
+			auto SeriesRange = GetSeriesRange(SeriesIdx, Axis, bIsAscending);
+			Range.Min = FMath::Min(Range.Min, SeriesRange.Min);
+			Range.Max = FMath::Max(Range.Max, SeriesRange.Max);
+		}
+		return Range;// Range.IsInversed() ? FCartesianAxisRange(0.0f, 0.0f) : Range;
 	}
 };
 

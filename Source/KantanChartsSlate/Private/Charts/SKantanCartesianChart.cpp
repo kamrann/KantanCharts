@@ -92,6 +92,7 @@ void SKantanCartesianChart::Construct(const FArguments& InArgs)
 	SetDataPointSize(InArgs._DataPointSize);
 	SetAxisTitlePadding(FMargin(0.0f, 4.0f));
 	SetAntialiasDataLines(true);
+	SetOnUpdatePlotScale(InArgs._OnUpdatePlotScale);
 }
 
 void SKantanCartesianChart::SetStyle(const FKantanCartesianChartStyle* InStyle)
@@ -192,6 +193,11 @@ void SKantanCartesianChart::SetYAxisConfig(FCartesianAxisConfig const& InConfig)
 void SKantanCartesianChart::SetAntialiasDataLines(bool bEnable)
 {
 	bAntialiasDataLines = bEnable;
+}
+
+void SKantanCartesianChart::SetOnUpdatePlotScale(FOnUpdatePlotScale Delegate)
+{
+	OnUpdatePlotScaleDelegate = Delegate;
 }
 
 void SKantanCartesianChart::EnableSeries(FName Id, bool bEnable)
@@ -757,7 +763,22 @@ void SKantanCartesianChart::OnActiveTick(double InCurrentTime, float InDeltaTime
 {
 	if (Datasource != nullptr)
 	{
+		// @TODO: Can't we get away with only updating enabled series here?
 		DataSnapshot.UpdateFromDatasource(Datasource);
+
+		if(OnUpdatePlotScaleDelegate.IsBound())
+		{
+			TArray< int32 > EnabledIndices;
+			for(int32 Idx = 0; Idx < DataSnapshot.Elements.Num(); ++Idx)
+			{
+				if(IsSeriesEnabled(DataSnapshot.Elements[Idx].Id))
+				{
+					EnabledIndices.Add(Idx);
+				}
+			}
+
+			PlotScale = OnUpdatePlotScaleDelegate.Execute(DataSnapshot, EnabledIndices);
+		}
 
 		UpdateDrawingElementsFromDatasource();
 		UpdateSeriesConfigFromDatasource();

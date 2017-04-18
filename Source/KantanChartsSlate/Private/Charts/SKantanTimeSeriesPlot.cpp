@@ -19,6 +19,8 @@ void SKantanTimeSeriesPlot::Construct(const FArguments& InArgs)
 
 	SetDisplayTimeRange(30.0f);
 	SetRoundTimeRange(false);
+
+	SetOnUpdatePlotScale(FOnUpdatePlotScale::CreateSP(this, &SKantanTimeSeriesPlot::DeterminePlotScale));
 }
 
 void SKantanTimeSeriesPlot::SetDisplayTimeRange(float InRange)
@@ -44,76 +46,6 @@ void SKantanTimeSeriesPlot::SetUpperValueBound(FCartesianRangeBound const& InBou
 void SKantanTimeSeriesPlot::OnActiveTick(double InCurrentTime, float InDeltaTime)
 {
 	SKantanCartesianChart::OnActiveTick(InCurrentTime, InDeltaTime);
-
-	if (Datasource != nullptr)
-	{
-		PlotScale.Type = ECartesianScalingType::FixedRange;
-		auto XSpan = GetDataAxisSpan(EAxis::X);
-		PlotScale.RangeX = ValidateAxisDisplayRange(XSpan);
-		if (DisplayTimeRange > 0.0f)
-		{
-			PlotScale.RangeX.Max = FMath::Max(PlotScale.RangeX.Max, PlotScale.RangeX.Min + DisplayTimeRange);
-			PlotScale.RangeX.Min = FMath::Max(PlotScale.RangeX.Min, PlotScale.RangeX.Max - DisplayTimeRange);
-		}
-
-		if (bRoundTimeRange)
-		{
-			// @TODO: for now just rounding to about 1 tenth of the range
-			auto RL = FFloatRoundingLevel::MakeFromMinimumStepSize(PlotScale.RangeX.Size() / 10);
-			PlotScale.RangeX.Max = RL.RoundUp(PlotScale.RangeX.Max).GetFloatValue();
-			if (DisplayTimeRange > 0.0f)
-			{
-				PlotScale.RangeX.Min = PlotScale.RangeX.Max - DisplayTimeRange;
-				//RL.RoundDown(PlotScale.RangeX.Min).GetFloatValue();
-			}
-		}
-
-		FCartesianAxisRange YSpan;
-
-		switch (LowerValueBound.Type)
-		{
-		case ECartesianRangeBoundType::FixedValue:
-			YSpan.Min = LowerValueBound.FixedBoundValue;
-			break;
-
-		case ECartesianRangeBoundType::FitToData:
-		case ECartesianRangeBoundType::FitToDataRounded:
-		{
-			auto FitSpan = GetDataAxisSpan(EAxis::Y);
-			YSpan.Min = FitSpan.Min;
-		}
-		break;
-		}
-
-		switch (UpperValueBound.Type)
-		{
-		case ECartesianRangeBoundType::FixedValue:
-			YSpan.Max = UpperValueBound.FixedBoundValue;
-			break;
-
-		case ECartesianRangeBoundType::FitToData:
-		case ECartesianRangeBoundType::FitToDataRounded:
-		{
-			auto FitSpan = GetDataAxisSpan(EAxis::Y);
-			YSpan.Max = FitSpan.Max;
-		}
-		break;
-		}
-
-		PlotScale.RangeY = ValidateAxisDisplayRange(YSpan);
-		// @TODO: for now just rounding to about 1 tenth of the range
-		auto RL = FFloatRoundingLevel::MakeFromMinimumStepSize(PlotScale.RangeY.Size() / 10);
-
-		if (LowerValueBound.Type == ECartesianRangeBoundType::FitToDataRounded)
-		{
-			PlotScale.RangeY.Min = RL.RoundDown(PlotScale.RangeY.Min).GetFloatValue();
-		}
-
-		if (UpperValueBound.Type == ECartesianRangeBoundType::FitToDataRounded)
-		{
-			PlotScale.RangeY.Max = RL.RoundUp(PlotScale.RangeY.Max).GetFloatValue();
-		}
-	}
 }
 
 void SKantanTimeSeriesPlot::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
@@ -121,41 +53,14 @@ void SKantanTimeSeriesPlot::Tick(const FGeometry& AllottedGeometry, const double
 	SKantanCartesianChart::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
 }
 
-FCartesianAxisRange SKantanTimeSeriesPlot::GetDataAxisSpan(EAxis::Type Axis) const
-{
-	FCartesianAxisRange Range(FLT_MAX, -FLT_MAX);
-
-	int32 AxisIdx = Axis == EAxis::X ? 0 : 1;
-	auto NumSeries = GetNumSeries();
-	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
-	{
-		auto Id = GetSeriesId(Idx);
-		if (IsSeriesEnabled(Id) == false)
-		{
-			continue;
-		}
-
-		auto Datapoints = GetSeriesDatapoints(Idx);
-		for (auto const& Pnt : Datapoints)
-		{
-			auto const AxisValue = Pnt.Coords[AxisIdx];
-			
-			if (AxisValue < Range.Min)
-			{
-				Range.Min = AxisValue;
-			}
-			if (AxisValue > Range.Max)
-			{
-				Range.Max = AxisValue;
-			}
-		}
-	}
-
-	return Range.IsInversed() ? FCartesianAxisRange(0.0f, 0.0f) : Range;
-}
-
 FCartesianAxisRange SKantanTimeSeriesPlot::ValidateAxisDisplayRange(FCartesianAxisRange InRange)
 {
+	if(InRange.ContainsNaNOrInf())
+	{
+		// @TODO: Log error
+		return FCartesianAxisRange(-1.0f, 1.0f);
+	}
+
 	// Normalize
 	if (InRange.Min > InRange.Max)
 	{
@@ -211,6 +116,87 @@ FCartesianAxisRange SKantanTimeSeriesPlot::ValidateAxisDisplayRange(FCartesianAx
 	}
 
 	return InRange;
+}
+
+FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCartesianDataSnapshot& Snapshot, const TArray< int32 >& Enabled) const
+{
+	FKantanCartesianPlotScale NewPlotScale;
+
+	NewPlotScale.Type = ECartesianScalingType::FixedRange;
+	auto XSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled);
+	NewPlotScale.RangeX = ValidateAxisDisplayRange(XSpan);
+	if(DisplayTimeRange > 0.0f)
+	{
+		NewPlotScale.RangeX.Max = FMath::Max(NewPlotScale.RangeX.Max, NewPlotScale.RangeX.Min + DisplayTimeRange);
+		NewPlotScale.RangeX.Min = FMath::Max(NewPlotScale.RangeX.Min, NewPlotScale.RangeX.Max - DisplayTimeRange);
+	}
+
+	if(bRoundTimeRange)
+	{
+		// @TODO: for now just rounding to about 1 tenth of the range
+		auto RL = FFloatRoundingLevel::MakeFromMinimumStepSize(NewPlotScale.RangeX.Size() / 10);
+		NewPlotScale.RangeX.Max = RL.RoundUp(NewPlotScale.RangeX.Max).GetFloatValue();
+		if(DisplayTimeRange > 0.0f)
+		{
+			NewPlotScale.RangeX.Min = NewPlotScale.RangeX.Max - DisplayTimeRange;
+			//RL.RoundDown(NewPlotScale.RangeX.Min).GetFloatValue();
+		}
+	}
+
+	TOptional< FCartesianAxisRange > DataYSpan;
+	FCartesianAxisRange YSpan;
+
+	switch(LowerValueBound.Type)
+	{
+		case ECartesianRangeBoundType::FixedValue:
+		YSpan.Min = LowerValueBound.FixedBoundValue;
+		break;
+
+		case ECartesianRangeBoundType::FitToData:
+		case ECartesianRangeBoundType::FitToDataRounded:
+		{
+			if(!DataYSpan.IsSet())
+			{
+				DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled);
+			}
+			YSpan.Min = DataYSpan->Min;
+		}
+		break;
+	}
+
+	switch(UpperValueBound.Type)
+	{
+		case ECartesianRangeBoundType::FixedValue:
+		YSpan.Max = UpperValueBound.FixedBoundValue;
+		break;
+
+		case ECartesianRangeBoundType::FitToData:
+		case ECartesianRangeBoundType::FitToDataRounded:
+		{
+			if(!DataYSpan.IsSet())
+			{
+				DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled);
+			}
+			YSpan.Max = DataYSpan->Max;
+		}
+		break;
+	}
+
+	NewPlotScale.RangeY = ValidateAxisDisplayRange(YSpan);
+	// @TODO: for now just rounding to about 1 tenth of the range
+	auto RL = FFloatRoundingLevel::MakeFromMinimumStepSize(NewPlotScale.RangeY.Size() / 10);
+
+	if(LowerValueBound.Type == ECartesianRangeBoundType::FitToDataRounded)
+	{
+		NewPlotScale.RangeY.Min = RL.RoundDown(NewPlotScale.RangeY.Min).GetFloatValue();
+	}
+
+	if(UpperValueBound.Type == ECartesianRangeBoundType::FitToDataRounded)
+	{
+		NewPlotScale.RangeY.Max = RL.RoundUp(NewPlotScale.RangeY.Max).GetFloatValue();
+	}
+
+	return NewPlotScale;
 }
 
 void SKantanTimeSeriesPlot::GetLinePointsToDraw(

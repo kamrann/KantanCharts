@@ -55,8 +55,8 @@ protected:
 		TArray< FVector2D >& OutPoints) const override;
 
 	// @TODO: Integrate this into datasource
-	FCartesianAxisRange GetDataAxisSpan(EAxis::Type Axis) const;
 	static FCartesianAxisRange ValidateAxisDisplayRange(FCartesianAxisRange InRange);
+	FKantanCartesianPlotScale DeterminePlotScale(const FCartesianDataSnapshot& Snapshot, const TArray< int32 >& Enabled) const;
 
 protected:
 	float DisplayTimeRange;

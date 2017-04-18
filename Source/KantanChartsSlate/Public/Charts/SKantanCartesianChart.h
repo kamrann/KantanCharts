@@ -29,6 +29,7 @@ public:
 		, _UpdateTickRate(0.0f)
 		, _PlotScale()
 		, _DataPointSize(EKantanDataPointSize::Medium)
+		, _OnUpdatePlotScale()
 		{}
 
 		SLATE_STYLE_ARGUMENT(FKantanCartesianChartStyle, Style)
@@ -41,6 +42,8 @@ public:
 		SLATE_ARGUMENT(FKantanCartesianPlotScale, PlotScale)
 
 		SLATE_ARGUMENT(EKantanDataPointSize::Type, DataPointSize)
+
+		SLATE_EVENT(FOnUpdatePlotScale, OnUpdatePlotScale)
 
 	SLATE_END_ARGS()
 
@@ -67,6 +70,7 @@ public:
 	virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) override;
 	virtual void SetAxisTitlePadding(FMargin const& InPadding) override;
 	virtual void SetAntialiasDataLines(bool bEnable) override;
+	virtual void SetOnUpdatePlotScale(FOnUpdatePlotScale Delegate) override;
 
 	virtual void EnableSeries(FName Id, bool bEnable) override;
 	virtual void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines) override;
@@ -174,6 +178,8 @@ protected:
 	FKantanCartesianPlotScale PlotScale;
 	EKantanDataPointSize::Type DataPointSize;
 	bool bAntialiasDataLines;
+
+	FOnUpdatePlotScale OnUpdatePlotScaleDelegate;
 
 	// Data
 	UObject* Datasource;
