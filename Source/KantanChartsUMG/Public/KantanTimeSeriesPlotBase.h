@@ -17,17 +17,34 @@ class KANTANCHARTSUMG_API UKantanTimeSeriesPlotBase : public UKantanCartesianCha
 
 public:
 	/*
-	The length of time to display data for.
-	If 0, the entire time range of the data is displayed.
+	Whether to display a fixed length of time on the X axis.
 	*/
 	UPROPERTY(EditAnywhere, Category = "Config")
+	bool bUseFixedTimeRange;
+
+	/*
+	The length of time to display data for.
+	*/
+	UPROPERTY(EditAnywhere, Category = "Config", Meta = (EditCondition = "bUseFixedTimeRange"))
 	float DisplayTimeRange;
 
 	/*
 	Whether or not to round off the displayed time range.
 	*/
+	//UPROPERTY(EditAnywhere, Category = "Config")
+	//bool bRoundTimeRange;
+
+	/*
+	Lower bound for the X (time) axis.
+	*/
+	UPROPERTY(EditAnywhere, Category = "Config", Meta = (EditCondition = "!bUseFixedTimeRange"))
+	FCartesianRangeBound LowerTimeBound;
+
+	/*
+	Upper bound for the X (time) axis.
+	*/
 	UPROPERTY(EditAnywhere, Category = "Config")
-	bool bRoundTimeRange;
+	FCartesianRangeBound UpperTimeBound;
 
 	/*
 	Lower bound for the Y (value) axis.

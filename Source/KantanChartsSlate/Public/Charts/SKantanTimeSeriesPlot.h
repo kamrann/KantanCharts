@@ -40,10 +40,12 @@ public:
 	virtual void Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) override;
 
 //	void SetStyle(const FKantanCartesianChartStyle* InStyle);
-	virtual void SetDisplayTimeRange(float InRange) override;
-	virtual void SetRoundTimeRange(bool bInRound) override;
+	virtual void SetFixedTimeRange(TOptional< float > InRange) override;
+//	virtual void SetRoundTimeRange(bool bInRound) override;
 	virtual void SetLowerValueBound(FCartesianRangeBound const& InBound) override;
 	virtual void SetUpperValueBound(FCartesianRangeBound const& InBound) override;
+	virtual void SetLowerTimeBound(FCartesianRangeBound const& InBound) override;
+	virtual void SetUpperTimeBound(FCartesianRangeBound const& InBound) override;
 
 protected:
 	virtual void OnActiveTick(double InCurrentTime, float InDeltaTime) override;
@@ -54,15 +56,15 @@ protected:
 		FCartesianAxisRange const& RangeY,
 		TArray< FVector2D >& OutPoints) const override;
 
-	// @TODO: Integrate this into datasource
-	static FCartesianAxisRange ValidateAxisDisplayRange(FCartesianAxisRange InRange);
 	FKantanCartesianPlotScale DeterminePlotScale(const FCartesianDataSnapshot& Snapshot, const TArray< int32 >& Enabled) const;
 
 protected:
-	float DisplayTimeRange;
-	bool bRoundTimeRange;
 	FCartesianRangeBound LowerValueBound;
 	FCartesianRangeBound UpperValueBound;
+	FCartesianRangeBound LowerTimeBound;
+	FCartesianRangeBound UpperTimeBound;
+	TOptional< float > FixedTimeRange;
+	//bool bRoundTimeRange;
 };
 
 

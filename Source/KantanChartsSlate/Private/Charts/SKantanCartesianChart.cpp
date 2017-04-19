@@ -231,6 +231,26 @@ void SKantanCartesianChart::ResetSeries(FName Id)
 	}
 }
 
+/*
+void SKantanCartesianChart::ResetSeriesNotInDatasource()
+{
+	TSet< FName > ToRemove;
+	for(auto const& Cfg : SeriesConfig)
+	{
+		auto Id = Cfg.Key;
+		if()
+		{
+			ToRemove.Add(Id);
+		}
+	}
+
+	for(auto Id : ToRemove)
+	{
+		SeriesConfig.Remove(Id);
+	}
+}
+*/
+
 bool SKantanCartesianChart::IsSeriesEnabled(FName Id) const
 {
 	auto Cfg = SeriesConfig.Find(Id);
@@ -320,26 +340,40 @@ bool SKantanCartesianChart::IsNullOrValidDatasource(UObject* Source)
 
 void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 {
+	TArray< FName > Unused;
+	SeriesElements.GenerateKeyArray(Unused);
+
 	auto NumSeries = GetNumSeries();
 	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
 	{
 		auto SeriesId = GetSeriesId(Idx);
 
-		if (SeriesId.IsNone() == false && SeriesElements.Contains(SeriesId) == false)
+		if (SeriesId.IsNone() == false)
 		{
-			// Series not in map
+			if(SeriesElements.Contains(SeriesId) == false)
+			{
+				// Series not in map
+				// Create new slate rendering element and add to map
+				auto Element = MakeShareable< FDataSeriesElement >(new FDataSeriesElement());
+				SeriesElements.Add(SeriesId, Element);
+			}
 
-			// Create new slate rendering element and add to map
-			auto Element = MakeShareable< FDataSeriesElement >(new FDataSeriesElement());
-			SeriesElements.Add(SeriesId, Element);
+			Unused.Remove(SeriesId);
 		}
 	}
 
-	// @TODO: Remove unused?
+	// Remove unused elements
+	for(auto const& Id : Unused)
+	{
+		SeriesElements.Remove(Id);
+	}
 }
 
 void SKantanCartesianChart::UpdateSeriesConfigFromDatasource()
 {
+	TArray< FName > Unused;
+	SeriesConfig.GenerateKeyArray(Unused);
+
 	// Loop through all series in the datasource
 	auto NumSeries = GetNumSeries();
 	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
@@ -358,10 +392,16 @@ void SKantanCartesianChart::UpdateSeriesConfigFromDatasource()
 			{
 				Cfg->SeriesStyleId = GetNextSeriesStyle();
 			}
+
+			Unused.Remove(SeriesId);
 		}
 	}
 
-	// @TODO: Better to remove configs for series no longer in the data source, or leave them in?
+	// Remove unused configs to free up series styles
+	for(auto const& Id : Unused)
+	{
+		SeriesConfig.Remove(Id);
+	}
 }
 
 FName SKantanCartesianChart::GetNextSeriesStyle() const
@@ -390,6 +430,71 @@ FName SKantanCartesianChart::GetNextSeriesStyle() const
 
 	// Currently if no unused styles available, return None (which will lead to using default style)
 	return NAME_None;
+}
+
+FCartesianAxisRange SKantanCartesianChart::ValidateAxisDisplayRange(FCartesianAxisRange InRange)
+{
+	if(InRange.ContainsNaNOrInf())
+	{
+		// @TODO: Log error
+		return FCartesianAxisRange(-1.0f, 1.0f);
+	}
+
+	// Normalize
+	if(InRange.Min > InRange.Max)
+	{
+		Swap(InRange.Min, InRange.Max);
+	}
+
+	// Disallow zero sized range
+	if(InRange.IsZero())
+	{
+		if(InRange.Max == 0.0f)
+		{
+			InRange.Min = -1.0f;
+			InRange.Max = 1.0f;
+		}
+		else
+		{
+			// Incr max
+			{
+				int n = (int)std::floor(std::log10(std::abs(InRange.Max)));
+				// Loop until we find an incremented value that is representable as a value distinct from Max
+				auto NewMax = InRange.Max;
+				for(; NewMax == InRange.Max && (NewMax == 0.0f || std::isnormal(NewMax)); ++n)
+				{
+					auto Incr = std::pow(10.0f, n);
+					NewMax = InRange.Max + Incr;
+				}
+
+				if(std::isnormal(NewMax))
+				{
+					InRange.Max = NewMax;
+				}
+			}
+
+			// Decr min
+			{
+				int n = (int)std::floor(std::log10(std::abs(InRange.Min)));
+				// Loop until we find an incremented value that is representable as a value distinct from Max
+				auto NewMin = InRange.Min;
+				for(; NewMin == InRange.Min && (NewMin == 0.0f || std::isnormal(NewMin)); ++n)
+				{
+					auto Decr = std::pow(10.0f, n);
+					NewMin = InRange.Min - Decr;
+				}
+
+				if(std::isnormal(NewMin))
+				{
+					InRange.Min = NewMin;
+				}
+			}
+
+			ensure(InRange.IsZero() == false);
+		}
+	}
+
+	return InRange;
 }
 
 int32 SKantanCartesianChart::DrawChartArea(

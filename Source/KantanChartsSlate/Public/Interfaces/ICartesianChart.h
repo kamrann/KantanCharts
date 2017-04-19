@@ -36,6 +36,7 @@ namespace KantanCharts {
 		virtual void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines) = 0;
 		virtual void SetSeriesStyle(FName Id, FName StyleId) = 0;
 		virtual void ResetSeries(FName Id = NAME_None) = 0;
+//		virtual void ResetSeriesNotInDatasource() = 0;
 
 		virtual bool IsSeriesEnabled(FName Id) const = 0;
 		virtual bool IsSeriesShowingLines(FName Id) const = 0;

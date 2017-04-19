@@ -8,8 +8,11 @@
 
 UKantanTimeSeriesPlotBase::UKantanTimeSeriesPlotBase(FObjectInitializer const& OI) : Super(OI)
 {
+	bUseFixedTimeRange = true;
 	DisplayTimeRange = 10.0f;
-	bRoundTimeRange = false;
+	//bRoundTimeRange = false;
+	LowerTimeBound.SetFitToData();
+	UpperTimeBound.SetFitToData();
 	LowerValueBound.SetFitToData();
 	UpperValueBound.SetFitToData();
 }
@@ -20,8 +23,10 @@ void UKantanTimeSeriesPlotBase::SynchronizeProperties()
 
 	auto TimeSeriesPlot = GetTimeSeriesPlot();
 
-	TimeSeriesPlot->SetDisplayTimeRange(DisplayTimeRange);
-	TimeSeriesPlot->SetRoundTimeRange(bRoundTimeRange);
+	TimeSeriesPlot->SetFixedTimeRange(bUseFixedTimeRange ? TOptional< float >(DisplayTimeRange) : TOptional< float >());
+	//TimeSeriesPlot->SetRoundTimeRange(bRoundTimeRange);
+	TimeSeriesPlot->SetLowerTimeBound(LowerTimeBound);
+	TimeSeriesPlot->SetUpperTimeBound(UpperTimeBound);
 	TimeSeriesPlot->SetLowerValueBound(LowerValueBound);
 	TimeSeriesPlot->SetUpperValueBound(UpperValueBound);
 }

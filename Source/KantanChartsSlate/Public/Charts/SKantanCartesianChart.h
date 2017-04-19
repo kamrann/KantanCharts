@@ -76,6 +76,7 @@ public:
 	virtual void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines) override;
 	virtual void SetSeriesStyle(FName Id, FName StyleId) override;
 	virtual void ResetSeries(FName Id = NAME_None) override;
+	//virtual void ResetSeriesNotInDatasource() override;
 
 	virtual bool IsSeriesEnabled(FName Id) const override;
 	virtual bool IsSeriesShowingLines(FName Id) const override;
@@ -131,6 +132,8 @@ protected:
 	void UpdateDrawingElementsFromDatasource();
 	void UpdateSeriesConfigFromDatasource();
 	FName GetNextSeriesStyle() const;
+
+	static FCartesianAxisRange ValidateAxisDisplayRange(FCartesianAxisRange InRange);
 
 protected:
 	virtual float GetChartAreaSize(EChartContentArea::Type Area, EAxis::Type ReqComp, FVector2D const& KnownPlotSize) const override;

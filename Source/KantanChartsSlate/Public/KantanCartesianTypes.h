@@ -4,6 +4,7 @@
 
 #include "UObject/ObjectMacros.h"
 #include "CoreMinimal.h"
+#include "Math/TransformCalculus2D.h"
 #include "KantanCartesianTypes.generated.h"
 
 
