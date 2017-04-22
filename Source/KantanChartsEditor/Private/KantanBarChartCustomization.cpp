@@ -1,6 +1,5 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsEditor.h"
 #include "KantanBarChartCustomization.h"
 #include "PropertyEditing.h"
 #include "KantanBarChartBase.h"

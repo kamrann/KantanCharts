@@ -1,6 +1,5 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsUMG.h"
 #include "CartesianPlot.h"
 #include "KantanCartesianDatasourceInterface.h"
 

@@ -1,6 +1,5 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsUMG.h"
 #include "KantanCategoryChart.h"
 #include "KantanCategoryDatasourceInterface.h"
 #include "KantanCategoryStyleSet.h"

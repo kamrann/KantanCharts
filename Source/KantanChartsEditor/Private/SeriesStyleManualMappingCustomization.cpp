@@ -1,7 +1,5 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsEditor.h"
-
 #include "SeriesStyleManualMappingCustomization.h"
 #include "PropertyEditing.h"
 #include "KantanCartesianChartBase.h"

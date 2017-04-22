@@ -1,10 +1,15 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsEditor.h"
 #include "DetailHelpers.h"
+#include "UnrealType.h"
+#include "Interface.h"
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
 #include "IContentBrowserSingleton.h"
+
+#include "SBox.h"
+#include "SComboButton.h"
+#include "STextBlock.h"
 
 
 namespace DetailHelpers {
@@ -21,7 +26,7 @@ namespace DetailHelpers {
 		*/
 
 		if (Property->IsValidHandle() == false ||
-			InterfaceClass == nullptr ||
+			*InterfaceClass == nullptr ||
 			Property->GetPropertyClass() != UObjectProperty::StaticClass()
 			)
 		{

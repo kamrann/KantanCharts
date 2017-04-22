@@ -6,6 +6,8 @@ public class KantanChartsUMG : ModuleRules
 {
 	public KantanChartsUMG(TargetInfo Target)
 	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
 		PublicDependencyModuleNames.AddRange(
             new string[] {
                 "Core",

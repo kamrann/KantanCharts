@@ -4,10 +4,12 @@
 
 #include "SWidget.h"
 #include "Templates/SharedPointer.h"
+#include "Templates/SubclassOf.h"
 
 
 class IPropertyHandle;
 class UInterface;
+
 
 namespace DetailHelpers {
 

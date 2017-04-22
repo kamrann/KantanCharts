@@ -1,0 +1,7 @@
+**************
+	NOTES
+**************
+
+Should be able to cache series data ranges in the simple datasource, adjusting as each point is added so don't need to constantly iterate over all data points.
+
+Also, DataSnapshot deltas? Copying over all data on each tick is clearly not necessary in general.

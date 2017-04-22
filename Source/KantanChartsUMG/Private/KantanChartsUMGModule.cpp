@@ -1,6 +1,6 @@
 // Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
 
-#include "KantanChartsUMG.h"
+#include "ModuleManager.h"
 
 
 IMPLEMENT_MODULE(FDefaultModuleImpl, KantanChartsUMG);
