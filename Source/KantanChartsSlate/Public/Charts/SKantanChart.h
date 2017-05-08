@@ -107,6 +107,8 @@ protected:
 	// Determine the actual size of the title area
 	FVector2D DetermineTitleAreaSize(FGeometry const& InsetGeometry, bool bIncludePadding) const;
 
+	FText GetAxisTitleToShow(FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const;
+
 	// Calculate size of axis title area
 	FVector2D DetermineAxisTitleSize(FCartesianAxisConfig const& AxisCfg, EAxis::Type AxisOrientation) const;
 
@@ -132,8 +134,8 @@ protected:
 
 	int32 DrawChartBackground(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FKantanChartStyle* Style, const FWidgetStyle& InWidgetStyle) const;
 	int32 DrawChartTitle(const FPaintArgs& Args, const FGeometry& TitleGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FKantanChartStyle* Style, const FWidgetStyle& InWidgetStyle) const;
-	int32 DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FText const& Title, FText const& Unit, AxisUtil::FAxisMarkerData const& MarkerData) const;
-	int32 DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FText const& Title, FText const& Unit, AxisUtil::FAxisMarkerData const& MarkerData) const;
+	int32 DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const;
+	int32 DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const;
 	int32 DrawFixedAxis(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, EAxis::Type Axis, AxisUtil::FAxisTransform const& ValueToChartAxisTransform, EChartAxisPosition AxisPosition, AxisUtil::FAxisMarkerData const& MarkerData, bool bDrawMarkers, bool bDrawLabels, float AxisMarkerLength, float AxisMarkerLabelGap) const;
 
 private:

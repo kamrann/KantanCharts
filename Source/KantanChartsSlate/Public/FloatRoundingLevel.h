@@ -81,14 +81,50 @@ struct FFloatRoundedValue
 		return Rounding.Power;
 	}
 
+	FFloatRoundedValue RelativeTo(const FFloatRoundedValue& Other) const
+	{
+		if(Other.IsZero())
+		{
+			return *this;
+		}
 
+		ensure(Rounding.Base == Other.Rounding.Base);
+		ensure(Abs().GetFloatValue() >= Other.Abs().GetFloatValue());
+		ensure(Rounding.Power < Other.Rounding.Power);
+
+		auto ipow = [](int32 base, int32 exp) -> int32
+		{
+			int result = 1;
+			while(exp)
+			{
+				if(exp & 1)
+				{
+					result *= base;
+				}
+				exp >>= 1;
+				base *= base;
+			}
+
+			return result;
+		};
+
+		// Determine how many of our steps make up one of Other's steps.
+		int32 Quotient = ipow(Rounding.Base, Other.Rounding.Power - Rounding.Power) * Other.Rounding.Multiplier / Rounding.Multiplier;
+
+		int32 OtherConvertedSteps = Quotient * Other.StepNumber;
+		ensure(FMath::Abs(StepNumber) >= FMath::Abs(OtherConvertedSteps));
+		int32 RelativeStepNumber = StepNumber - OtherConvertedSteps;
+		FFloatRoundedValue Result(Rounding, RelativeStepNumber);
+		return Result;
+	}
+	
 	// Necessary number of digits to display this value in raw form (without exponent)
 	inline int32 RequiredDigits() const
 	{
 		int32 Result = 0;
 		
 		// Need one digit for every order of magnitude (note zero special case, it requires a digit)
-		int32 Mult = GetMultiplier();
+		int32 Mult = FMath::Abs(GetMultiplier());
 		if (Mult == 0)
 		{
 			++Result;
@@ -107,7 +143,15 @@ struct FFloatRoundedValue
 		// (i.e. if step size is non-fractional, just show 0. but if step is e.g. 0.1, should show 0.0)
 		if (GetMultiplier() != 0 || Rounding.Power < 0)
 		{
-			Result += FMath::Abs(Rounding.Power);	// @TODO: assuming base 10 rounding here!
+			// @TODO: assuming base 10 rounding here!
+			if(Rounding.Power >= 0)
+			{
+				Result += FMath::Abs(Rounding.Power);
+			}
+			else
+			{
+				Result = FMath::Max(Result, FMath::Abs(Rounding.Power) + 1);
+			}
 		}
 
 		return Result;
@@ -229,6 +273,11 @@ public:
 	inline double GetStepValue() const
 	{
 		return Rounding.GetStepValue();
+	}
+
+	inline int32 GetPower() const
+	{
+		return Rounding.Power;
 	}
 
 	// Round input values off to the current rounding level step size

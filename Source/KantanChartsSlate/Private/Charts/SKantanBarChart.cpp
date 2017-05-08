@@ -504,25 +504,25 @@ int32 SKantanBarChart::DrawChartArea(
 	case EChartContentArea::XAxisBottomTitle:
 		if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.LeftBottomAxis.bEnabled && ValueAxisCfg.LeftBottomAxis.bShowTitle)
 		{
-			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg.Title, ValueAxisCfg.Unit, DetermineValueAxisMarkerData(PlotSpaceGeometry));
+			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg, DetermineValueAxisMarkerData(PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::XAxisTopTitle:
 		if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.RightTopAxis.bEnabled && ValueAxisCfg.RightTopAxis.bShowTitle)
 		{
-			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg.Title, ValueAxisCfg.Unit, DetermineValueAxisMarkerData(PlotSpaceGeometry));
+			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg, DetermineValueAxisMarkerData(PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::YAxisLeftTitle:
 		if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.LeftBottomAxis.bEnabled && ValueAxisCfg.LeftBottomAxis.bShowTitle)
 		{
-			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg.Title, ValueAxisCfg.Unit, DetermineValueAxisMarkerData(PlotSpaceGeometry));
+			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg, DetermineValueAxisMarkerData(PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::YAxisRightTitle:
 		if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.RightTopAxis.bEnabled && ValueAxisCfg.RightTopAxis.bShowTitle)
 		{
-			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg.Title, ValueAxisCfg.Unit, DetermineValueAxisMarkerData(PlotSpaceGeometry));
+			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, LayerId + BarChartLayers::ValueAxis, ValueAxisCfg, DetermineValueAxisMarkerData(PlotSpaceGeometry));
 		}
 		break;
 

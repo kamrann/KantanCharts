@@ -67,11 +67,66 @@ namespace AxisUtil {
 		{
 			// Add the value to the markers list
 			Data.MarkerValues.Add(RoundedMarker);
+		}
 
+		// See if we want to use an offset value (eg. Offset + n*10^p)
+		if(AxisRange.Contains(0.0f) == false)
+		{
+			// Since we don't span 0, the smallest absolute value in the range will be either its min or max.
+			const bool bIsPositive = AxisRange.Min > 0.0f;
+			float SmallestSigned = bIsPositive ? AxisRange.Min : AxisRange.Max;
+			float SmallestAbs = FMath::Abs(SmallestSigned);
+
+			// Start at the power that will be sufficiently large such that rounding down 
+			// SmallestAbs will yield zero.
+			const int32 StartPower = FMath::CeilToInt(FMath::LogX(10.0f, SmallestAbs)) + 1;
+			auto Power = StartPower;
+
+			// @NOTE: Doesn't make sense for the power of the offset to be smaller than that 
+			// of the step levels of the labels. There are some cases, where MaxLabelDigits is small
+			// and the number of desired labels too large, where it just isn't possible to satisfy
+			// the requirements.
+			while(Power > RLevel.GetPower())
+			{
+				FFloatRoundingLevel OffsetRL(Power, 10);
+				auto RoundedOffset = bIsPositive ? OffsetRL.RoundDown(SmallestSigned) : OffsetRL.RoundUp(SmallestSigned);
+
+				// Expecting that the first power chosen should result in no offset.
+				ensure(Power != StartPower || RoundedOffset.IsZero());
+
+				bool bCanRepresent = true;
+				for(auto const& Mkr : Data.MarkerValues)
+				{
+					auto RelativeMarker = Mkr.RelativeTo(RoundedOffset);
+					auto ReqDigits = RelativeMarker.RequiredDigits();
+					if(ReqDigits > MaxLabelDigits)
+					{
+						bCanRepresent = false;
+						break;
+					}
+				}
+
+				if(bCanRepresent)
+				{
+					if(RoundedOffset.IsZero() == false)
+					{
+						Data.Offset = RoundedOffset;
+					}
+					break;
+				}
+
+				--Power;
+			}
+		}
+
+		for(auto const& Mkr : Data.MarkerValues)
+		{
+			auto RelativeMkr = Data.Offset.IsSet() ?
+				Mkr.RelativeTo(Data.Offset.GetValue()) :
+				Mkr;
 			// See if this value requires a more extreme power than any previous, and if so update
-			// @TODO: Look into this.
-			auto ReqPower = RoundedMarker.RequiredPowerForDisplay(MaxLabelDigits);
-			if (FMath::Abs(ReqPower) > FMath::Abs(Data.DisplayPower))
+			auto ReqPower = RelativeMkr.RequiredPowerForDisplay(MaxLabelDigits);
+			if(FMath::Abs(ReqPower) > FMath::Abs(Data.DisplayPower))
 			{
 				Data.DisplayPower = ReqPower;
 			}

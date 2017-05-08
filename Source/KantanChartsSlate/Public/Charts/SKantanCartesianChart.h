@@ -110,9 +110,6 @@ protected:
 	};
 
 protected:
-	// Create geometry that maps to the actual cartesian space on which we are plotting points
-	FGeometry MakeCartesianSpaceGeometry(FGeometry const& LocalGeometry) const;
-
 	// @TODO: Making use of LocalGeometry seems weird, since this transform should be independent of it
 	FSlateRenderTransform CartesianToPlotTransform(FGeometry const& LocalGeometry) const;
 
@@ -162,11 +159,13 @@ protected:
 		FCartesianAxisRange const& RangeY,
 		TArray< FVector2D >& OutPoints) const;
 
-//	int32 DrawAxisLabels(const FGeometry& ContentGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FPlotMarkerData const& MarkerData) const;
 	int32 DrawAxes(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 AxisLayerId, int32 LabelLayerId, FPlotMarkerData const& MarkerData) const;
 	int32 DrawPoints(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const;
 	int32 DrawLines(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const;
 	int32 DrawSeries(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const;
+
+	void InvalidateCachedMarkerData(EAxis::Type Axis) const;
+	const AxisUtil::FAxisMarkerData& GetCachedMarkerData(EAxis::Type Axis, FGeometry const& PlotSpaceGeometry) const;
 
 public:
 	// FGCObject implementation
@@ -215,5 +214,8 @@ protected:
 	// Implementation
 	typedef TSharedPtr< class FDataSeriesElement, ESPMode::ThreadSafe > FSeriesElemPtr;
 	TMap< FName, FSeriesElemPtr > SeriesElements;
+
+	mutable TOptional< AxisUtil::FAxisMarkerData > XAxisMarkers;
+	mutable TOptional< AxisUtil::FAxisMarkerData > YAxisMarkers;
 };
 

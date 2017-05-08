@@ -54,14 +54,17 @@ namespace AxisUtil {
 	*/
 	struct FAxisMarkerData
 	{
-		FFloatRoundingLevel				RL;					// Rounding level used for axis markers
-		TArray< FFloatRoundedValue >	MarkerValues;		// The values to be marked on the axis
-		int32							DisplayPower;		// n, where values are labelled as Ax10^n
+		FFloatRoundingLevel					RL;					// Rounding level used for axis markers
+		TArray< FFloatRoundedValue >		MarkerValues;		// The values to be marked on the axis
+		// Values are treated as: [Offset +] MarkerValue x10^DisplayPower
+		int32								DisplayPower;
+		TOptional< FFloatRoundedValue >		Offset;
 
 		FAxisMarkerData() :
 			RL(),
 			MarkerValues(),
-			DisplayPower(0)
+			DisplayPower(0),
+			Offset()
 		{}
 	};
 

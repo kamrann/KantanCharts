@@ -5,6 +5,8 @@
 #include "SlateRotatedRect.h"
 #include "SlateApplication.h"
 
+#define LOCTEXT_NAMESPACE "KantanCharts"
+
 
 void SKantanChart::Construct(const FArguments& InArgs)
 {
@@ -245,13 +247,66 @@ FVector2D SKantanChart::DetermineTitleAreaSize(FGeometry const& InsetGeometry, b
 	return TitleExtent;
 }
 
+FText SKantanChart::GetAxisTitleToShow(FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const
+{
+	auto Title = AxisCfg.Title.IsEmptyOrWhitespace() ? FText::GetEmpty() : AxisCfg.Title;
+
+	if(true)	// @TODO: config
+	{
+		FText UnitStr = FText::GetEmpty();
+		if(AxisCfg.Unit.IsEmptyOrWhitespace() == false)
+		{
+			UnitStr = FText::Format(FText::FromString(TEXT("{0}")),
+				AxisCfg.Unit
+			);
+		}
+		FText ExponentStr = FText::GetEmpty();
+		if(MarkerData.DisplayPower != 0)
+		{
+			ExponentStr = FText::Format(FText::FromString(TEXT("x10^{0}")),
+				FText::AsNumber(MarkerData.DisplayPower)
+			);
+		}
+		FText OffsetStr = FText::GetEmpty();
+		if(MarkerData.Offset.IsSet())
+		{
+			OffsetStr = FText::Format(FText::FromString(TEXT("+{0}")),
+				FText::AsNumber(MarkerData.Offset.GetValue().GetFloatValue())	// @TODO: display offset in exponent form if above some number of digits
+			);
+		}
+		/*			FText UnitSpace = FText::GetEmpty();
+		if (!UnitStr.IsEmpty() && !ExponentStr.IsEmpty())
+		{
+		UnitSpace = FText::FromString(TEXT(" "));
+		}
+		*/			
+		if(!UnitStr.IsEmpty() || !ExponentStr.IsEmpty() || !OffsetStr.IsEmpty())
+		{
+			Title = FText::Format(FText::FromString(TEXT("{0} ({1}{2}{3})")),
+				Title,
+				ExponentStr,
+				OffsetStr,
+				//UnitSpace,
+				UnitStr
+			);
+		}
+	}
+
+	return Title;
+}
+
 FVector2D SKantanChart::DetermineAxisTitleSize(FCartesianAxisConfig const& AxisCfg, EAxis::Type AxisOrientation) const
 {
 	auto ChartStyle = GetChartStyle();
 	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 	auto LabelFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisTitle);
 
-	auto LabelExtents = AxisCfg.Title.IsEmptyOrWhitespace() ? FVector2D::ZeroVector : FontMeasureService->Measure(AxisCfg.Title, LabelFont);
+	auto TitleToUse = LOCTEXT("TitleDummy", "Dummy");
+		//GetAxisTitleToShow(AxisCfg, MarkerData);
+	// @NOTE: Having to always allocate space even when empty. This is because this method cannot
+	// be dependent on plot size, but plot size must be known in order to calculate whether
+	// the title will have an offset or display power component.
+	auto LabelExtents = /*AxisCfg.Title.IsEmptyOrWhitespace()*/ false ? FVector2D::ZeroVector : FontMeasureService->Measure(TitleToUse, LabelFont);
 
 	FVector2D Size = FVector2D::ZeroVector;
 	switch (AxisOrientation)
@@ -278,9 +333,9 @@ FVector2D SKantanChart::DetermineAxisValueLabelMaxExtents(EAxis::Type Axis, int3
 	auto ChartStyle = GetChartStyle();
 	auto Font = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisMarkerLabel);
 	// Assuming font is fixed width for numeric digits
-	FString DummyStr = TEXT("-.");
+	FString DummyStr = TEXT("-0.");
 	//auto MaxAxisValueDigits = Axis == EAxis::X ? XAxisCfg.MaxValueDigits : YAxisCfg.MaxValueDigits;
-	for (int32 Digit = 0; Digit < MaxLabelDigits; ++Digit)
+	for (int32 Digit = 1; Digit < MaxLabelDigits; ++Digit)
 	{
 		DummyStr += TEXT("0");
 	}
@@ -470,12 +525,14 @@ int32 SKantanChart::DrawFixedAxis(
 	auto const MarkerLabelGapOffset = bIsReversed ? -AxisMarkerLabelGap : AxisMarkerLabelGap;
 
 	// Axis markers and labels
-	auto Start = Rounding.RoundUp(CartesianRange.Min);
-	for (auto RoundedMarker = Start; RoundedMarker.GetFloatValue() < CartesianRange.Max; ++RoundedMarker)
+	for(auto const& AbsoluteRoundedMarker : MarkerData.MarkerValues)
 	{
-		auto Marker = RoundedMarker.GetFloatValue();
+		auto RoundedMarker = MarkerData.Offset.IsSet() ?
+			AbsoluteRoundedMarker.RelativeTo(MarkerData.Offset.GetValue()) :
+			AbsoluteRoundedMarker;
 
-		auto MarkerPlotSpace = ValueToChartAxisTransform.MapPoint(Marker);
+		auto AbsMarkerVal = AbsoluteRoundedMarker.GetFloatValue();
+		auto MarkerPlotSpace = ValueToChartAxisTransform.MapPoint(AbsMarkerVal);
 		TArray< FVector2D > Points;
 		Points.Init(FVector2D::ZeroVector, 2);
 		Points[0][AxisIdx] = MarkerPlotSpace;
@@ -541,47 +598,16 @@ int32 SKantanChart::DrawFixedAxis(
 	return LayerId;
 }
 
-int32 SKantanChart::DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FText const& Title, FText const& Unit, AxisUtil::FAxisMarkerData const& MarkerData) const
+int32 SKantanChart::DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const
 {
 	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 	auto ChartStyle = GetChartStyle();
 	auto LabelFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisTitle);
 
-	if (Title.IsEmptyOrWhitespace() == false)
+	auto ActualTitle = GetAxisTitleToShow(AxisCfg, MarkerData);
+	if (ActualTitle.IsEmptyOrWhitespace() == false)
 	{
-		auto Label = Title;
-		if (true)	// @TODO: config
-		{
-			FText UnitStr = FText::GetEmpty();
-			if (Unit.IsEmptyOrWhitespace() == false)
-			{
-				UnitStr = FText::Format(FText::FromString(TEXT("{0}")),
-					Unit
-					);
-			}
-			FText ExponentStr = FText::GetEmpty();
-			if (MarkerData.DisplayPower != 0)
-			{
-				ExponentStr = FText::Format(FText::FromString(TEXT("x10^{0}")),
-					FText::AsNumber(MarkerData.DisplayPower)
-					);
-			}
-			FText UnitSpace = FText::GetEmpty();
-			if (!UnitStr.IsEmpty() && !ExponentStr.IsEmpty())
-			{
-				UnitSpace = FText::FromString(TEXT(" "));
-			}
-			if (!UnitStr.IsEmpty() || !ExponentStr.IsEmpty())
-			{
-				Label = FText::Format(FText::FromString(TEXT("{0} ({1}{2}{3})")),
-					Label,
-					ExponentStr,
-					UnitSpace,
-					UnitStr
-					);
-			}
-		}
-
+		auto Label = ActualTitle;
 		auto Extents = FontMeasureService->Measure(Label, LabelFont);
 		auto AvailableSize = Geometry.GetLocalSize();
 		FSlateDrawElement::MakeText(
@@ -598,47 +624,16 @@ int32 SKantanChart::DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 	return LayerId;
 }
 
-int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FText const& Title, FText const& Unit, AxisUtil::FAxisMarkerData const& MarkerData) const
+int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FCartesianAxisConfig const& AxisCfg, AxisUtil::FAxisMarkerData const& MarkerData) const
 {
 	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
 	auto ChartStyle = GetChartStyle();
 	auto LabelFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisTitle);
 
-	if (Title.IsEmptyOrWhitespace() == false)
+	auto ActualTitle = GetAxisTitleToShow(AxisCfg, MarkerData);
+	if(ActualTitle.IsEmptyOrWhitespace() == false)
 	{
-		auto Label = Title;
-		if (true)
-		{
-			FText UnitStr = FText::GetEmpty();
-			if (Unit.IsEmptyOrWhitespace() == false)
-			{
-				UnitStr = FText::Format(FText::FromString(TEXT("{0}")),
-					Unit
-					);
-			}
-			FText ExponentStr = FText::GetEmpty();
-			if (MarkerData.DisplayPower != 0)
-			{
-				ExponentStr = FText::Format(FText::FromString(TEXT("x10^{0}")),
-					FText::AsNumber(MarkerData.DisplayPower)
-					);
-			}
-			FText UnitSpace = FText::GetEmpty();
-			if (!UnitStr.IsEmpty() && !ExponentStr.IsEmpty())
-			{
-				UnitSpace = FText::FromString(TEXT(" "));
-			}
-			if (!UnitStr.IsEmpty() || !ExponentStr.IsEmpty())
-			{
-				Label = FText::Format(FText::FromString(TEXT("{0} ({1}{2}{3})")),
-					Label,
-					ExponentStr,
-					UnitSpace,
-					UnitStr
-					);
-			}
-		}
-
+		auto Label = ActualTitle;
 		auto Extents = FontMeasureService->Measure(Label, LabelFont);
 		auto AvailableSize = Geometry.GetLocalSize();
 
@@ -705,41 +700,6 @@ EActiveTimerReturnType SKantanChart::ActiveTick(double InCurrentTime, float InDe
 
 int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
 {
-	/*
-	static TSharedPtr< FSlateBrush > TempBrush = MakeShareable< FSlateBrush >(new FSlateBorderBrush(NAME_None, FMargin(1.0f), FLinearColor::White, ESlateBrushImageType::NoImage));
-
-	FSlateDrawElement::MakeBox(
-		OutDrawElements,
-		LayerId,
-		AllottedGeometry.ToPaintGeometry(),
-		TempBrush.Get(),
-		MyClippingRect,
-		ESlateDrawEffect::None,
-		FLinearColor::White
-		);
-
-	//
-	TArray< FVector2D > Points;
-	Points.Init(FVector2D::ZeroVector, 5);
-	Points[0].Set(0, 0);
-	Points[1].Set(0, AllottedGeometry.GetLocalSize().Y);
-	Points[2].Set(AllottedGeometry.GetLocalSize().X, AllottedGeometry.GetLocalSize().Y);
-	Points[3].Set(AllottedGeometry.GetLocalSize().X, 0);
-	Points[4].Set(0, 0);
-
-	FSlateDrawElement::MakeLines(
-		OutDrawElements,
-		LayerId,
-		AllottedGeometry.ToPaintGeometry(),
-		Points,
-		MyClippingRect,
-		ESlateDrawEffect::None,
-		FLinearColor::White,
-		false);
-	//
-	return LayerId;
-	*/
-
 	// Pre-snap the clipping rect to try and reduce common jitter, since the padding is typically only a single pixel.
 	FSlateRect SnappedClippingRect = FSlateRect(FMath::RoundToInt(MyClippingRect.Left), FMath::RoundToInt(MyClippingRect.Top), FMath::RoundToInt(MyClippingRect.Right), FMath::RoundToInt(MyClippingRect.Bottom));
 
@@ -794,4 +754,6 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 	return LayerId;
 }
 
+
+#undef LOCTEXT_NAMESPACE
 

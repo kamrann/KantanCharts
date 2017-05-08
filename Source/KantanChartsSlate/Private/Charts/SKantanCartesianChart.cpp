@@ -534,25 +534,25 @@ int32 SKantanCartesianChart::DrawChartArea(
 	case EChartContentArea::XAxisBottomTitle:
 		if (XAxisCfg.LeftBottomAxis.bEnabled && XAxisCfg.LeftBottomAxis.bShowTitle)
 		{
-			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, XAxisCfg.Title, XAxisCfg.Unit, DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X));
+			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, XAxisCfg, GetCachedMarkerData(EAxis::X, PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::XAxisTopTitle:
 		if (XAxisCfg.RightTopAxis.bEnabled && XAxisCfg.RightTopAxis.bShowTitle)
 		{
-			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, XAxisCfg.Title, XAxisCfg.Unit, DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X));
+			DrawXAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, XAxisCfg, GetCachedMarkerData(EAxis::X, PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::YAxisLeftTitle:
 		if (YAxisCfg.LeftBottomAxis.bEnabled && YAxisCfg.LeftBottomAxis.bShowTitle)
 		{
-			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, YAxisCfg.Title, YAxisCfg.Unit, DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y));
+			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, YAxisCfg, GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry));
 		}
 		break;
 	case EChartContentArea::YAxisRightTitle:
 		if (YAxisCfg.RightTopAxis.bEnabled && YAxisCfg.RightTopAxis.bShowTitle)
 		{
-			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, YAxisCfg.Title, YAxisCfg.Unit, DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y));
+			DrawYAxisTitle(Geometry, SnappedClippingRect, OutDrawElements, RetLayerId, YAxisCfg, GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry));
 		}
 		break;
 
@@ -567,7 +567,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 				EAxis::X,
 				AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 0 /* X axis */),
 				EChartAxisPosition::LeftBottom,
-				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X),
+				GetCachedMarkerData(EAxis::X, PlotSpaceGeometry),
 				XAxisCfg.LeftBottomAxis.bShowMarkers,
 				XAxisCfg.LeftBottomAxis.bShowLabels,
 				ChartConstants::AxisMarkerLength,
@@ -586,7 +586,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 				EAxis::X,
 				AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 0 /* X axis */),
 				EChartAxisPosition::RightTop,
-				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X),
+				GetCachedMarkerData(EAxis::X, PlotSpaceGeometry),
 				XAxisCfg.RightTopAxis.bShowMarkers,
 				XAxisCfg.RightTopAxis.bShowLabels,
 				ChartConstants::AxisMarkerLength,
@@ -605,7 +605,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 				EAxis::Y,
 				AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 1 /* Y axis */),
 				EChartAxisPosition::LeftBottom,
-				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y),
+				GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry),
 				YAxisCfg.LeftBottomAxis.bShowMarkers,
 				YAxisCfg.LeftBottomAxis.bShowLabels,
 				ChartConstants::AxisMarkerLength,
@@ -624,7 +624,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 				EAxis::Y,
 				AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 1 /* Y axis */),
 				EChartAxisPosition::RightTop,
-				DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y),
+				GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry),
 				YAxisCfg.RightTopAxis.bShowMarkers,
 				YAxisCfg.RightTopAxis.bShowLabels,
 				ChartConstants::AxisMarkerLength,
@@ -642,8 +642,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 		// Add 1 unit to right and bottom of clip rect for purposes of drawing axes
 		auto AxisLayer = RetLayerId;
 		FPlotMarkerData PlotMarkerData;
-		PlotMarkerData.XAxis = DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X);
-		PlotMarkerData.YAxis = DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y);
+		PlotMarkerData.XAxis = GetCachedMarkerData(EAxis::X, PlotSpaceGeometry);
+		PlotMarkerData.YAxis = GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry);
 		RetLayerId = DrawAxes(PlotSpaceGeometry, SnappedClippingRect.ExtendBy(FMargin(0, 0, 1, 1)), OutDrawElements, AxisLayer, AxisLayer + 2, PlotMarkerData);
 
 		auto ChartStyle = GetChartStyle();
@@ -681,178 +681,6 @@ int32 SKantanCartesianChart::DrawChartArea(
 
 	return RetLayerId;
 }
-
-#if 0
-int32 SKantanCartesianChart::DrawChartArea(
-	EChartContentArea::Type Area,
-	const FPaintArgs& Args,
-	const FGeometry& ContentGeometry,
-	const FSlateRect& MyClippingRect,
-	FSlateWindowElementList& OutDrawElements,
-	int32 LayerId,
-	const FWidgetStyle& InWidgetStyle,
-	bool bParentEnabled
-	) const
-{
-	// Used to track the layer ID we will return.
-	int32 RetLayerId = LayerId;
-
-	bool bEnabled = ShouldBeEnabled(bParentEnabled);
-	const ESlateDrawEffect::Type DrawEffects = bEnabled ? ESlateDrawEffect::None : ESlateDrawEffect::DisabledEffect;
-
-	// Pre-snap the clipping rect to try and reduce common jitter, since the padding is typically only a single pixel.
-	FSlateRect SnappedClippingRect = FSlateRect(FMath::RoundToInt(MyClippingRect.Left), FMath::RoundToInt(MyClippingRect.Top), FMath::RoundToInt(MyClippingRect.Right), FMath::RoundToInt(MyClippingRect.Bottom));
-
-	/*	FGeometry AreaGeoms[ChartContentAreaCount];
-	MakeAreaGeometries(ContentGeometry, AreaGeoms);
-	auto const& PlotSpaceGeometry = AreaGeoms[EChartContentArea::Plot];
-
-	if (PlotSpaceGeometry.GetLocalSize().X == 0
-	|| PlotSpaceGeometry.GetLocalSize().Y == 0)
-	{
-	// @TODO: Bit of a cheap way out, avoiding some division by zero issues
-	return RetLayerId;
-	}
-	*/
-
-
-	FPlotMarkerData MarkerData;
-	MarkerData.XAxis = DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::X);
-	MarkerData.YAxis = DetermineAxisMarkerData(PlotSpaceGeometry, EAxis::Y);
-
-	if (XAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		if (XAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			DrawXAxisTitle(AreaGeoms[EChartContentArea::XAxisBottomTitle], SnappedClippingRect, OutDrawElements, RetLayerId, MarkerData);
-		}
-
-		DrawFixedAxis(
-			AreaGeoms[EChartContentArea::XAxisBottom],
-			SnappedClippingRect,
-			OutDrawElements,
-			RetLayerId,
-			EAxis::X,
-			AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 0 /* X axis */),
-			EChartAxisPosition::LeftBottom,
-			MarkerData.XAxis,
-			XAxisCfg.LeftBottomAxis.bShowMarkers,
-			XAxisCfg.LeftBottomAxis.bShowLabels,
-			ChartConstants::AxisMarkerLength,
-			ChartConstants::AxisMarkerLabelGap
-			);
-	}
-
-	if (XAxisCfg.RightTopAxis.bEnabled)
-	{
-		if (XAxisCfg.RightTopAxis.bShowTitle)
-		{
-			DrawXAxisTitle(AreaGeoms[EChartContentArea::XAxisTopTitle], SnappedClippingRect, OutDrawElements, RetLayerId, MarkerData);
-		}
-
-		DrawFixedAxis(
-			AreaGeoms[EChartContentArea::XAxisTop],
-			SnappedClippingRect,
-			OutDrawElements,
-			RetLayerId,
-			EAxis::X,
-			AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 0 /* X axis */),
-			EChartAxisPosition::RightTop,
-			MarkerData.XAxis,
-			XAxisCfg.RightTopAxis.bShowMarkers,
-			XAxisCfg.RightTopAxis.bShowLabels,
-			ChartConstants::AxisMarkerLength,
-			ChartConstants::AxisMarkerLabelGap
-			);
-	}
-
-	if (YAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		if (YAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			DrawYAxisTitle(AreaGeoms[EChartContentArea::YAxisLeftTitle], SnappedClippingRect, OutDrawElements, RetLayerId, MarkerData);
-		}
-
-		DrawFixedAxis(
-			AreaGeoms[EChartContentArea::YAxisLeft],
-			SnappedClippingRect,
-			OutDrawElements,
-			RetLayerId,
-			EAxis::Y,
-			AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 1 /* Y axis */),
-			EChartAxisPosition::LeftBottom,
-			MarkerData.YAxis,
-			YAxisCfg.LeftBottomAxis.bShowMarkers,
-			YAxisCfg.LeftBottomAxis.bShowLabels,
-			ChartConstants::AxisMarkerLength,
-			ChartConstants::AxisMarkerLabelGap
-			);
-	}
-
-	if (YAxisCfg.RightTopAxis.bEnabled)
-	{
-		if (YAxisCfg.RightTopAxis.bShowTitle)
-		{
-			DrawYAxisTitle(AreaGeoms[EChartContentArea::YAxisRightTitle], SnappedClippingRect, OutDrawElements, RetLayerId, MarkerData);
-		}
-
-		DrawFixedAxis(
-			AreaGeoms[EChartContentArea::YAxisRight],
-			SnappedClippingRect,
-			OutDrawElements,
-			RetLayerId,
-			EAxis::Y,
-			AxisUtil::FAxisTransform::FromTransform2D(CartesianToPlotTransform(PlotSpaceGeometry), 1 /* Y axis */),
-			EChartAxisPosition::RightTop,
-			MarkerData.YAxis,
-			YAxisCfg.RightTopAxis.bShowMarkers,
-			YAxisCfg.RightTopAxis.bShowLabels,
-			ChartConstants::AxisMarkerLength,
-			ChartConstants::AxisMarkerLabelGap
-			);
-	}
-
-	// @TODO: Using deprecated GetClippingRect which ignores render transforms.
-	// Not sure of better way to do this though.
-	SnappedClippingRect = PlotSpaceGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
-
-	// Add 1 unit to right and bottom of clip rect for purposes of drawing axes
-	auto AxisLayer = RetLayerId;
-	RetLayerId = DrawAxes(PlotSpaceGeometry, SnappedClippingRect.ExtendBy(FMargin(0, 0, 1, 1)), OutDrawElements, AxisLayer, AxisLayer + 2, MarkerData);
-
-	auto ChartStyle = GetChartStyle();
-	auto NumSeries = GetNumSeries();
-
-	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
-	{
-		auto SeriesId = GetSeriesId(Idx);
-		if (SeriesId.IsNone())
-		{
-			continue;
-		}
-
-		auto const& Config = SeriesConfig[SeriesId];
-		if (Config.bEnabled == false)
-		{
-			continue;
-		}
-
-		// Don't render if no element is setup for this series
-		if (SeriesElements.Contains(SeriesId) == false)
-		{
-			continue;
-		}
-
-		auto Points = GetSeriesDatapoints(Idx);
-		auto const& Style = GetSeriesStyle(SeriesId);
-
-		// @TODO: Sort out layers, maybe need to separate out DrawAxes into DrawAxisLines and DrawAxisLabels
-		DrawSeries(PlotSpaceGeometry, SnappedClippingRect, OutDrawElements, AxisLayer + 1, SeriesId, Points, Style);
-	}
-
-	return RetLayerId;
-}
-#endif
 
 /**
  * Computes the desired size of this widget (SWidget)
@@ -892,141 +720,13 @@ void SKantanCartesianChart::OnActiveTick(double InCurrentTime, float InDeltaTime
 
 void SKantanCartesianChart::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
+	// @TODO: Ideally, we should only do this when we detect a change in geometry from the last time the marker data
+	// was calculated, or in direct response to a change to some setting, or data update leading to altered plot scale.
+	InvalidateCachedMarkerData(EAxis::X);
+	InvalidateCachedMarkerData(EAxis::Y);
+
 	SKantanChart::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
 }
-
-/*
-int32 SKantanCartesianChart::DrawAxisLabels(const FGeometry& ContentGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FPlotMarkerData const& MarkerData) const
-{
-	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
-	auto ChartStyle = GetChartStyle();
-	auto LabelFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisTitle);
-
-	if (XAxisLabel.IsEmptyOrWhitespace() == false)
-	{
-		auto XAxisLabelGeometry = MakeXAxisLabelGeometry(ContentGeometry);
-
-		auto Label = XAxisLabel;
-		if (true)	// @TODO: config
-		{
-			FText UnitStr = FText::GetEmpty();
-			if (XAxisUnit.IsEmptyOrWhitespace() == false)
-			{
-				UnitStr = FText::Format(FText::FromString(TEXT("{0}")),
-					XAxisUnit
-					);
-			}
-			FText ExponentStr = FText::GetEmpty();
-			if (MarkerData.XAxis.DisplayPower != 0)
-			{
-				ExponentStr = FText::Format(FText::FromString(TEXT("x10^{0}")),
-					FText::AsNumber(MarkerData.XAxis.DisplayPower)
-					);
-			}
-			FText UnitSpace = FText::GetEmpty();
-			if (!UnitStr.IsEmpty() && !ExponentStr.IsEmpty())
-			{
-				UnitSpace = FText::FromString(TEXT(" "));
-			}
-			if (!UnitStr.IsEmpty() || !ExponentStr.IsEmpty())
-			{
-				Label = FText::Format(FText::FromString(TEXT("{0} ({1}{2}{3})")),
-					Label,
-					ExponentStr,
-					UnitSpace,
-					UnitStr
-					);
-			}
-		}
-
-		auto Extents = FontMeasureService->Measure(Label, LabelFont);
-		auto AvailableSize = XAxisLabelGeometry.GetLocalSize();
-		FSlateDrawElement::MakeText(
-			OutDrawElements,
-			LayerId,
-			XAxisLabelGeometry.ToPaintGeometry(Extents, FSlateLayoutTransform(FVector2D((AvailableSize.X - Extents.X) * 0.5f, 0.0f))),
-			Label,
-			LabelFont,
-			ClipRect,
-			ESlateDrawEffect::None,
-			ChartStyle->FontColor);
-	}
-
-	if (YAxisLabel.IsEmptyOrWhitespace() == false)
-	{
-		auto YAxisLabelGeometry = MakeYAxisLabelGeometry(ContentGeometry);
-
-		auto Label = YAxisLabel;
-		if (true)
-		{
-			FText UnitStr = FText::GetEmpty();
-			if (YAxisUnit.IsEmptyOrWhitespace() == false)
-			{
-				UnitStr = FText::Format(FText::FromString(TEXT(" {0}")),
-					YAxisUnit
-					);
-			}
-			FText ExponentStr = FText::GetEmpty();
-			if (MarkerData.YAxis.DisplayPower != 0)
-			{
-				ExponentStr = FText::Format(FText::FromString(TEXT("x10^{0}")),
-					FText::AsNumber(MarkerData.YAxis.DisplayPower)
-					);
-			}
-			FText UnitSpace = FText::GetEmpty();
-			if (!UnitStr.IsEmpty() && !ExponentStr.IsEmpty())
-			{
-				UnitSpace = FText::FromString(TEXT(" "));
-			}
-			if (!UnitStr.IsEmpty() || !ExponentStr.IsEmpty())
-			{
-				Label = FText::Format(FText::FromString(TEXT("{0} ({1}{2}{3})")),
-					Label,
-					ExponentStr,
-					UnitSpace,
-					UnitStr
-					);
-			}
-		}
-
-		auto Extents = FontMeasureService->Measure(Label, LabelFont);
-		auto AvailableSize = YAxisLabelGeometry.GetLocalSize();
-
-		auto const RenderTransform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(Extents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
-		YAxisLabelGeometry = YAxisLabelGeometry.MakeChild(
-			Extents,
-			FSlateLayoutTransform(FVector2D(0.0f, (AvailableSize.Y - Extents.X) * 0.5f)),
-			RenderTransform,
-			FVector2D(0.0f, 0.0f)
-			);
-		FSlateRect BaseClipRect(
-			YAxisLabelGeometry.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(0, 0)),
-			YAxisLabelGeometry.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(Extents.Y, Extents.X))
-			);
-		auto IntersectedClipRect = BaseClipRect.IntersectionWith(ClipRect);
-		auto TransformedClipRect = TransformRect(
-			Concatenate(
-				Inverse(YAxisLabelGeometry.GetAccumulatedLayoutTransform()),
-				Inverse(RenderTransform),
-				YAxisLabelGeometry.GetAccumulatedLayoutTransform()
-			),
-			FSlateRotatedRect2(IntersectedClipRect)
-			).ToBoundingRect();
-		auto FinalClipRect = TransformedClipRect;
-		FSlateDrawElement::MakeText(
-			OutDrawElements,
-			LayerId,
-			YAxisLabelGeometry.ToPaintGeometry(),
-			Label,
-			LabelFont,
-			FinalClipRect,
-			ESlateDrawEffect::None,
-			ChartStyle->FontColor);
-	}
-
-	return LayerId;
-}
-*/
 
 void SKantanCartesianChart::GetPointsToDraw(
 	TArray< FKantanCartesianDatapoint > const& InPoints,
@@ -1523,6 +1223,46 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 	return LabelLayerId + 1;
 }
 
+void SKantanCartesianChart::InvalidateCachedMarkerData(EAxis::Type Axis) const
+{
+	switch(Axis)
+	{
+		case EAxis::X:
+		XAxisMarkers.Reset();
+		break;
+		case EAxis::Y:
+		YAxisMarkers.Reset();
+		break;
+	}
+}
+
+const AxisUtil::FAxisMarkerData& SKantanCartesianChart::GetCachedMarkerData(EAxis::Type Axis, FGeometry const& PlotSpaceGeometry) const
+{
+	switch(Axis)
+	{
+		case EAxis::X:
+		if(XAxisMarkers.IsSet() == false)
+		{
+			XAxisMarkers = DetermineAxisMarkerData(PlotSpaceGeometry, Axis);
+		}
+		return XAxisMarkers.GetValue();
+
+		case EAxis::Y:
+		if(YAxisMarkers.IsSet() == false)
+		{
+			YAxisMarkers = DetermineAxisMarkerData(PlotSpaceGeometry, Axis);
+		}
+		return YAxisMarkers.GetValue();
+
+		default:
+		{
+			check(false);
+			static const auto Dummy = AxisUtil::FAxisMarkerData();
+			return Dummy;
+		}
+	}
+}
+
 float SKantanCartesianChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Type ReqComp, FVector2D const& KnownPlotSize) const
 {
 	switch (Area)
@@ -1547,188 +1287,6 @@ float SKantanCartesianChart::GetChartAreaSize(EChartContentArea::Type Area, EAxi
 	default:
 		return 0.0f;
 	}
-}
-
-#if 0
-void SKantanCartesianChart::MakeAreaGeometries(FGeometry const& ContentGeometry, FGeometry(&Geoms)[ChartContentAreaCount]) const
-{
-	auto ChartStyle = GetChartStyle();
-	auto FontMeasureService = FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
-	auto LabelFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisTitle);
-	auto AvailableSize = ContentGeometry.GetLocalSize();
-	
-	auto XTitleSize = DetermineAxisTitleSize(EAxis::X);
-	auto YTitleSize = DetermineAxisTitleSize(EAxis::Y);
-
-	auto XAxisWidth = DetermineAxisRequiredWidth(EAxis::X);
-	auto YAxisWidth = DetermineAxisRequiredWidth(EAxis::Y);
-
-	auto PlotSize = FVector2D(
-		AvailableSize.X,
-		AvailableSize.Y
-		);
-	if (YAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		if (YAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			PlotSize.X -= YTitleSize.X;
-		}
-		PlotSize.X -= YAxisWidth;
-	}
-	if (YAxisCfg.RightTopAxis.bEnabled)
-	{
-		if (YAxisCfg.RightTopAxis.bShowTitle)
-		{
-			PlotSize.X -= YTitleSize.X;
-		}
-		PlotSize.X -= YAxisWidth;
-	}
-	if (XAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		if (XAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			PlotSize.Y -= XTitleSize.Y;
-		}
-		PlotSize.Y -= XAxisWidth;
-	}
-	if (XAxisCfg.RightTopAxis.bEnabled)
-	{
-		if (XAxisCfg.RightTopAxis.bShowTitle)
-		{
-			PlotSize.Y -= XTitleSize.Y;
-		}
-		PlotSize.Y -= XAxisWidth;
-	}
-
-	FVector2D Offsets[ChartContentAreaCount];
-
-	auto XOffset = 0.0f;
-
-	if (YAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		if (YAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			Offsets[EChartContentArea::YAxisLeftTitle].X = XOffset;
-			XOffset += YTitleSize.X;
-		}
-		Offsets[EChartContentArea::YAxisLeft].X = XOffset;
-		XOffset += YAxisWidth;
-	}
-
-	Offsets[EChartContentArea::Plot].X = XOffset;
-	Offsets[EChartContentArea::XAxisBottomTitle].X = XOffset;
-	Offsets[EChartContentArea::XAxisTopTitle].X = XOffset;
-	Offsets[EChartContentArea::XAxisBottom].X = XOffset;
-	Offsets[EChartContentArea::XAxisTop].X = XOffset;
-	XOffset += PlotSize.X;
-
-	if (YAxisCfg.RightTopAxis.bEnabled)
-	{
-		Offsets[EChartContentArea::YAxisRight].X = XOffset;
-		XOffset += YAxisWidth;
-		if (YAxisCfg.RightTopAxis.bShowTitle)
-		{
-			Offsets[EChartContentArea::YAxisRightTitle].X = XOffset;
-			XOffset += YTitleSize.X;
-		}
-	}
-
-	auto YOffset = 0.0f;
-
-	if (XAxisCfg.RightTopAxis.bEnabled)
-	{
-		if (XAxisCfg.RightTopAxis.bShowTitle)
-		{
-			Offsets[EChartContentArea::XAxisTopTitle].Y = YOffset;
-			YOffset += XTitleSize.Y;
-		}
-		Offsets[EChartContentArea::XAxisTop].Y = YOffset;
-		YOffset += XAxisWidth;
-	}
-
-	Offsets[EChartContentArea::Plot].Y = YOffset;
-	Offsets[EChartContentArea::YAxisLeftTitle].Y = YOffset;
-	Offsets[EChartContentArea::YAxisRightTitle].Y = YOffset;
-	Offsets[EChartContentArea::YAxisLeft].Y = YOffset;
-	Offsets[EChartContentArea::YAxisRight].Y = YOffset;
-	YOffset += PlotSize.Y;
-
-	if (XAxisCfg.LeftBottomAxis.bEnabled)
-	{
-		Offsets[EChartContentArea::XAxisBottom].Y = YOffset;
-		YOffset += XAxisWidth;
-		if (XAxisCfg.LeftBottomAxis.bShowTitle)
-		{
-			Offsets[EChartContentArea::XAxisBottomTitle].Y = YOffset;
-			YOffset += XTitleSize.Y;
-		}
-	}
-
-	Geoms[EChartContentArea::YAxisLeftTitle] = ContentGeometry.MakeChild(
-		FVector2D(YTitleSize.X, PlotSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::YAxisLeftTitle])
-		);
-	Geoms[EChartContentArea::YAxisRightTitle] = ContentGeometry.MakeChild(
-		FVector2D(YTitleSize.X, PlotSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::YAxisRightTitle])
-		);
-	Geoms[EChartContentArea::YAxisLeft] = ContentGeometry.MakeChild(
-		FVector2D(YAxisWidth, PlotSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::YAxisLeft])
-		);
-	Geoms[EChartContentArea::YAxisRight] = ContentGeometry.MakeChild(
-		FVector2D(YAxisWidth, PlotSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::YAxisRight])
-		);
-
-	Geoms[EChartContentArea::XAxisBottomTitle] = ContentGeometry.MakeChild(
-		FVector2D(PlotSize.X, XTitleSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::XAxisBottomTitle])
-		);
-	Geoms[EChartContentArea::XAxisTopTitle] = ContentGeometry.MakeChild(
-		FVector2D(PlotSize.X, XTitleSize.Y),
-		FSlateLayoutTransform(Offsets[EChartContentArea::XAxisTopTitle])
-		);
-	Geoms[EChartContentArea::XAxisBottom] = ContentGeometry.MakeChild(
-		FVector2D(PlotSize.X, XAxisWidth),
-		FSlateLayoutTransform(Offsets[EChartContentArea::XAxisBottom])
-		);
-	Geoms[EChartContentArea::XAxisTop] = ContentGeometry.MakeChild(
-		FVector2D(PlotSize.X, XAxisWidth),
-		FSlateLayoutTransform(Offsets[EChartContentArea::XAxisTop])
-		);
-
-	Geoms[EChartContentArea::Plot] = ContentGeometry.MakeChild(
-		PlotSize,
-		FSlateLayoutTransform(Offsets[EChartContentArea::Plot])
-		);
-}
-#endif
-
-FGeometry SKantanCartesianChart::MakeCartesianSpaceGeometry(FGeometry const& LocalGeometry) const
-{
-#if 0
-	auto CenterRelativeLocal = LocalGeometry.MakeChild(
-		LocalGeometry.GetLocalSize(),
-		FSlateLayoutTransform(LocalGeometry.GetLocalSize() * 0.5f)
-		);
-	// Y axis should be up, so negate the Y scale @TODO: make this configurable via property
-	// @NOTE: Sucks but seems layout transforms can only have uniform scales, so this has to be dealt with by
-	// render transform.
-	auto ScaleAdjusted = CenterRelativeLocal.MakeChild(
-		CenterRelativeLocal.GetLocalSize(),
-		FSlateLayoutTransform(),
-		//FSlateLayoutTransform(PlotScale.X, FVector2D::ZeroVector),
-		FTransform2D(FScale2D(PlotScale.X, -PlotScale.Y)),
-		FVector2D::ZeroVector
-		);
-	return ScaleAdjusted.MakeChild(
-		ScaleAdjusted.GetLocalSize(),
-		FSlateLayoutTransform(-CartesianSpaceFocalPoint)
-		);
-#endif
-	ensure(false);
-	return{};
 }
 
 FSlateRenderTransform SKantanCartesianChart::CartesianToPlotTransform(FGeometry const& PlotSpaceGeometry) const

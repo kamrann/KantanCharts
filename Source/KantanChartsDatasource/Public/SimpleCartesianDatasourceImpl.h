@@ -56,6 +56,26 @@ struct KANTANCHARTSDATASOURCE_API FKantanSeriesDataList :
 
 		return false;
 	}
+
+	bool ClearSeriesData(FName const& SeriesId)
+	{
+		auto S = Find(SeriesId);
+		if(S)
+		{
+			S->Points.Reset();
+			return true;
+		}
+
+		return false;
+	}
+
+	void ClearAllData()
+	{
+		for(auto& Elem : Elements)
+		{
+			Elem.Points.Reset();
+		}
+	}
 	
 private:
 	static const FString SeriesIdPrefix;
