@@ -5,7 +5,7 @@ using System.IO;
 
 public class KantanChartsSlate : ModuleRules
 {
-	public KantanChartsSlate(TargetInfo Target)
+	public KantanChartsSlate(ReadOnlyTargetRules Target): base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 

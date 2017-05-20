@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class KantanChartsEditor : ModuleRules
 {
-	public KantanChartsEditor(TargetInfo Target)
+	public KantanChartsEditor(ReadOnlyTargetRules Target): base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 

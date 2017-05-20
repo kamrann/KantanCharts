@@ -491,7 +491,7 @@ int32 SKantanBarChart::DrawChartArea(
 	) const
 {
 	bool bEnabled = ShouldBeEnabled(bParentEnabled);
-	const ESlateDrawEffect::Type DrawEffects = bEnabled ? ESlateDrawEffect::None : ESlateDrawEffect::DisabledEffect;
+	const ESlateDrawEffect DrawEffects = bEnabled ? ESlateDrawEffect::None : ESlateDrawEffect::DisabledEffect;
 
 	// Paint inside the border only. 
 	// Pre-snap the clipping rect to try and reduce common jitter, since the padding is typically only a single pixel.
