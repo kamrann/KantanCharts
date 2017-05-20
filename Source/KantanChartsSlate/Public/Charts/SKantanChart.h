@@ -7,6 +7,7 @@
 #include "AxisUtility.h"
 #include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
 #include "IChartBase.h"
+#include "ChartEvents.h"
 
 
 enum class EKantanChartLabelClass : uint8 {
@@ -33,6 +34,9 @@ public:
 
 		/** Rate at which this widget is ticked when sleeping in seconds */
 		SLATE_ARGUMENT(float, UpdateTickRate)
+
+		/** Fired when mouse button is pressed within the chart */
+		SLATE_EVENT(KantanCharts::FOnInteractionMouseDown, OnChartMouseDown)
 	SLATE_END_ARGS()
 
 	/**
@@ -43,6 +47,7 @@ public:
 	void Construct(const FArguments& InArgs);
 
 	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyClippingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
+	virtual FReply OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 
 	virtual TSharedRef< SWidget > AsWidget() override;
 
@@ -50,6 +55,7 @@ public:
 	virtual void SetChartTitle(FText const& InTitle) override;
 	virtual void SetChartTitlePadding(FMargin const& InPadding) override;
 	virtual void SetUpdateTickRate(float InRate) override;
+	virtual void SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate) override;
 
 	//virtual const FKantanChartStyle* GetChartStyle() const = 0;
 
@@ -155,5 +161,7 @@ protected:
 
 	/** Rate at which the widget gets updates from its datasource */
 	float UpdateTickRate;
+
+	KantanCharts::FOnInteractionMouseDown OnChartMouseDown;
 };
 

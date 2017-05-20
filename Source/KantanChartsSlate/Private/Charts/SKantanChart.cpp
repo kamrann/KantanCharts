@@ -14,6 +14,7 @@ void SKantanChart::Construct(const FArguments& InArgs)
 	SetChartTitle(InArgs._ChartTitle);
 	SetChartTitlePadding(FMargin(0.0f, 5.0f));
 	SetUpdateTickRate(InArgs._UpdateTickRate);
+	SetOnChartMouseDown(InArgs._OnChartMouseDown);
 }
 
 TSharedRef< SWidget > SKantanChart::AsWidget()
@@ -39,6 +40,11 @@ void SKantanChart::SetChartTitlePadding(FMargin const& InPadding)
 void SKantanChart::SetUpdateTickRate(float InRate)
 {
 	SetActiveTimerTickRate(InRate);
+}
+
+void SKantanChart::SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate)
+{
+	OnChartMouseDown = InDelegate;
 }
 
 FSlateFontInfo SKantanChart::GetLabelFont(const FKantanChartStyle* ChartStyle, EKantanChartLabelClass LabelClass)
@@ -752,6 +758,17 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 	}
 
 	return LayerId;
+}
+
+FReply SKantanChart::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+{
+	if(OnChartMouseDown.IsBound())
+	{
+		// @TODO: Area detection
+		OnChartMouseDown.Execute(KantanCharts::EChartInteractionArea::Plot, MouseEvent);
+	}
+
+	return SLeafWidget::OnMouseButtonDown(MyGeometry, MouseEvent);
 }
 
 
