@@ -99,6 +99,14 @@ public:
 		return DataSnapshot;
 	}
 
+	virtual TSharedRef< SWidget > AsWidget() override { return SKantanChart::AsWidget(); }
+
+	virtual void SetMargins(FMargin const& InMargins) override { SKantanChart::SetMargins(InMargins); }
+	virtual void SetChartTitle(FText const& InTitle) override { SKantanChart::SetChartTitle(InTitle); }
+	virtual void SetChartTitlePadding(FMargin const& InPadding) override { SKantanChart::SetChartTitlePadding(InPadding); }
+	virtual void SetUpdateTickRate(float InRate) override { SKantanChart::SetUpdateTickRate(InRate); }
+	virtual void SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate) override { SKantanChart::SetOnChartMouseDown(InDelegate); }
+
 	static bool IsValidDatasource(UObject* Source);
 	static bool IsNullOrValidDatasource(UObject* Source);
 

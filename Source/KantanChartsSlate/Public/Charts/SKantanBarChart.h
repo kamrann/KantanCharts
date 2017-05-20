@@ -58,6 +58,21 @@ public:
 	virtual void SetValueExtentsDisplay(EKantanBarValueExtents InExtents) override;
 	virtual void SetValueAxisConfig(FCartesianAxisConfig const& InConfig) override;
 
+	virtual TSharedRef< SWidget > AsWidget() override { return SKantanCategoryChart::AsWidget(); }
+
+	virtual void SetMargins(FMargin const& InMargins) override { SKantanCategoryChart::SetMargins(InMargins); }
+	virtual void SetChartTitle(FText const& InTitle) override { SKantanCategoryChart::SetChartTitle(InTitle); }
+	virtual void SetChartTitlePadding(FMargin const& InPadding) override { SKantanCategoryChart::SetChartTitlePadding(InPadding); }
+	virtual void SetUpdateTickRate(float InRate) override { SKantanCategoryChart::SetUpdateTickRate(InRate); }
+	virtual void SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate) override { SKantanCategoryChart::SetOnChartMouseDown(InDelegate); }
+
+	virtual bool SetDatasource(UObject* InDatasource) override { return SKantanCategoryChart::SetDatasource(InDatasource); }
+	virtual void SetUseAutoPerCategoryStyles(bool bEnabled) override { SKantanCategoryChart::SetUseAutoPerCategoryStyles(bEnabled); }
+	virtual void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles) override { SKantanCategoryChart::SetCategoryStylesList(Styles); }
+	virtual void LoadCategoryStylesList(const FStringAssetReference& Styles) override { SKantanCategoryChart::LoadCategoryStylesList(Styles); }
+	virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) override { SKantanCategoryChart::SetManualCategoryStyleMappings(Mappings); }
+	virtual void ResetCategoryStyleMappings() override { SKantanCategoryChart::ResetCategoryStyleMappings(); }
+
 protected:
 	// Map a box origin from chart space (x across categories, y up bars) to local widget geometry space (x right, y down)
 	inline FVector2D MapChartToLocal(FVector2D const& InOrigin, FVector2D const& InBoxSize, FVector2D const& InChartSize) const

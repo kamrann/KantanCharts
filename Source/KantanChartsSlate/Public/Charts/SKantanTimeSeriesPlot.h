@@ -47,6 +47,46 @@ public:
 	virtual void SetLowerTimeBound(FCartesianRangeBound const& InBound) override;
 	virtual void SetUpperTimeBound(FCartesianRangeBound const& InBound) override;
 
+	// @NOTE: All the following are needed only because VC++ doesn't support the use of the 'using' keyword
+	// for resolving inheritance via dominance warnings, and for some reason the pragma is failing to suppress
+	// them also.
+	virtual TSharedRef< SWidget > AsWidget() override { return SKantanCartesianChart::AsWidget(); }
+
+	virtual void SetMargins(FMargin const& InMargins) override { SKantanCartesianChart::SetMargins(InMargins); }
+	virtual void SetChartTitle(FText const& InTitle) override { SKantanCartesianChart::SetChartTitle(InTitle); }
+	virtual void SetChartTitlePadding(FMargin const& InPadding) override { SKantanCartesianChart::SetChartTitlePadding(InPadding); }
+	virtual void SetUpdateTickRate(float InRate) override { SKantanCartesianChart::SetUpdateTickRate(InRate); }
+	virtual void SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate) override { SKantanCartesianChart::SetOnChartMouseDown(InDelegate); }
+
+	virtual const FKantanCartesianChartStyle* GetChartStyle() const override { return SKantanCartesianChart::GetChartStyle(); }
+
+	virtual void SetStyle(const FKantanCartesianChartStyle* InStyle) override { SKantanCartesianChart::SetStyle(InStyle); }
+	virtual void SetStyleFromAsset(USlateWidgetStyleContainerBase* InStyleAsset) override { SKantanCartesianChart::SetStyleFromAsset(InStyleAsset); }
+	virtual bool SetDatasource(UObject* InDatasource) override { return SKantanCartesianChart::SetDatasource(InDatasource); }
+	virtual void SetUseAutoPerSeriesStyles(bool bEnabled) override { SKantanCartesianChart::SetUseAutoPerSeriesStyles(bEnabled); }
+	virtual void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles) override { SKantanCartesianChart::SetSeriesStylesList(Styles); }
+	virtual void LoadSeriesStylesList(const FStringAssetReference& Styles) override { SKantanCartesianChart::LoadSeriesStylesList(Styles); }
+	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override { SKantanCartesianChart::SetManualSeriesStyleMappings(Mappings); }
+	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override { SKantanCartesianChart::SetPlotScale(Scaling); }
+	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override { SKantanCartesianChart::SetDataPointSize(InSize); }
+	virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) override { SKantanCartesianChart::SetXAxisConfig(InConfig); }
+	virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) override { SKantanCartesianChart::SetYAxisConfig(InConfig); }
+	virtual void SetAxisTitlePadding(FMargin const& InPadding) override { SKantanCartesianChart::SetAxisTitlePadding(InPadding); }
+	virtual void SetAntialiasDataLines(bool bEnable) override { SKantanCartesianChart::SetAntialiasDataLines(bEnable); }
+	virtual void SetOnUpdatePlotScale(FOnUpdatePlotScale Delegate) override { SKantanCartesianChart::SetOnUpdatePlotScale(Delegate); }
+
+	virtual void EnableSeries(FName Id, bool bEnable) override { SKantanCartesianChart::EnableSeries(Id, bEnable); }
+	virtual void ConfigureSeries(FName Id, bool bDrawPoints, bool bDrawLines) override { SKantanCartesianChart::ConfigureSeries(Id, bDrawPoints, bDrawLines); }
+	virtual void SetSeriesStyle(FName Id, FName StyleId) override { SKantanCartesianChart::SetSeriesStyle(Id, StyleId); }
+	virtual void ResetSeries(FName Id = NAME_None) override { SKantanCartesianChart::ResetSeries(Id); }
+
+	virtual bool IsSeriesEnabled(FName Id) const override { return SKantanCartesianChart::IsSeriesEnabled(Id); }
+	virtual bool IsSeriesShowingLines(FName Id) const override { return SKantanCartesianChart::IsSeriesShowingLines(Id); }
+	virtual bool IsSeriesShowingPoints(FName Id) const override { return SKantanCartesianChart::IsSeriesShowingPoints(Id); }
+
+	virtual FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const override { return SKantanCartesianChart::GetSeriesStyle(SeriesId); }
+	virtual FCartesianDataSnapshot const& GetCurrentSnapshot() const override { return SKantanCartesianChart::GetCurrentSnapshot(); }
+
 protected:
 	virtual void OnActiveTick(double InCurrentTime, float InDeltaTime) override;
 

@@ -43,6 +43,14 @@ public:
 	virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) override;
 	virtual void ResetCategoryStyleMappings() override;
 
+	virtual TSharedRef< SWidget > AsWidget() override { return SKantanChart::AsWidget(); }
+
+	virtual void SetMargins(FMargin const& InMargins) override { SKantanChart::SetMargins(InMargins); }
+	virtual void SetChartTitle(FText const& InTitle) override { SKantanChart::SetChartTitle(InTitle); }
+	virtual void SetChartTitlePadding(FMargin const& InPadding) override { SKantanChart::SetChartTitlePadding(InPadding); }
+	virtual void SetUpdateTickRate(float InRate) override { SKantanChart::SetUpdateTickRate(InRate); }
+	virtual void SetOnChartMouseDown(KantanCharts::FOnInteractionMouseDown InDelegate) override { SKantanChart::SetOnChartMouseDown(InDelegate); }
+
 	int32 GetNumCategories() const;
 	FName GetCategoryId(int32 Index) const;
 	FText GetCategoryLabel(int32 Index) const;
