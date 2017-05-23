@@ -513,7 +513,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 	int32 RetLayerId = LayerId;
 
 	bool bEnabled = ShouldBeEnabled(bParentEnabled);
-	const ESlateDrawEffect DrawEffects = bEnabled ? ESlateDrawEffect::None : ESlateDrawEffect::DisabledEffect;
+	const ESlateDrawEffect::Type DrawEffects = bEnabled ? ESlateDrawEffect::None : ESlateDrawEffect::DisabledEffect;
 
 	// Pre-snap the clipping rect to try and reduce common jitter, since the padding is typically only a single pixel.
 	FSlateRect SnappedClippingRect = FSlateRect(FMath::RoundToInt(MyClippingRect.Left), FMath::RoundToInt(MyClippingRect.Top), FMath::RoundToInt(MyClippingRect.Right), FMath::RoundToInt(MyClippingRect.Bottom));
