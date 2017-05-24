@@ -1,7 +1,7 @@
 {
 	"FileVersion" : 3,
-	"Version" : 5,
-	"VersionName" : "UE4.15-K5",
+	"Version" : 6,
+	"VersionName" : "UE4.15-K6",
 	"FriendlyName" : "Kantan Charts",
 	"Description" : "Simple UMG/Slate charts for debugging and basic UI.",
 	"Category" : "Kantan Dev",
