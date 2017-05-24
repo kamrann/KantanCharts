@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KantanCartesianTypes.h"
-#include "DataAsset.h"
+#include "Engine/DataAsset.h"
 #include "KantanSeriesStyle.generated.h"
 
 

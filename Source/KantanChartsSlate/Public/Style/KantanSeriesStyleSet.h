@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KantanSeriesStyle.h"
-#include "DataAsset.h"
+#include "Engine/DataAsset.h"
 #include "KantanSeriesStyleSet.generated.h"
 
 
