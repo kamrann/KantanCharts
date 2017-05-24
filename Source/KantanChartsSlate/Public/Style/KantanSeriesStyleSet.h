@@ -3,12 +3,13 @@
 #pragma once
 
 #include "KantanSeriesStyle.h"
+#include "DataAsset.h"
 #include "KantanSeriesStyleSet.generated.h"
 
 
 // An asset storing a list of series styles used with a KantanCartesianChart
 UCLASS()
-class KANTANCHARTSSLATE_API UKantanSeriesStyleSet: public UObject
+class KANTANCHARTSSLATE_API UKantanSeriesStyleSet: public UDataAsset
 {
 	GENERATED_BODY()
 
