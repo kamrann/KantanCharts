@@ -1,44 +1,63 @@
 {
-	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "1.3",
-	"FriendlyName": "Kantan Charts",
-	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
-	"Category": "Kantan Dev",
+	"FileVersion" : 3,
+	"Version" : 4,
+	"VersionName" : "UE4.15-K4",
+	"FriendlyName" : "Kantan Charts",
+	"Description" : "Simple UMG/Slate charts for debugging and basic UI.",
+	"Category" : "Kantan Dev",
+	"CreatedBy" : "Kantan Dev",
+	"CreatedByURL" : "http://kantandev.com",
+	"DocsURL" : "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
+	"MarketplaceURL" : "com.epicgames.launcher://ue/marketplace/content/89bd18db011b4bd19606db2e31020f13",
+	"SupportURL" : "mailto:kantandev@gmail.com",
 	"EngineVersion" : "4.15.0",
-	"CreatedBy": "Kantan Dev",
-	"CreatedByURL": "http://kantandev.com",
-	"DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/89bd18db011b4bd19606db2e31020f13",
-	"SupportURL": "mailto:kantandev@gmail.com",
-	"Modules": [
+	"CanContainContent" : true,
+	"IsBetaVersion" : false,
+	"Installed" : false,
+	"RequiresBuildPlatform" : false,
+	"Modules" :
+	[
 		{
-			"Name": "KantanChartsDatasource",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Android" ]
+			"Name" : "KantanChartsDatasource",
+			"Type" : "Runtime",
+			"LoadingPhase" : "Default",
+			"WhitelistPlatforms" :
+			[
+				"Win64",
+				"Win32",
+				"Android"
+			]
 		},
 		{
-			"Name": "KantanChartsSlate",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Android" ]
+			"Name" : "KantanChartsSlate",
+			"Type" : "Runtime",
+			"LoadingPhase" : "Default",
+			"WhitelistPlatforms" :
+			[
+				"Win64",
+				"Win32",
+				"Android"
+			]
 		},
 		{
-			"Name": "KantanChartsUMG",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Android" ]
+			"Name" : "KantanChartsUMG",
+			"Type" : "Runtime",
+			"LoadingPhase" : "Default",
+			"WhitelistPlatforms" :
+			[
+				"Win64",
+				"Win32",
+				"Android"
+			]
 		},
 		{
-			"Name": "KantanChartsEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64" ]
+			"Name" : "KantanChartsEditor",
+			"Type" : "Editor",
+			"LoadingPhase" : "Default",
+			"WhitelistPlatforms" :
+			[
+				"Win64"
+			]
 		}
-	],
-	"EnabledByDefault": false,
-	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"Installed": false
+	]
 }
