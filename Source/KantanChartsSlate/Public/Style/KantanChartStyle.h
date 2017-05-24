@@ -91,21 +91,3 @@ struct KANTANCHARTSSLATE_API FKantanChartStyle : public FSlateWidgetStyle
 	}
 };
 
-
-UCLASS(BlueprintType, HideCategories = Object, MinimalAPI)
-class UKantanChartWidgetStyle : public USlateWidgetStyleContainerBase
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, Category = "Style")
-	FKantanChartStyle ChartStyle;
-
-public:
-	virtual const FSlateWidgetStyle* const GetStyle() const override
-	{
-		return &ChartStyle;
-	}
-};
-
-
