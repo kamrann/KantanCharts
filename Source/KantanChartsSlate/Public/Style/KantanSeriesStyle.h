@@ -3,11 +3,12 @@
 #pragma once
 
 #include "KantanCartesianTypes.h"
+#include "DataAsset.h"
 #include "KantanSeriesStyle.generated.h"
 
 
 UCLASS()
-class KANTANCHARTSSLATE_API UKantanPointStyle : public UObject
+class KANTANCHARTSSLATE_API UKantanPointStyle : public UDataAsset
 {
 	GENERATED_BODY()
 
