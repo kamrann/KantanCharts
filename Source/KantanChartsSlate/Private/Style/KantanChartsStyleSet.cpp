@@ -43,10 +43,28 @@ const FVector2D Icon16x16(16.0f, 16.0f);
 const FVector2D Icon20x20(20.0f, 20.0f);
 const FVector2D Icon40x40(40.0f, 40.0f);
 
+TSharedPtr< IPlugin > GetPluginFromModuleName(const FName& ModuleName)
+{
+	auto PluginStatuses = IPluginManager::Get().QueryStatusForAllPlugins();
+	for(auto const& PluginStatus : PluginStatuses)
+	{
+		if(PluginStatus.Descriptor.Modules.ContainsByPredicate([&ModuleName](const FModuleDescriptor& Mod)
+		{
+			return Mod.Name == ModuleName;
+		}))
+		{
+			return IPluginManager::Get().FindPlugin(PluginStatus.Name);
+		}
+	}
+
+	return nullptr;
+}
+
 TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 {
+	auto Plugin = GetPluginFromModuleName(TEXT("KantanChartsSlate"));
+	check(Plugin.IsValid());
 	FString BasePath = IPluginManager::Get().FindPlugin(TEXT("KantanCharts"))->GetContentDir() / TEXT("Style");
-	//FString BasePath = TEXT("/KantanCharts/Style");
 	FString ScopePath = BasePath;
 	TSharedRef<FSlateStyleSet> Style = FSlateGameResources::New(
 		FKantanChartsStyleSet::GetStyleSetName(),
