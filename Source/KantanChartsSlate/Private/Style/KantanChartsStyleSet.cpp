@@ -64,7 +64,7 @@ TSharedRef< FSlateStyleSet > FKantanChartsStyleSet::Create()
 {
 	auto Plugin = GetPluginFromModuleName(TEXT("KantanChartsSlate"));
 	check(Plugin.IsValid());
-	FString BasePath = IPluginManager::Get().FindPlugin(TEXT("KantanCharts"))->GetContentDir() / TEXT("Style");
+	FString BasePath = Plugin->GetContentDir() / TEXT("Style");
 	FString ScopePath = BasePath;
 	TSharedRef<FSlateStyleSet> Style = FSlateGameResources::New(
 		FKantanChartsStyleSet::GetStyleSetName(),
