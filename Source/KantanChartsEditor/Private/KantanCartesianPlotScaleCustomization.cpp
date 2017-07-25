@@ -53,22 +53,22 @@ void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<class IP
 void FKantanCartesianPlotScaleCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	{
-		auto& Row = StructBuilder.AddChildProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, Scale)).ToSharedRef());
+		auto& Row = StructBuilder.AddProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, Scale)).ToSharedRef());
 		Row.Visibility(TAttribute<EVisibility>::Create(TAttribute<EVisibility>::FGetter::CreateSP(this, &FKantanCartesianPlotScaleCustomization::GetFixedScaleAndFocusVisibility)));
 	}
 
 	{
-		auto& Row = StructBuilder.AddChildProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, FocalCoordinates)).ToSharedRef());
+		auto& Row = StructBuilder.AddProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, FocalCoordinates)).ToSharedRef());
 		Row.Visibility(TAttribute<EVisibility>::Create(TAttribute<EVisibility>::FGetter::CreateSP(this, &FKantanCartesianPlotScaleCustomization::GetFixedScaleAndFocusVisibility)));
 	}
 
 	{
-		auto& Row = StructBuilder.AddChildProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, RangeX)).ToSharedRef());
+		auto& Row = StructBuilder.AddProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, RangeX)).ToSharedRef());
 		Row.Visibility(TAttribute<EVisibility>::Create(TAttribute<EVisibility>::FGetter::CreateSP(this, &FKantanCartesianPlotScaleCustomization::GetFixedRangeVisibility)));
 	}
 
 	{
-		auto& Row = StructBuilder.AddChildProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, RangeY)).ToSharedRef());
+		auto& Row = StructBuilder.AddProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, RangeY)).ToSharedRef());
 		Row.Visibility(TAttribute<EVisibility>::Create(TAttribute<EVisibility>::FGetter::CreateSP(this, &FKantanCartesianPlotScaleCustomization::GetFixedRangeVisibility)));
 	}
 }

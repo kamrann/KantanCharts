@@ -92,7 +92,7 @@ int32 SKantanChartLegend::OnPaint(const FPaintArgs& Args, const FGeometry& Allot
 			AllottedGeometry.ToPaintGeometry(),
 			Label,
 			FontInfo,
-			SnappedClippingRect,
+			//SnappedClippingRect,
 			ESlateDrawEffect::None
 			);
 		return LayerId;
@@ -110,7 +110,7 @@ int32 SKantanChartLegend::OnPaint(const FPaintArgs& Args, const FGeometry& Allot
 		LayerId,
 		AllottedGeometry.ToPaintGeometry(),
 		Brush,
-		SnappedClippingRect,
+		//SnappedClippingRect,
 		ESlateDrawEffect::None,
 		Brush->TintColor.GetColor(InWidgetStyle)
 		);
@@ -143,7 +143,7 @@ int32 SKantanChartLegend::OnPaint(const FPaintArgs& Args, const FGeometry& Allot
 			TextGeom.ToPaintGeometry(),
 			Label,
 			FontInfo,
-			SnappedClippingRect,
+			//SnappedClippingRect,
 			ESlateDrawEffect::None,
 			SeriesStyle.Color
 			);

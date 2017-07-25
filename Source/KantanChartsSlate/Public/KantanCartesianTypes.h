@@ -19,15 +19,15 @@ enum class ECartesianScalingType : uint8
 };
 
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCartesianAxisRange
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Axis")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Axis")
 	float Min;
 
-	UPROPERTY(EditAnywhere, Category = "Axis")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Axis")
 	float Max;
 
 	FCartesianAxisRange() :
