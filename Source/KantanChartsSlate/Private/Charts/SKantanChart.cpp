@@ -497,7 +497,9 @@ int32 SKantanChart::DrawFixedAxis(
 			//ClipRect,
 			ESlateDrawEffect::None,
 			ChartStyle->ChartLineColor,
-			false);
+			false,
+			ChartStyle->ChartLineThickness
+			);
 	}
 
 
@@ -556,7 +558,9 @@ int32 SKantanChart::DrawFixedAxis(
 				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false);
+				false,
+				ChartStyle->ChartLineThickness
+			);
 		}
 
 		if (bDrawLabels)
@@ -736,7 +740,8 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 		MakeAreaGeometries(ContentGeometry, AreaGeoms);
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		auto ClipRect = SnappedClippingRect;// ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
+		auto ClipRect = InsetGeometry.GetLayoutBoundingRect();
+			//SnappedClippingRect;// ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 		for (int32 AreaIdx = 0; AreaIdx < ChartContentAreaCount; ++AreaIdx)
 		{
 			if (AreaGeoms[AreaIdx].GetLocalSize().X > 0.0f &&
