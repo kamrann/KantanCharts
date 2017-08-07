@@ -7,6 +7,8 @@
 #include "KantanSeriesStyle.generated.h"
 
 
+class UTexture2D;
+
 UCLASS()
 class KANTANCHARTSSLATE_API UKantanPointStyle : public UDataAsset
 {

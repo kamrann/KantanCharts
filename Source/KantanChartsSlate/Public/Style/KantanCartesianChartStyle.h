@@ -3,6 +3,7 @@
 #pragma once
 
 #include "KantanChartStyle.h"
+#include "SlateWidgetStyleContainerBase.h"
 #include "KantanCartesianChartStyle.generated.h"
 
 

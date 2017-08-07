@@ -14,6 +14,8 @@
 #include "AxisUtility.h"
 #include "ICartesianChart.h"
 
+#include "SlateWidgetStyleAsset.h"
+
 
 /** A widget class implementing a cartesian chart. */
 class KANTANCHARTSSLATE_API SKantanCartesianChart:

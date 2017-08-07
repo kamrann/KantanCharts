@@ -2,7 +2,9 @@
 
 #include "SKantanChartLegend.h"
 #include "SKantanCartesianChart.h"
+
 #include "SlateApplication.h"
+#include "FontMeasure.h"
 
 
 void SKantanChartLegend::Construct(const FArguments& InArgs)
