@@ -2,6 +2,8 @@
 
 #include "KantanTimeSeriesPlotBase.h"
 
+#include "Package.h"
+
 #define LOCTEXT_NAMESPACE "KantanCharts"
 
 
