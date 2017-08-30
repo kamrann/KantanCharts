@@ -23,7 +23,7 @@ void FCategoryStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class 
 void FCategoryStyleManualMappingCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr< IPropertyHandle > PropCatId = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FCategoryStyleManualMapping, CategoryId));
-	StructBuilder.AddChildProperty(PropCatId.ToSharedRef());
+	StructBuilder.AddProperty(PropCatId.ToSharedRef());
 
 	auto CatStyleStruct = FKantanCategoryStyle::StaticStruct();
 	TSharedPtr< IPropertyHandle > PropStyle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FCategoryStyleManualMapping, Style));
@@ -34,7 +34,7 @@ void FCategoryStyleManualMappingCustomization::CustomizeChildren(TSharedRef<clas
 		if (ChildPropName != GET_MEMBER_NAME_CHECKED(FKantanCategoryStyle, CategoryStyleId))
 		{
 			TSharedPtr< IPropertyHandle > PropChild = PropStyle->GetChildHandle(ChildPropName);
-			StructBuilder.AddChildProperty(PropChild.ToSharedRef());
+			StructBuilder.AddProperty(PropChild.ToSharedRef());
 		}
 	}
 }

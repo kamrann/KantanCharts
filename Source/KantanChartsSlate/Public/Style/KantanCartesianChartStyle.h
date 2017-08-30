@@ -3,6 +3,7 @@
 #pragma once
 
 #include "KantanChartStyle.h"
+#include "SlateWidgetStyleContainerBase.h"
 #include "KantanCartesianChartStyle.generated.h"
 
 
@@ -17,9 +18,16 @@ struct KANTANCHARTSSLATE_API FKantanCartesianChartStyle : public FKantanChartSty
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	float DataOpacity;
 
+	/*
+	Thickness of plotted lines.
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
+	float DataLineThickness;
+
 	FKantanCartesianChartStyle() :
 		FKantanChartStyle()
 		, DataOpacity(1.0f)
+		, DataLineThickness(1.0f)
 	{}
 
 	static const FName TypeName;

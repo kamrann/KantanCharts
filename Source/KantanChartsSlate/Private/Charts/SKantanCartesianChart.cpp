@@ -7,13 +7,15 @@
 #include "SlateRotatedRect.h"
 #include "AxisUtility.h"
 #include "ChartConstants.h"
+#include "KantanSeriesStyleSet.h"
+
 #include "SlateApplication.h"
 #include "RenderingThread.h"
 #include "Engine/Texture2D.h"
 #include "RenderUtils.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
-#include "KantanSeriesStyleSet.h"
+#include "FontMeasure.h"
 
 
 class FDataSeriesElement : public ICustomSlateElement
@@ -518,12 +520,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 	// Pre-snap the clipping rect to try and reduce common jitter, since the padding is typically only a single pixel.
 	FSlateRect SnappedClippingRect = FSlateRect(FMath::RoundToInt(MyClippingRect.Left), FMath::RoundToInt(MyClippingRect.Top), FMath::RoundToInt(MyClippingRect.Right), FMath::RoundToInt(MyClippingRect.Bottom));
 
-/*	FGeometry AreaGeoms[ChartContentAreaCount];
-	MakeAreaGeometries(ContentGeometry, AreaGeoms);
-	auto const& PlotSpaceGeometry = AreaGeoms[EChartContentArea::Plot];
-*/
-	if (PlotSpaceGeometry.GetLocalSize().X == 0
-		|| PlotSpaceGeometry.GetLocalSize().Y == 0)
+	if (PlotSpaceGeometry.GetLocalSize().X == 0 || PlotSpaceGeometry.GetLocalSize().Y == 0)
 	{
 		// @TODO: Bit of a cheap way out, avoiding some division by zero issues
 		return RetLayerId;
@@ -635,16 +632,23 @@ int32 SKantanCartesianChart::DrawChartArea(
 
 	case EChartContentArea::Plot:
 	{
-		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
-		// Not sure of better way to do this though.
-		SnappedClippingRect = PlotSpaceGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
-
 		// Add 1 unit to right and bottom of clip rect for purposes of drawing axes
+		const FSlateRect AxisClipRect = SnappedClippingRect.ExtendBy(FMargin(0, 0, 1, 1));
+			//Geometry.GetRenderBoundingRect(FMargin(0, 0, 1, 1));
+		OutDrawElements.PushClip(FSlateClippingZone(AxisClipRect));
+
 		auto AxisLayer = RetLayerId;
 		FPlotMarkerData PlotMarkerData;
 		PlotMarkerData.XAxis = GetCachedMarkerData(EAxis::X, PlotSpaceGeometry);
 		PlotMarkerData.YAxis = GetCachedMarkerData(EAxis::Y, PlotSpaceGeometry);
-		RetLayerId = DrawAxes(PlotSpaceGeometry, SnappedClippingRect.ExtendBy(FMargin(0, 0, 1, 1)), OutDrawElements, AxisLayer, AxisLayer + 2, PlotMarkerData);
+		RetLayerId = DrawAxes(PlotSpaceGeometry, AxisClipRect, OutDrawElements, AxisLayer, AxisLayer + 2, PlotMarkerData);
+
+		OutDrawElements.PopClip();
+
+		// Inflate slightly to avoid clipping plot lines lying exactly along the edges of the plot area.
+		// @NOTE: Bit random, but apparently 1.0 on the vertical is not sufficient to stop this.
+		const FSlateRect DataClipRect = PlotSpaceGeometry.GetRenderBoundingRect(FMargin(0.5f, 2.0f));
+		OutDrawElements.PushClip(FSlateClippingZone(DataClipRect));
 
 		auto ChartStyle = GetChartStyle();
 		auto NumSeries = GetNumSeries();
@@ -673,8 +677,10 @@ int32 SKantanCartesianChart::DrawChartArea(
 			auto const& SeriesStyle = GetSeriesStyle(SeriesId);
 
 			// @TODO: Sort out layers, maybe need to separate out DrawAxes into DrawAxisLines and DrawAxisLabels
-			DrawSeries(PlotSpaceGeometry, SnappedClippingRect, OutDrawElements, AxisLayer + 1, SeriesId, Points, SeriesStyle);
+			DrawSeries(PlotSpaceGeometry, DataClipRect, OutDrawElements, AxisLayer + 1, SeriesId, Points, SeriesStyle);
 		}
+
+		OutDrawElements.PopClip();
 	}
 	break;
 	}
@@ -899,10 +905,11 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 			LayerId,
 			PlotSpaceGeometry.ToPaintGeometry(),
 			SegmentPoints,//DrawPoints,
-			ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
+			//ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 			ESlateDrawEffect::None,
 			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
-			bAntialiasDataLines
+			bAntialiasDataLines,
+			GetChartStyle()->DataLineThickness
 			);
 	}
 
@@ -967,10 +974,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				ClipRect,
+				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false);
+				false,
+				ChartStyle->ChartLineThickness
+				);
 		}
 
 		auto XRounding = MarkerData.XAxis.RL;
@@ -996,7 +1005,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				UnitGeometry.ToPaintGeometry(),
 				UnitText,
 				AxisMarkerFont,
-				ClipRect,
+				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 		}
@@ -1032,10 +1041,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					ClipRect,
+					//ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
-					true);
+					true,
+					ChartStyle->ChartLineThickness
+				);
 			}
 
 			if (XAxisCfg.FloatingAxis.bShowLabels)
@@ -1058,7 +1069,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						ClipRect,
+						//ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}
@@ -1087,10 +1098,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				ClipRect,
+				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false);
+				false,
+				ChartStyle->ChartLineThickness
+			);
 		}
 
 		auto YRounding = MarkerData.YAxis.RL;
@@ -1152,7 +1165,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				UnitGeometry.ToPaintGeometry(),
 				UnitText,
 				AxisMarkerFont,
-				FinalUnitClipRect1,
+				//FinalUnitClipRect1,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 		}
@@ -1187,10 +1200,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					ClipRect,
+					//ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
-					true);
+					true,
+					ChartStyle->ChartLineThickness
+				);
 			}
 
 			if (YAxisCfg.FloatingAxis.bShowLabels)
@@ -1212,7 +1227,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						ClipRect,
+						//ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}

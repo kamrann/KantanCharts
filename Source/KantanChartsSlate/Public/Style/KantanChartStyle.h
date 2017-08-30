@@ -2,9 +2,9 @@
 
 #pragma once
 
-//#include "SlateWidgetStyle.h"
-//#include "SlateWidgetStyleContainerBase.h"
-#include "SlateCore.h"
+#include "SlateWidgetStyle.h"
+#include "SlateBrush.h"
+#include "SlateFontInfo.h"
 #include "KantanChartStyle.generated.h"
 
 
@@ -24,6 +24,12 @@ struct KANTANCHARTSSLATE_API FKantanChartStyle : public FSlateWidgetStyle
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	FLinearColor ChartLineColor;
+
+	/*
+	Thickness of lines of the chart itself (e.g. axis lines).
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
+	float ChartLineThickness;
 
 	/*
 	The default font used for chart text.
@@ -58,6 +64,7 @@ struct KANTANCHARTSSLATE_API FKantanChartStyle : public FSlateWidgetStyle
 	FKantanChartStyle() :
 		Background()
 		, ChartLineColor(FLinearColor::White)
+		, ChartLineThickness(1.0f)
 		, BaseFont()
 		, TitleFontSize(0)
 		, AxisDescriptionFontSize(0)

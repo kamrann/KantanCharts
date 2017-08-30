@@ -2,6 +2,8 @@
 
 #include "KantanCartesianPlotBase.h"
 
+#include "Package.h"
+
 #define LOCTEXT_NAMESPACE "KantanCharts"
 
 

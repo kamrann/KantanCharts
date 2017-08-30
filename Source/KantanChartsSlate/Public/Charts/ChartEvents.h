@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 
 
+struct FPointerEvent;
+
+
 namespace KantanCharts
 {
 	enum class EChartInteractionArea: uint8 {
@@ -14,5 +17,4 @@ namespace KantanCharts
 	};
 
 	DECLARE_DELEGATE_TwoParams(FOnInteractionMouseDown, EChartInteractionArea, const FPointerEvent&);
-//	DECLARE_DELEGATE_TwoParams(FOnInteractionAxisPan, EAxis::Type, );
 }
