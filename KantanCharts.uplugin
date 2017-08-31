@@ -10,7 +10,7 @@
 	"DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/89bd18db011b4bd19606db2e31020f13",
   "SupportURL": "mailto:kantandev@gmail.com",
-  "CanContainContent": "true",
+  "CanContainContent": true,
 	"Modules": [
 		{
 			"Name" : "KantanChartsDatasource",
