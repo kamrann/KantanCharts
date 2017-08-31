@@ -414,10 +414,10 @@ void SKantanBarChart::DrawCategoryAxis(
 				);
 			/*/
 
-			//FSlateRect LabelClipRect(
-			//	LabelGeom.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(0.0f, 0.0f)),
-			//	LabelGeom.GetAccumulatedLayoutTransform().TransformPoint(LabelGeom.GetLocalSize())
-			//	);
+			FSlateRect LabelClipRect(
+				LabelGeom.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(0.0f, 0.0f)),
+				LabelGeom.GetAccumulatedLayoutTransform().TransformPoint(LabelGeom.GetLocalSize())
+				);
 
 			FSlateDrawElement::MakeText(
 				OutDrawElements,
@@ -425,7 +425,7 @@ void SKantanBarChart::DrawCategoryAxis(
 				LabelGeom.ToPaintGeometry(),
 				Label,
 				FontInfo,
-				//ChartConstants::RotatedTextClipRect,
+				ChartConstants::RotatedTextClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 
@@ -451,7 +451,7 @@ void SKantanBarChart::DrawCategoryAxis(
 							LayerId,
 							Geometry.ToPaintGeometry(),
 							Points,
-							//MyClippingRect,
+							MyClippingRect,
 							ESlateDrawEffect::None,
 							ChartStyle->ChartLineColor,
 							false);
@@ -467,7 +467,7 @@ void SKantanBarChart::DrawCategoryAxis(
 							LayerId,
 							Geometry.ToPaintGeometry(),
 							Points,
-							//MyClippingRect,
+							MyClippingRect,
 							ESlateDrawEffect::None,
 							ChartStyle->ChartLineColor,
 							false);
@@ -671,7 +671,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::BarInterior,
 				BarGeom.ToPaintGeometry(),
 				BarInteriorBrush.Get(),
-				//SnappedClippingRect,
+				SnappedClippingRect,
 				ESlateDrawEffect::None,
 				CatStyle.Color.CopyWithNewOpacity(ChartStyle ? ChartStyle->BarOpacity : 1.0f));
 			/*
@@ -701,7 +701,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::BarOutline,
 				BarGeom.ToPaintGeometry(),
 				BarPoints,
-				//SnappedClippingRect,
+				SnappedClippingRect,
 				ESlateDrawEffect::None,
 				CatStyle.Color.CopyWithNewOpacity(ChartStyle ? ChartStyle->BarOutlineOpacity : 1.0f),
 				false);
@@ -718,7 +718,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::ZeroLine,
 				Geometry.ToPaintGeometry(),
 				Points,
-				//SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
+				SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
@@ -735,7 +735,7 @@ int32 SKantanBarChart::DrawChartArea(
 				LayerId + BarChartLayers::MaxValueLine,
 				Geometry.ToPaintGeometry(),
 				Points,
-				//SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
+				SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);

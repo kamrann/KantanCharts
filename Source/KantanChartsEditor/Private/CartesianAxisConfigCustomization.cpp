@@ -133,7 +133,7 @@ void FCartesianAxisConfigCustomization::CustomizeChildren(TSharedRef<class IProp
 			}
 		}
 
-		auto& Child = StructBuilder.AddProperty(Handle);
+		auto& Child = StructBuilder.AddChildProperty(Handle);
 	
 		if (Handle->GetProperty()->GetFName() == GET_MEMBER_NAME_CHECKED(FCartesianAxisConfig, LeftBottomAxis))
 		{

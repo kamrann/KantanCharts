@@ -23,7 +23,7 @@ void FSeriesStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class IP
 void FSeriesStyleManualMappingCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr< IPropertyHandle > PropCatId = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FSeriesStyleManualMapping, SeriesId));
-	StructBuilder.AddProperty(PropCatId.ToSharedRef());
+	StructBuilder.AddChildProperty(PropCatId.ToSharedRef());
 
 	auto SeriesStyleStruct = FKantanSeriesStyle::StaticStruct();
 	TSharedPtr< IPropertyHandle > PropStyle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FSeriesStyleManualMapping, Style));
@@ -34,7 +34,7 @@ void FSeriesStyleManualMappingCustomization::CustomizeChildren(TSharedRef<class 
 		if (ChildPropName != GET_MEMBER_NAME_CHECKED(FKantanSeriesStyle, StyleId))
 		{
 			TSharedPtr< IPropertyHandle > PropChild = PropStyle->GetChildHandle(ChildPropName);
-			StructBuilder.AddProperty(PropChild.ToSharedRef());
+			StructBuilder.AddChildProperty(PropChild.ToSharedRef());
 		}
 	}
 }

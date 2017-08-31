@@ -47,7 +47,7 @@ public:
 	/*
 	Defines the region of cartesian space which is drawn.
 	*/
-	UPROPERTY(EditAnywhere, Category = "Config")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	FKantanCartesianPlotScale PlotScale;
 
 	/*

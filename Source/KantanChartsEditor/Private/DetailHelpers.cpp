@@ -33,7 +33,7 @@ namespace DetailHelpers {
 			return SNullWidget::NullWidget;
 		}
 
-		auto OnAssetSelected = [Property](const FAssetData& AssetData)
+		auto OnAssetSelected = [Property](const class FAssetData& AssetData)
 		{
 			if (Property->IsValidHandle())
 			{
@@ -42,7 +42,7 @@ namespace DetailHelpers {
 			}
 		};
 
-		auto IsValidAsset = [InterfaceClass](const FAssetData& AssetData) -> bool
+		auto IsValidAsset = [InterfaceClass](const class FAssetData& AssetData) -> bool
 		{
 			// @TODO: Calling GetAsset causes all incoming assets to be force-loaded if not already,
 			// which is clearly not going to work. 

@@ -639,7 +639,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 	{
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		//SnappedClippingRect = PlotSpaceGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
+		SnappedClippingRect = PlotSpaceGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 
 		// Add 1 unit to right and bottom of clip rect for purposes of drawing axes
 		auto AxisLayer = RetLayerId;
@@ -901,7 +901,7 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 			LayerId,
 			PlotSpaceGeometry.ToPaintGeometry(),
 			SegmentPoints,//DrawPoints,
-			//ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
+			ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 			ESlateDrawEffect::None,
 			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
 			bAntialiasDataLines
@@ -969,7 +969,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				//ClipRect,
+				ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
@@ -998,7 +998,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				UnitGeometry.ToPaintGeometry(),
 				UnitText,
 				AxisMarkerFont,
-				//ClipRect,
+				ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 		}
@@ -1034,7 +1034,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					//ClipRect,
+					ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
 					true);
@@ -1060,7 +1060,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						//ClipRect,
+						ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}
@@ -1089,7 +1089,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				//ClipRect,
+				ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
@@ -1154,7 +1154,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				UnitGeometry.ToPaintGeometry(),
 				UnitText,
 				AxisMarkerFont,
-				//FinalUnitClipRect1,
+				FinalUnitClipRect1,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 		}
@@ -1189,7 +1189,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					//ClipRect,
+					ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
 					true);
@@ -1214,7 +1214,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						//ClipRect,
+						ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}

@@ -414,7 +414,7 @@ int32 SKantanChart::DrawChartBackground(const FPaintArgs& Args, const FGeometry&
 		LayerId++,
 		AllottedGeometry.ToPaintGeometry(),
 		BackgroundBrush,
-		//MyClippingRect,
+		MyClippingRect,
 		ESlateDrawEffect::None,
 		BackgroundBrush->GetTint(InWidgetStyle)
 		);
@@ -440,7 +440,7 @@ int32 SKantanChart::DrawChartTitle(const FPaintArgs& Args, const FGeometry& Titl
 		TextGeometry.ToPaintGeometry(),
 		ChartTitle,
 		TitleFont,
-		//MyClippingRect,
+		MyClippingRect,
 		ESlateDrawEffect::None,
 		ChartStyle->FontColor);
 
@@ -497,7 +497,7 @@ int32 SKantanChart::DrawFixedAxis(
 			LayerId,
 			Geometry.ToPaintGeometry(),
 			Points,
-			//ClipRect,
+			ClipRect,
 			ESlateDrawEffect::None,
 			ChartStyle->ChartLineColor,
 			false);
@@ -556,7 +556,7 @@ int32 SKantanChart::DrawFixedAxis(
 				LayerId,
 				Geometry.ToPaintGeometry(),
 				Points,
-				//ClipRect,
+				ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
 				false);
@@ -597,7 +597,7 @@ int32 SKantanChart::DrawFixedAxis(
 					LabelGeometry.ToPaintGeometry(),
 					LabelText,
 					ValueFont,
-					//ClipRect,
+					ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->FontColor);
 			}
@@ -625,7 +625,7 @@ int32 SKantanChart::DrawXAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 			Geometry.ToPaintGeometry(Extents, FSlateLayoutTransform(FVector2D((AvailableSize.X - Extents.X) * 0.5f, 0.0f))),
 			Label,
 			LabelFont,
-			//ClipRect,
+			ClipRect,
 			ESlateDrawEffect::None,
 			ChartStyle->FontColor);
 	}
@@ -673,7 +673,7 @@ int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 			RotatedGeometry.ToPaintGeometry(),
 			Label,
 			LabelFont,
-			//FinalClipRect,
+			FinalClipRect,
 			ESlateDrawEffect::None,
 			ChartStyle->FontColor);
 	}
@@ -729,7 +729,7 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 		auto TitleGeometry = MakeTitleGeometry(InsetGeometry);
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		auto ClipRect = SnappedClippingRect;// TitleGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
+		auto ClipRect = TitleGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 		LayerId = DrawChartTitle(Args, TitleGeometry, ClipRect, OutDrawElements, LayerId, ChartStyle, InWidgetStyle);
 	}
 
@@ -739,7 +739,7 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 		MakeAreaGeometries(ContentGeometry, AreaGeoms);
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		auto ClipRect = SnappedClippingRect;// ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
+		auto ClipRect = ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 		for (int32 AreaIdx = 0; AreaIdx < ChartContentAreaCount; ++AreaIdx)
 		{
 			if (AreaGeoms[AreaIdx].GetLocalSize().X > 0.0f &&
