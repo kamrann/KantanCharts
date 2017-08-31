@@ -4,7 +4,6 @@
 #include "KantanCartesianTypes.h"
 #include "ChartConstants.h"
 #include "SlateApplication.h"
-#include "Fonts/FontMeasure.h"
 
 
 void SKantanBarChart::Construct(const FArguments& InArgs)
@@ -455,9 +454,7 @@ void SKantanBarChart::DrawCategoryAxis(
 							//MyClippingRect,
 							ESlateDrawEffect::None,
 							ChartStyle->ChartLineColor,
-							false,
-							ChartStyle->ChartLineThickness
-						);
+							false);
 
 						Points.Empty(2);
 						Points.Add(MapChartToLocal(FVector2D(BarWidth * (Idx + 1) + GapWidth * (0.5f + Idx), 0.0f), FVector2D::ZeroVector, AvailableSize));
@@ -473,9 +470,7 @@ void SKantanBarChart::DrawCategoryAxis(
 							//MyClippingRect,
 							ESlateDrawEffect::None,
 							ChartStyle->ChartLineColor,
-							false,
-							ChartStyle->ChartLineThickness
-						);
+							false);
 					}
 				}
 			}
@@ -709,9 +704,7 @@ int32 SKantanBarChart::DrawChartArea(
 				//SnappedClippingRect,
 				ESlateDrawEffect::None,
 				CatStyle.Color.CopyWithNewOpacity(ChartStyle ? ChartStyle->BarOutlineOpacity : 1.0f),
-				false,
-				GetChartStyle()->BarOutlineThickness
-				);
+				false);
 		}
 
 		if (ValueExtentsDisplay != EKantanBarValueExtents::NoValueLines)
@@ -728,9 +721,7 @@ int32 SKantanBarChart::DrawChartArea(
 				//SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false,
-				ChartStyle->ChartLineThickness
-			);
+				false);
 		}
 
 		if (ValueExtentsDisplay == EKantanBarValueExtents::ZeroAndMaxLines)
@@ -747,9 +738,7 @@ int32 SKantanBarChart::DrawChartArea(
 				//SnappedClippingRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false,
-				ChartStyle->ChartLineThickness
-			);
+				false);
 		}
 	}
 	break;

@@ -4,8 +4,6 @@
 #include "KantanCartesianDatasourceInterface.h"
 #include "KantanSeriesStyleSet.h"
 
-#include "UObject/ConstructorHelpers.h"
-
 #define LOCTEXT_NAMESPACE "KantanCharts"
 
 

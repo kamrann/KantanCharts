@@ -24,17 +24,10 @@ struct KANTANCHARTSSLATE_API FKantanBarChartStyle : public FKantanChartStyle
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
 	float BarOutlineOpacity;
 
-	/*
-	Thickness of bar outlines.
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Style")
-	float BarOutlineThickness;
-
 	FKantanBarChartStyle() :
 		FKantanChartStyle()
 		, BarOpacity(1.0f)
 		, BarOutlineOpacity(1.0f)
-		, BarOutlineThickness(1.0f)
 	{}
 
 	static const FName TypeName;
