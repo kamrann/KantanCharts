@@ -22,7 +22,7 @@ namespace KantanCharts {
 		virtual bool SetDatasource(UObject* InDatasource) = 0;
 		virtual void SetUseAutoPerSeriesStyles(bool bEnabled) = 0;
 		virtual void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles) = 0;
-		virtual void LoadSeriesStylesList(const FStringAssetReference& Styles) = 0;
+		virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) = 0;
 		virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) = 0;
 		virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) = 0;
 		virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) = 0;

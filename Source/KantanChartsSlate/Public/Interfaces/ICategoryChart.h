@@ -15,7 +15,7 @@ namespace KantanCharts {
 		virtual bool SetDatasource(UObject* InDatasource) = 0;
 		virtual void SetUseAutoPerCategoryStyles(bool bEnabled) = 0;
 		virtual void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles) = 0;
-		virtual void LoadCategoryStylesList(const FStringAssetReference& Styles) = 0;
+		virtual void LoadCategoryStylesList(const FSoftObjectPath& Styles) = 0;
 		virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) = 0;
 		virtual void ResetCategoryStyleMappings() = 0;
 	};

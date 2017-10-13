@@ -65,7 +65,7 @@ public:
 	virtual bool SetDatasource(UObject* InDatasource) override { return SKantanCartesianChart::SetDatasource(InDatasource); }
 	virtual void SetUseAutoPerSeriesStyles(bool bEnabled) override { SKantanCartesianChart::SetUseAutoPerSeriesStyles(bEnabled); }
 	virtual void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles) override { SKantanCartesianChart::SetSeriesStylesList(Styles); }
-	virtual void LoadSeriesStylesList(const FStringAssetReference& Styles) override { SKantanCartesianChart::LoadSeriesStylesList(Styles); }
+	virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) override { SKantanCartesianChart::LoadSeriesStylesList(Styles); }
 	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override { SKantanCartesianChart::SetManualSeriesStyleMappings(Mappings); }
 	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override { SKantanCartesianChart::SetPlotScale(Scaling); }
 	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override { SKantanCartesianChart::SetDataPointSize(InSize); }

@@ -71,7 +71,7 @@ public:
 	virtual bool SetDatasource(UObject* InDatasource) override { return SKantanCategoryChart::SetDatasource(InDatasource); }
 	virtual void SetUseAutoPerCategoryStyles(bool bEnabled) override { SKantanCategoryChart::SetUseAutoPerCategoryStyles(bEnabled); }
 	virtual void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles) override { SKantanCategoryChart::SetCategoryStylesList(Styles); }
-	virtual void LoadCategoryStylesList(const FStringAssetReference& Styles) override { SKantanCategoryChart::LoadCategoryStylesList(Styles); }
+	virtual void LoadCategoryStylesList(const FSoftObjectPath& Styles) override { SKantanCategoryChart::LoadCategoryStylesList(Styles); }
 	virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) override { SKantanCategoryChart::SetManualCategoryStyleMappings(Mappings); }
 	virtual void ResetCategoryStyleMappings() override { SKantanCategoryChart::ResetCategoryStyleMappings(); }
 
