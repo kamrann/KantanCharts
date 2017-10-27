@@ -39,7 +39,7 @@ public:
 	virtual bool SetDatasource(UObject* InDatasource) override;
 	virtual void SetUseAutoPerCategoryStyles(bool bEnabled) override;
 	virtual void SetCategoryStylesList(TArray< FKantanCategoryStyle > const& Styles) override;
-	virtual void LoadCategoryStylesList(const FSoftObjectPath& Styles) override;
+	virtual void LoadCategoryStylesList(const FStringAssetReference& Styles) override;
 	virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) override;
 	virtual void ResetCategoryStyleMappings() override;
 

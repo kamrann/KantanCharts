@@ -56,7 +56,7 @@ void SKantanCategoryChart::SetCategoryStylesList(TArray< FKantanCategoryStyle > 
 	CategoryStyles = Styles;
 }
 
-void SKantanCategoryChart::LoadCategoryStylesList(const FSoftObjectPath& Styles)
+void SKantanCategoryChart::LoadCategoryStylesList(const FStringAssetReference& Styles)
 {
 	auto CatStyleSet = Cast< UKantanCategoryStyleSet >(Styles.TryLoad());
 	if(CatStyleSet)

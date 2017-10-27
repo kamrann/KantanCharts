@@ -64,7 +64,7 @@ public:
 	virtual bool SetDatasource(UObject* InDatasource) override;
 	virtual void SetUseAutoPerSeriesStyles(bool bEnabled) override;
 	virtual void SetSeriesStylesList(TArray< FKantanSeriesStyle > const& Styles) override;
-	virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) override;
+	virtual void LoadSeriesStylesList(const FStringAssetReference& Styles) override;
 	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override;
 	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override;
 	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override;

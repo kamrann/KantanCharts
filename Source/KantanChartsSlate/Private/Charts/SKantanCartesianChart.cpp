@@ -148,7 +148,7 @@ void SKantanCartesianChart::SetSeriesStylesList(TArray< FKantanSeriesStyle > con
 	SeriesStyles = Styles;
 }
 
-void SKantanCartesianChart::LoadSeriesStylesList(const FSoftObjectPath& Styles)
+void SKantanCartesianChart::LoadSeriesStylesList(const FStringAssetReference& Styles)
 {
 	auto SeriesStyleSet = Cast< UKantanSeriesStyleSet >(Styles.TryLoad());
 	if(SeriesStyleSet)
