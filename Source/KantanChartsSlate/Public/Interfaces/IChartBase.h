@@ -6,7 +6,7 @@
 Inheritance via dominance - seems strange that this warning is raised even when there is only a single base that has an *implementation* of the method in question.
 Also, apparently should be suppressable in code via 'using base::method;', but this is not implemented by VC++ (as of VS2015).
 */
-#pragma warning(disable:4250)
+//#pragma warning(disable:4250)
 
 #include "ChartEvents.h"
 #include "CoreMinimal.h"
