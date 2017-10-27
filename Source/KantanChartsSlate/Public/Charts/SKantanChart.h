@@ -2,12 +2,15 @@
 
 #pragma once
 
-#include "SLeafWidget.h"
 #include "KantanChartStyle.h"
 #include "AxisUtility.h"
 #include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
 #include "IChartBase.h"
 #include "ChartEvents.h"
+
+#include "SLeafWidget.h"
+#include "DeclarativeSyntaxSupport.h"
+#include "GCObject.h"
 
 
 enum class EKantanChartLabelClass : uint8 {

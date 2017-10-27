@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
-#include "KantanCartesianDataPoint.generated.h"
+#include "KantanCartesianDatapoint.generated.h"
 
 
 USTRUCT(BlueprintType)

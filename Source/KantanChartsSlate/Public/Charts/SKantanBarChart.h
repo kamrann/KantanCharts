@@ -8,6 +8,8 @@
 #include "KantanCategoryTypes.h"
 #include "IBarChart.h"
 
+#include "SlateWidgetStyleAsset.h"
+
 
 /** A bar chart widget. */
 class KANTANCHARTSSLATE_API SKantanBarChart:

@@ -7,13 +7,15 @@
 #include "SlateRotatedRect.h"
 #include "AxisUtility.h"
 #include "ChartConstants.h"
+#include "KantanSeriesStyleSet.h"
+
 #include "SlateApplication.h"
 #include "RenderingThread.h"
 #include "Engine/Texture2D.h"
 #include "RenderUtils.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
-#include "KantanSeriesStyleSet.h"
+#include "FontMeasure.h"
 
 
 class FDataSeriesElement : public ICustomSlateElement

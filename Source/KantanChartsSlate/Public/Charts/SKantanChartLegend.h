@@ -6,6 +6,8 @@
 #include "Interfaces/IChartLegend.h"
 #include "KantanChartStyle.h"
 
+#include "DeclarativeSyntaxSupport.h"
+
 
 class SKantanCartesianChart;
 

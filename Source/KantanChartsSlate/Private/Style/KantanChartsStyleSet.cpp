@@ -2,7 +2,9 @@
 #include "KantanChartsStyleSet.h"
 #include "KantanBarChartStyle.h"
 #include "KantanCartesianChartStyle.h"
+
 #include "SlateGameResources.h"
+#include "SlateStyleRegistry.h"
 #include "IPluginManager.h"
 #include "SlateApplication.h"
 
@@ -45,15 +47,15 @@ const FVector2D Icon40x40(40.0f, 40.0f);
 
 TSharedPtr< IPlugin > GetPluginFromModuleName(const FName& ModuleName)
 {
-	auto PluginStatuses = IPluginManager::Get().QueryStatusForAllPlugins();
-	for(auto const& PluginStatus : PluginStatuses)
+	auto PluginStatuses = IPluginManager::Get().GetDiscoveredPlugins();
+	for(auto const& Plugin : PluginStatuses)
 	{
-		if(PluginStatus.Descriptor.Modules.ContainsByPredicate([&ModuleName](const FModuleDescriptor& Mod)
+		if(Plugin->GetDescriptor().Modules.ContainsByPredicate([&ModuleName](const FModuleDescriptor& Mod)
 		{
 			return Mod.Name == ModuleName;
 		}))
 		{
-			return IPluginManager::Get().FindPlugin(PluginStatus.Name);
+			return Plugin;
 		}
 	}
 
