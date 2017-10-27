@@ -1,40 +1,43 @@
 {
-  "FileVersion": 3,
-  "Version": 4,
-  "VersionName": "1.4",
-  "FriendlyName": "Kantan Charts",
-  "Description": "Simple UMG/Slate charts for debugging and basic UI.",
-  "Category": "Kantan Dev",
-  "CreatedBy": "Kantan Dev",
-  "CreatedByURL": "http://kantandev.com",
-  "DocsURL": "https://www.dropbox.com/s/y5kin62j22esby4/KantanChartsDocumentation.html?dl=0",
-  "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/89bd18db011b4bd19606db2e31020f13",
-  "SupportURL": "mailto:kantandev@gmail.com",
-  "CanContainContent": true,
-  "Modules": [
-    {
-      "Name": "KantanChartsDatasource",
-      "Type": "Runtime",
-      "LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
-    },
-    {
-      "Name": "KantanChartsSlate",
-      "Type": "Runtime",
-      "LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
-    },
-    {
-      "Name": "KantanChartsUMG",
-      "Type": "Runtime",
-      "LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
-    },
-    {
-      "Name": "KantanChartsEditor",
-      "Type": "Editor",
-      "LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Mac", "Linux" ]
-    }
-  ]
+	"FileVersion": 3,
+	"Version": 4,
+	"VersionName": "1.4",
+	"FriendlyName": "Kantan Charts",
+	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
+	"Category": "Kantan Dev",
+	"CreatedBy": "Kantan Dev",
+	"CreatedByURL": "http://kantandev.com",
+	"DocsURL": "https://kamrann.github.io/KantanCharts-Docs/",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/89bd18db011b4bd19606db2e31020f13",
+	"SupportURL": "mailto:kantandev@gmail.com",
+	"Modules": [
+		{
+			"Name": "KantanChartsDatasource",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+		},
+		{
+			"Name": "KantanChartsSlate",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+		},
+		{
+			"Name": "KantanChartsUMG",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+		},
+		{
+			"Name": "KantanChartsEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Mac", "Linux" ]
+		}
+	],
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false
 }
