@@ -31,7 +31,7 @@
 		},
 		{
 			"Name": "KantanChartsEditor",
-			"Type": "Editor",
+			"Type": "EditorNoCommandlet",
 			"LoadingPhase": "Default",
 			"WhitelistPlatforms": [ "Win64", "Mac", "Linux" ]
 		}
