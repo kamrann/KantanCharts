@@ -8,22 +8,49 @@ public class KantanChartsEditor : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(
+        PrivateDependencyModuleNames.AddRange(
+            new string[] {
+                "UnrealEd",
+                "PropertyEditor",
+                "EditorStyle",
+                "Projects",
+                "XmlParser",
+            }
+            );
+
+        PublicDependencyModuleNames.AddRange(
             new string[] {
                 "Core",
                 "CoreUObject",
                 "Engine",
-                "UnrealEd",
-                "PropertyEditor",
-                "EditorStyle",
                 "InputCore",        // Seemingly needed for SNumericEntryBox
-                "ContentBrowser",
                 "KantanChartsDatasource",
                 "KantanChartsSlate",
 				"KantanChartsUMG"
             }
-        );
+            );
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-	}
+
+        DynamicallyLoadedModuleNames.AddRange(
+            new string[]
+            {
+				// ... add any modules that your module loads dynamically here ...
+                "MainFrame",
+                "ContentBrowser",
+                "AssetTools",
+                "AssetRegistry",
+            }
+            );
+
+        PrivateIncludePathModuleNames.AddRange(
+            new string[]
+            {
+                "MainFrame",
+                "ContentBrowser",
+                "AssetTools",
+                "AssetRegistry",
+            }
+            );
+    }
 }
