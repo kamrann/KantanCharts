@@ -1,6 +1,7 @@
 // Copyright (C) 2015 Cameron Angus. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class KantanChartsEditor : ModuleRules
 {
