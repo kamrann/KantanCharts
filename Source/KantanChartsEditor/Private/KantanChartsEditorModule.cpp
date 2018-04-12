@@ -12,15 +12,11 @@
 #include "ClassIconFinder.h"
 #include "KantanChartsStyleSet.h"
 
-#include "KCIKantanPluginInstallation.h"
-
 //
 #include "KantanSimpleCategoryDatasource.h"
 #include "KantanSimpleCartesianDatasource.h"
 //
 
-
-const FString PluginName = TEXT("KantanCharts");
 
 class FKantanChartsEditorModule : public FDefaultModuleImpl
 {
@@ -89,14 +85,10 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 
 		// Chart preview data
 		CreatePreviewDatasources();
-
-		KCKantanInstallation::InitializeKantanPluginInstallation(PluginName, false);
 	}
 
 	virtual void ShutdownModule() override
 	{
-		KCKantanInstallation::ShutdownKantanPluginInstallation();
-
 		// Unregister customizations
 		if (FModuleManager::Get().IsModuleLoaded("PropertyEditor"))
 		{
