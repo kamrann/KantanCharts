@@ -57,6 +57,9 @@ private:
 	TUniquePtr< class FSimpleRenderTarget > RenderTarget;
 
 	FRenderData RenderData;
+
+public:
+	FSlateBrush TempPointBrush;
 };
 
 
@@ -647,7 +650,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 
 		// Inflate slightly to avoid clipping plot lines lying exactly along the edges of the plot area.
 		// @NOTE: Bit random, but apparently 1.0 on the vertical is not sufficient to stop this.
-		const FSlateRect DataClipRect = PlotSpaceGeometry.GetRenderBoundingRect(FMargin(0.5f, 2.0f));
+		const FSlateRect DataClipRect = SnappedClippingRect.ExtendBy(FMargin(0.5f, 2.0f));
+			//PlotSpaceGeometry.GetRenderBoundingRect(FMargin(0.5f, 2.0f));
 		OutDrawElements.PushClip(FSlateClippingZone(DataClipRect));
 
 		auto ChartStyle = GetChartStyle();
@@ -784,16 +788,20 @@ void SKantanCartesianChart::GetLinePointsToDraw(
 
 int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const
 {
+	const bool bCustomPoints = false;
+
 	++LayerId;
 
 	const EKantanDataPointSize::Type DP_SizeType = DataPointSize;
 	const int32 DP_PixelSize = KantanDataPointPixelSizes[DP_SizeType];
 
 	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
-	auto const Transform = Concatenate(
+	auto const Transform = bCustomPoints ? Concatenate(
 		CartesianToPlotXform,
 		PlotSpaceGeometry.GetAccumulatedRenderTransform()
-		);
+		) :
+		CartesianToPlotXform
+	;
 	auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
 	auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
 
@@ -851,17 +859,45 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 	auto ChartStyle = GetChartStyle();
 
 	auto& Element = SeriesElements.FindChecked(SeriesId);
-	if (Element->BeginRenderingCanvas(
-		CanvasRect,
-		ClippingRect,
+
+	//
+	Element->TempPointBrush = FSlateImageBrush(
 		SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr,
-		UV0,
-		UV1,
-		SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
 		FVector2D(DP_PixelSize, DP_PixelSize),
-		MoveTemp(DrawPoints)))
+		FLinearColor::White
+	);
+	Element->TempPointBrush.SetUVRegion(FBox2D(UV0, UV1));
+	//
+
+	if (bCustomPoints)
 	{
-		FSlateDrawElement::MakeCustom(OutDrawElements, LayerId, Element);
+		if (Element->BeginRenderingCanvas(
+			CanvasRect,
+			ClippingRect,
+			SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr,
+			UV0,
+			UV1,
+			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
+			FVector2D(DP_PixelSize, DP_PixelSize),
+			MoveTemp(DrawPoints)
+		))
+		{
+			FSlateDrawElement::MakeCustom(OutDrawElements, LayerId, Element);
+		}
+	}
+	else
+	{
+		for (const auto& Pnt : DrawPoints)
+		{
+			FSlateDrawElement::MakeBox(
+				OutDrawElements,
+				LayerId,
+				PlotSpaceGeometry.MakeChild(FVector2D(DP_PixelSize, DP_PixelSize), FSlateLayoutTransform(Pnt)).ToPaintGeometry(),
+				&Element->TempPointBrush,
+				ESlateDrawEffect::None,
+				SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity)
+			);
+		}
 	}
 
 	return LayerId;
@@ -1407,10 +1443,10 @@ void FDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmdList, 
 {
 	FIntRect ViewRect = RenderTarget->GetViewRect();
 	// Clip the canvas to avoid having to set UV values
+	// @test: FIntRect ClippingRect = FIntRect(FIntPoint(0, 0), FIntPoint(2, 2));
 	FIntRect ClippingRect = RenderTarget->GetClippingRect();
 
-//	auto RenderTransform = RenderTarget->GetRenderTransform();
-
+	// @TODO: The scissor rect appears to be ignored...
 	RHICmdList.SetScissorRect(
 		true,
 		ClippingRect.Min.X,
@@ -1429,22 +1465,7 @@ void FDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmdList, 
 			Canvas.SetAllowedModes(0);
 			bool bTestIsScaled = Canvas.IsScaledToRenderTarget();
 			Canvas.SetScaledToRenderTarget(false);
-			//Canvas.SetRenderTargetRect(//RenderTarget->GetViewRect());
-
-/*			auto RenderTransform2D = RenderTarget->GetRenderTransform();
-			auto RotationScale2D = RenderTransform2D.GetMatrix();
-			auto Translation2D = RenderTransform2D.GetTranslation();
-			FMatrix RenderTransformMatrix = FMatrix::Identity;
-			RotationScale2D.GetMatrix(
-				RenderTransformMatrix.M[0][0],
-				RenderTransformMatrix.M[0][1],
-				RenderTransformMatrix.M[1][0],
-				RenderTransformMatrix.M[1][1]
-				);
-			RenderTransformMatrix.M[3][0] = Translation2D.X;
-			RenderTransformMatrix.M[3][1] = Translation2D.Y;
-			Canvas.PushRelativeTransform(RenderTransformMatrix);
-*/
+			
 			FCanvasTileItem Tile(
 				FVector2D(),
 				RenderData.TextureResource,
@@ -1458,8 +1479,6 @@ void FDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmdList, 
 				Tile.Position = Pnt;
 				Canvas.DrawItem(Tile);
 			}
-
-//			Canvas.PopTransform();
 		}
 		Canvas.Flush_RenderThread(RHICmdList, true);
 	}
