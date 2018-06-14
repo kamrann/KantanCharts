@@ -743,7 +743,8 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 		MakeAreaGeometries(ContentGeometry, AreaGeoms);
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		auto ClipRect = InsetGeometry.GetLayoutBoundingRect();
+		auto ClipRect = SnappedClippingRect;
+		//InsetGeometry.GetLayoutBoundingRect();
 			//SnappedClippingRect;// ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 		for (int32 AreaIdx = 0; AreaIdx < ChartContentAreaCount; ++AreaIdx)
 		{
