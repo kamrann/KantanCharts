@@ -13,10 +13,10 @@ class FSlateWindowElementList;
 class IDataSeriesElement : public TSharedFromThis< IDataSeriesElement, ESPMode::ThreadSafe >
 {
 public:
-	virtual FSlateRenderTransform GetPointTransform(const FSlateRenderTransform& CartesianToPlotXform, const FGeometry& PlotSpaceGeometry) const = 0;
 	virtual void RenderSeries(
 		const FGeometry& PlotSpaceGeometry,
 		const FSlateRect& ClipRect,
+		const FSlateRenderTransform& CartesianToPlotXform,
 		TArray< FVector2D >&& Points,
 		int32 LayerId,
 		FSlateWindowElementList& OutDrawElements
