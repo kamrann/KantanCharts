@@ -1,4 +1,4 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SKantanBarChart.h"
 #include "KantanCartesianTypes.h"
