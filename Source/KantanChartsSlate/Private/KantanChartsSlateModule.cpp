@@ -9,13 +9,14 @@
 
 namespace KantanCharts {
 
-	// @NOTE: Retaining legacy drawing for now, as it's slightly more performant.
+	// @NOTE: New drawing mode fixes clipping issue, but is actually slightly less performant with large datasets.
+	// Look at SMeshWidget if want to find a more optimal approach that (presumably) would also be properly clipped.
 	// Can be switched by adding the following to a project's [Default]Game.ini:
 	/*
 	[KantanCharts]
-	CustomPointDrawing=false
+	CustomPointDrawing=true/false
 	*/
-	bool FKantanChartsSlateModule::bCustomSeriesDrawing = true;
+	bool FKantanChartsSlateModule::bCustomSeriesDrawing = false;
 
 	FKantanChartsSlateModule::FKantanChartsSlateModule(): CustomDrawingCmd(
 		TEXT("KantanCharts.CustomPoints"), TEXT("Toggle custom drawing of datapoints (legacy implementation)"), FConsoleCommandWithArgsDelegate::CreateStatic(&FKantanChartsSlateModule::OnCustomDrawingCommand)
