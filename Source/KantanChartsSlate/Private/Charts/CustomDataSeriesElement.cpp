@@ -25,10 +25,10 @@ public:
 		RenderData()
 	{}
 
-	virtual FSlateRenderTransform GetPointTransform(const FSlateRenderTransform& CartesianToPlotXform, const FGeometry& PlotSpaceGeometry) const override;
 	virtual void RenderSeries(
 		const FGeometry& PlotSpaceGeometry,
 		const FSlateRect& ClipRect,
+		const FSlateRenderTransform& CartesianToPlotXform,
 		TArray< FVector2D >&& Points,
 		int32 LayerId,
 		FSlateWindowElementList& OutDrawElements
@@ -63,6 +63,7 @@ private:
 	bool BeginRenderingCanvas(
 		const FIntRect& InCanvasRect,
 		const FIntRect& InClippingRect,
+		const FSlateRenderTransform& InTransform,
 		UTexture2D* InTexture, 
 		FVector2D InUV_0, 
 		FVector2D InUV_1, 
@@ -83,10 +84,24 @@ private:
 };
 
 
-bool FCustomDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect, const FIntRect& InClippingRect, UTexture2D* InTexture, FVector2D InUV_0, FVector2D InUV_1, FLinearColor InColor, FVector2D InPointSize, TArray< FVector2D >&& InPoints)
+bool FCustomDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect, const FIntRect& InClippingRect, const FSlateRenderTransform& InTransform, UTexture2D* InTexture, FVector2D InUV_0, FVector2D InUV_1, FLinearColor InColor, FVector2D InPointSize, TArray< FVector2D >&& InPoints)
 {
 	if (InCanvasRect.Size().X > 0 && InCanvasRect.Size().Y > 0 && InClippingRect.Size().X > 0 && InClippingRect.Size().Y > 0 && InPoints.Num() > 0)
 	{
+		for (auto& Pnt : InPoints)
+		{
+			Pnt = InTransform.TransformPoint(Pnt);
+
+			// Offset half of the tile size, so the point image is drawn centered on its coordinates
+			Pnt -= InPointSize * 0.5f;
+
+			// @NOTE: This seems to help avoid an infrequent issue with the tile being stretched/distorted slightly, however believe have still seen one distortion after adding this...
+			Pnt = FVector2D(
+				FMath::TruncToFloat(Pnt.X),
+				FMath::TruncToFloat(Pnt.Y)
+			);
+		}
+
 		/**
 		* Struct to contain all info that needs to be passed to the render thread
 		*/
@@ -176,17 +191,10 @@ void FCustomDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmd
 	RHICmdList.SetScissorRect(false, 0, 0, 0, 0);
 }
 
-FSlateRenderTransform FCustomDataSeriesElement::GetPointTransform(const FSlateRenderTransform& CartesianToPlotXform, const FGeometry& PlotSpaceGeometry) const
-{
-	return Concatenate(
-		CartesianToPlotXform,
-		PlotSpaceGeometry.GetAccumulatedRenderTransform()
-	);
-}
-
 void FCustomDataSeriesElement::RenderSeries(
 	const FGeometry& PlotSpaceGeometry,
 	const FSlateRect& ClipRect,
+	const FSlateRenderTransform& CartesianToPlotXform,
 	TArray< FVector2D >&& Points,
 	int32 LayerId,
 	FSlateWindowElementList& OutDrawElements
@@ -207,14 +215,19 @@ void FCustomDataSeriesElement::RenderSeries(
 		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Bottom))
 	);
 
+	const auto Transform = Concatenate(
+		CartesianToPlotXform,
+		PlotSpaceGeometry.GetAccumulatedRenderTransform()
+	);
 	if (BeginRenderingCanvas(
 		CanvasRect,
 		ClippingRect,
-		PointTexture.Get(),//SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr,
+		Transform,
+		PointTexture.Get(),
 		PointUVs.Min,
 		PointUVs.Max,
-		Color,//SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
-		PointSize,//FVector2D(DP_PixelSize, DP_PixelSize),
+		Color,
+		PointSize,
 		MoveTemp(Points)
 	))
 	{

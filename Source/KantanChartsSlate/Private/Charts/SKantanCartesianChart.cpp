@@ -8,6 +8,7 @@
 #include "AxisUtility.h"
 #include "ChartConstants.h"
 #include "KantanSeriesStyleSet.h"
+#include "KantanChartsSlateModule.h"
 
 #include "SlateApplication.h"
 #include "RenderingThread.h"
@@ -78,8 +79,8 @@ bool SKantanCartesianChart::SetDatasource(UObject* InDatasource)
 			DataSnapshot.Clear();
 		}
 
-		UpdateDrawingElementsFromDatasource();
 		UpdateSeriesConfigFromDatasource();
+		UpdateDrawingElementsFromDatasource();
 	}
 
 	return true;
@@ -326,8 +327,8 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 		{
 			if(SeriesElements.Contains(SeriesId) == false)
 			{
-				const bool bCustomPoints = false;
-
+				const bool bCustomPoints = KantanCharts::FKantanChartsSlateModule::bCustomSeriesDrawing;
+				
 				// Series not in map
 				// Create new slate rendering element and add to map
 
@@ -389,10 +390,10 @@ void SKantanCartesianChart::UpdateSeriesConfigFromDatasource()
 	SeriesConfig.GenerateKeyArray(Unused);
 
 	// Loop through all series in the datasource
-	auto NumSeries = GetNumSeries();
+	const auto NumSeries = GetNumSeries();
 	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
 	{
-		auto SeriesId = GetSeriesId(Idx);
+		const auto SeriesId = GetSeriesId(Idx);
 		if (SeriesId.IsNone() == false)
 		{
 			auto Cfg = SeriesConfig.Find(SeriesId);
@@ -732,8 +733,8 @@ void SKantanCartesianChart::OnActiveTick(double InCurrentTime, float InDeltaTime
 			PlotScale = OnUpdatePlotScaleDelegate.Execute(DataSnapshot, EnabledIndices);
 		}
 
-		UpdateDrawingElementsFromDatasource();
 		UpdateSeriesConfigFromDatasource();
+		UpdateDrawingElementsFromDatasource();
 	}
 }
 
@@ -804,28 +805,14 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 	const EKantanDataPointSize::Type DP_SizeType = DataPointSize;
 	const int32 DP_PixelSize = KantanDataPointPixelSizes[DP_SizeType];
 
-	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
-	auto const Transform = Element->GetPointTransform(CartesianToPlotXform, PlotSpaceGeometry);
 	const auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
 	const auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
 
 	TArray< FVector2D > DrawPoints;
 	GetPointsToDraw(Points, RangeX, RangeY, DrawPoints);
-	for (auto& Pnt : DrawPoints)
-	{
-		Pnt = Transform.TransformPoint(Pnt);
+	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
 
-		// Offset half of the tile size, so the point image is drawn centered on its coordinates
-		Pnt -= FVector2D(DP_PixelSize * 0.5f, DP_PixelSize * 0.5f);
-
-		// @NOTE: This seems to help avoid an infrequent issue with the tile being stretched/distorted slightly, however believe have still seen one distortion after adding this...
-		Pnt = FVector2D(
-			FMath::TruncToFloat(Pnt.X),
-			FMath::TruncToFloat(Pnt.Y)
-			);
-	}
-
-	Element->RenderSeries(PlotSpaceGeometry, ClipRect, MoveTemp(DrawPoints), LayerId, OutDrawElements);
+	Element->RenderSeries(PlotSpaceGeometry, ClipRect, CartesianToPlotXform, MoveTemp(DrawPoints), LayerId, OutDrawElements);
 
 	return LayerId;
 }
