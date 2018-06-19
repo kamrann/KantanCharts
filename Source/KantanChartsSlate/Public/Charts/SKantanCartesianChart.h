@@ -1,4 +1,4 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #pragma once
 
@@ -136,6 +136,10 @@ protected:
 		});
 	}
 
+	typedef TSharedPtr< class IDataSeriesElement, ESPMode::ThreadSafe > FSeriesElemPtr;
+
+	void DiscardDrawingElements(TArray< FSeriesElemPtr >& Elements);
+	void DiscardAllDrawingElements();
 	void UpdateDrawingElementsFromDatasource();
 	void UpdateSeriesConfigFromDatasource();
 	FName GetNextSeriesStyle() const;
@@ -188,20 +192,20 @@ protected:
 	FCartesianAxisConfig YAxisCfg;
 	FMargin AxisTitlePadding;
 	FKantanCartesianPlotScale PlotScale;
-	EKantanDataPointSize::Type DataPointSize;
-	bool bAntialiasDataLines;
+	EKantanDataPointSize::Type DataPointSize = EKantanDataPointSize::Medium;
+	bool bAntialiasDataLines = false;
 
 	FOnUpdatePlotScale OnUpdatePlotScaleDelegate;
 
 	// Data
-	UObject* Datasource;
+	UObject* Datasource = nullptr;
 	FCartesianDataSnapshot DataSnapshot;
 
 	// Chart style
-	const FKantanCartesianChartStyle* Style;
+	const FKantanCartesianChartStyle* Style = nullptr;
 
 	// Series style
-	bool bAutoPerSeriesStyles;
+	bool bAutoPerSeriesStyles = true;
 	TArray< FKantanSeriesStyle > SeriesStyles;
 
 	struct FSeriesConfig
@@ -220,9 +224,6 @@ protected:
 	};
 
 	TMap< FName, FSeriesConfig > SeriesConfig;
-
-	// Implementation
-	typedef TSharedPtr< class FDataSeriesElement, ESPMode::ThreadSafe > FSeriesElemPtr;
 	TMap< FName, FSeriesElemPtr > SeriesElements;
 
 	mutable TOptional< AxisUtil::FAxisMarkerData > XAxisMarkers;
