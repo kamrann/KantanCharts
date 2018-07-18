@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "Widgets/SLeafWidget.h"
 #include "Interfaces/IChartLegend.h"
-#include "KantanChartStyle.h"
+#include "Style/KantanChartStyle.h"
 
+#include "Widgets/SLeafWidget.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
 
 

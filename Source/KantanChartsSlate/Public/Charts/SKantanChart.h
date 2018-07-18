@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "IChartBase.h"
+#include "Interfaces/IChartBase.h"
 #include "AxisUtility.h"
 #include "ChartEvents.h"
 #include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts

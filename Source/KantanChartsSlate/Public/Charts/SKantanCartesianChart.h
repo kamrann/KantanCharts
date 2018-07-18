@@ -7,12 +7,12 @@
 #include "CartesianAxisConfig.h"
 #include "KantanCartesianDatapoint.h"
 #include "CartesianData.h"
-#include "KantanSeriesStyle.h"
-#include "KantanCartesianChartStyle.h"
-#include "KantanChartsStyleSet.h"
+#include "Style/KantanSeriesStyle.h"
+#include "Style/KantanCartesianChartStyle.h"
+#include "Style/KantanChartsStyleSet.h"
 #include "FloatRoundingLevel.h"
 #include "AxisUtility.h"
-#include "ICartesianChart.h"
+#include "Interfaces/ICartesianChart.h"
 
 #include "Styling/SlateWidgetStyleAsset.h"
 

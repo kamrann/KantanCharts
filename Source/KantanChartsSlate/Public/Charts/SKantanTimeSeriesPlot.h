@@ -3,8 +3,8 @@
 #pragma once
 
 #include "SKantanCartesianChart.h"
-#include "KantanChartsStyleSet.h"
-#include "ITimeSeriesChart.h"
+#include "Style/KantanChartsStyleSet.h"
+#include "Interfaces/ITimeSeriesChart.h"
 
 
 /** A widget class implementing a cartesian chart specialized for plotting time-varying series. */
