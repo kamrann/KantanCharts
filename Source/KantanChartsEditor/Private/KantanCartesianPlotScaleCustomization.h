@@ -2,9 +2,14 @@
 
 #pragma once
 
-#include "PropertyEditing.h"
-#include "PropertyCustomizationHelpers.h"
 #include "KantanCartesianTypes.h"
+
+#include "IPropertyTypeCustomization.h"
+#include "Layout/Visibility.h"
+#include "PropertyHandle.h"
+
+
+class SWidget;
 
 
 class FKantanCartesianPlotScaleCustomization: public IPropertyTypeCustomization

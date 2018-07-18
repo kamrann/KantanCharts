@@ -1,8 +1,8 @@
 #pragma once
 
 #include "IKantanChartsSlateModule.h"
-#include "UniquePtr.h"
-#include "IConsoleManager.h"
+#include "Templates/UniquePtr.h"
+#include "HAL/IConsoleManager.h"
 
 
 namespace KantanCharts {

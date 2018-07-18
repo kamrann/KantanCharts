@@ -1,8 +1,11 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanCategoryChartCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCategoryChart.h"
+
+#include "DetailLayoutBuilder.h"
+#include "DetailCategoryBuilder.h"
+#include "IDetailGroup.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 

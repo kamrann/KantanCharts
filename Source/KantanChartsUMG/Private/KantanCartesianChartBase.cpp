@@ -1,8 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanCartesianChartBase.h"
-#include "KantanCartesianDatasourceInterface.h"
-#include "KantanSeriesStyleSet.h"
+#include "Style/KantanSeriesStyleSet.h"
 
 #include "UObject/ConstructorHelpers.h"
 

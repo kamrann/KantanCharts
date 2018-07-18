@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Widget.h"
-#include "SKantanChartLegend.h"
+#include "Components/Widget.h"
+#include "Charts/SKantanChartLegend.h"
 #include "KantanChartLegend.generated.h"
 
 

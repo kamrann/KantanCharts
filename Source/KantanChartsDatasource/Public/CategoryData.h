@@ -4,7 +4,7 @@
 
 #include "IdBasedList.h"
 #include "KantanCategoryDatasourceInterface.h"
-#include "UnrealType.h"
+#include "UObject/UnrealType.h"
 
 
 struct FKantanCategoryData

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "IDetailCustomization.h"
-#include "KantanCategoryChart.h"
 
 
 class FKantanCategoryChartCustomization: public IDetailCustomization

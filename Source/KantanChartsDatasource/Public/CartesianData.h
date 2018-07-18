@@ -5,7 +5,7 @@
 #include "IdBasedList.h"
 #include "KantanCartesianDatapoint.h"
 #include "KantanCartesianDatasourceInterface.h"
-#include "UnrealType.h"
+#include "UObject/UnrealType.h"
 #include "Math/Interval.h"
 
 

@@ -1,8 +1,13 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "CartesianAxisConfigCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCartesianTypes.h"
+#include "Charts/CartesianAxisConfig.h"
+
+#include "PropertyHandle.h"
+#include "PropertyCustomizationHelpers.h"
+#include "IDetailChildrenBuilder.h"
+#include "Widgets/SBoxPanel.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 
@@ -12,7 +17,7 @@ TSharedRef< IPropertyTypeCustomization > FCartesianAxisInstanceConfigCustomizati
 	return MakeShareable(new FCartesianAxisInstanceConfigCustomization);
 }
 
-void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	static const FName EnabledPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisInstanceConfig, bEnabled);
 	static const FName TitlePropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisInstanceConfig, bShowTitle);
@@ -85,7 +90,7 @@ void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<class
 		];
 }
 
-void FCartesianAxisInstanceConfigCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisInstanceConfigCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	
 }
@@ -96,7 +101,7 @@ TSharedRef< IPropertyTypeCustomization > FCartesianAxisConfigCustomization::Make
 	return MakeShareable(new FCartesianAxisConfigCustomization);
 }
 
-void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
@@ -117,7 +122,7 @@ void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<class IProper
 		;
 }
 
-void FCartesianAxisConfigCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisConfigCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	uint32 NumChildren = 0;
 	StructPropertyHandle->GetNumChildren(NumChildren);
@@ -175,7 +180,7 @@ TSharedRef< IPropertyTypeCustomization > FCartesianRangeBoundCustomization::Make
 	return MakeShareable(new FCartesianRangeBoundCustomization);
 }
 
-void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
@@ -221,7 +226,7 @@ void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<class IProper
 	;
 }
 
-void FCartesianRangeBoundCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianRangeBoundCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	
 }

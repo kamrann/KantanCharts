@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "UnrealEd.h"
+#include "Factories/Factory.h"
 #include "KantanSimpleCartesianDatasourceFactory.generated.h"
 
 

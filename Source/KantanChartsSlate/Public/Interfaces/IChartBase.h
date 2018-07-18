@@ -8,7 +8,7 @@ Also, apparently should be suppressable in code via 'using base::method;', but t
 */
 //#pragma warning(disable:4250)
 
-#include "ChartEvents.h"
+#include "Charts/ChartEvents.h"
 #include "CoreMinimal.h"
 
 

@@ -1,7 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
-#include "KantanBarChartStyle.h"
-#include "KantanCartesianChartStyle.h"
+#include "Style/KantanBarChartStyle.h"
+#include "Style/KantanCartesianChartStyle.h"
 
 
 const FName FKantanBarChartStyle::TypeName(TEXT("FKantanBarChartStyle"));

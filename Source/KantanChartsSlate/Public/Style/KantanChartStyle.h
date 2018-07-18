@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "SlateWidgetStyle.h"
-#include "SlateBrush.h"
-#include "SlateFontInfo.h"
+#include "Styling/SlateWidgetStyle.h"
+#include "Styling/SlateBrush.h"
+#include "Fonts/SlateFontInfo.h"
 #include "KantanChartStyle.generated.h"
 
 

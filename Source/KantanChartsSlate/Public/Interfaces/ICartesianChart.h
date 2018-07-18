@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "IChartBase.h"
+#include "Interfaces/IChartBase.h"
 #include "KantanCartesianTypes.h"
 
 

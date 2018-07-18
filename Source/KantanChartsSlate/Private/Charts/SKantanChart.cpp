@@ -1,12 +1,12 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
-#include "SKantanChart.h"
+#include "Charts/SKantanChart.h"
 #include "KantanCartesianTypes.h"	// @TODO: refactor to avoid cartesian specific includes
 
-#include "SlateRotatedRect.h"
-#include "SlateColorBrush.h"
-#include "SlateApplication.h"
-#include "FontMeasure.h"
+#include "Layout/SlateRotatedRect.h"
+#include "Brushes/SlateColorBrush.h"
+#include "Framework/Application/SlateApplication.h"
+#include "Fonts/FontMeasure.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 
@@ -668,7 +668,7 @@ int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 			Inverse(RenderXform),
 			RotatedGeometry.GetAccumulatedLayoutTransform()
 			),
-			FSlateRotatedRect2(IntersectedClipRect)
+			FSlateRotatedRect(IntersectedClipRect)
 			).ToBoundingRect();
 		auto FinalClipRect = TransformedClipRect;
 		FSlateDrawElement::MakeText(

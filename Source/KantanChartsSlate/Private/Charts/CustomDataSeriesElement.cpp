@@ -3,12 +3,12 @@
 #include "IDataSeriesElement.h"
 #include "SimpleRenderTarget.h"
 
-#include "RenderingCommon.h"
+#include "Rendering/RenderingCommon.h"
 #include "Engine/Texture2D.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
-#include "Geometry.h"
-#include "DrawElements.h"
+#include "Layout/Geometry.h"
+#include "Rendering/DrawElements.h"
 
 
 class FTexture;

@@ -1,15 +1,15 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "DetailHelpers.h"
-#include "UnrealType.h"
-#include "Interface.h"
+#include "UObject/UnrealType.h"
+#include "UObject/Interface.h"
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
 #include "IContentBrowserSingleton.h"
 
-#include "SBox.h"
-#include "SComboButton.h"
-#include "STextBlock.h"
+#include "Widgets/Layout/SBox.h"
+#include "Widgets/Input/SComboButton.h"
+#include "Widgets/Text/STextBlock.h"
 
 
 namespace DetailHelpers {

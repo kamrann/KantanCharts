@@ -1,8 +1,8 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
-#include "SKantanCategoryChart.h"
+#include "Charts/SKantanCategoryChart.h"
 #include "KantanCategoryDatasourceInterface.h"
-#include "KantanCategoryStyleSet.h"
+#include "Style/KantanCategoryStyleSet.h"
 
 
 void SKantanCategoryChart::Construct(const FArguments& InArgs)

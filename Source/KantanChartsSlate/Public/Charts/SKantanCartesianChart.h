@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include "SKantanChart.h"
+#include "Charts/SKantanChart.h"
 #include "KantanCartesianTypes.h"
-#include "CartesianAxisConfig.h"
+#include "Charts/CartesianAxisConfig.h"
 #include "KantanCartesianDatapoint.h"
 #include "CartesianData.h"
-#include "KantanSeriesStyle.h"
-#include "KantanCartesianChartStyle.h"
-#include "KantanChartsStyleSet.h"
+#include "Style/KantanSeriesStyle.h"
+#include "Style/KantanCartesianChartStyle.h"
+#include "Style/KantanChartsStyleSet.h"
 #include "FloatRoundingLevel.h"
 #include "AxisUtility.h"
-#include "ICartesianChart.h"
+#include "Interfaces/ICartesianChart.h"
 
-#include "SlateWidgetStyleAsset.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 
 /** A widget class implementing a cartesian chart. */

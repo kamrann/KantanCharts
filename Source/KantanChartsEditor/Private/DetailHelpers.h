@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "SWidget.h"
+#include "Widgets/SWidget.h"
 #include "Templates/SharedPointer.h"
 #include "Templates/SubclassOf.h"
 

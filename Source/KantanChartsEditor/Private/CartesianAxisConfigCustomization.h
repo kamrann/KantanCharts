@@ -2,9 +2,7 @@
 
 #pragma once
 
-#include "PropertyEditing.h"
-#include "PropertyCustomizationHelpers.h"
-#include "CartesianAxisConfig.h"
+#include "IPropertyTypeCustomization.h"
 
 
 class FCartesianAxisInstanceConfigCustomization: public IPropertyTypeCustomization
@@ -16,9 +14,6 @@ public:
 	// End IPropertyTypeCustomization interface
 
 	static TSharedRef<IPropertyTypeCustomization> MakeInstance();
-
-protected:
-//	TSharedPtr< IPropertyHandle > ScalingTypeProp;
 };
 
 

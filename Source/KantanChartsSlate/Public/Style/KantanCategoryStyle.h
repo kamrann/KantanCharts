@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "UObject/ObjectMacros.h"
 #include "KantanCategoryStyle.generated.h"
 
 
@@ -23,16 +24,10 @@ struct FKantanCategoryStyle
 	UPROPERTY(EditAnywhere, Category = "Style")
 	FLinearColor Color;
 
-//	UPROPERTY(EditAnywhere, Category = "Style")
-//	FSlateBrush Brush;
-
 	FKantanCategoryStyle() :
 		CategoryStyleId(NAME_None)
 		, Color(FLinearColor::White)
-//		, Brush()
-	{
-//		Brush.DrawAs = ESlateBrushDrawType::NoDrawType;
-	}
+	{}
 };
 
 

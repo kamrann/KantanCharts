@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "SKantanChart.h"
+#include "Charts/SKantanChart.h"
 #include "CategoryData.h"
-#include "KantanCategoryStyle.h"
-#include "ICategoryChart.h"
+#include "Style/KantanCategoryStyle.h"
+#include "Interfaces/ICategoryChart.h"
 
 
 /** A base class for category chart widgets. */

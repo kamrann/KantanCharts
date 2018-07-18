@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
-#include "ScriptMacros.h"
+#include "UObject/ScriptMacros.h"
 #include "UObject/Interface.h"
 #include "KantanCategoryDatasourceInterface.generated.h"
 

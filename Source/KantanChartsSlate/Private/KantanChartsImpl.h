@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IKantanChartsInterface.h"
+#include "Interfaces/IKantanChartsInterface.h"
 
 
 namespace KantanCharts {

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "ICategoryChart.h"
+#include "Interfaces/ICategoryChart.h"
 #include "KantanCategoryTypes.h"
 
 

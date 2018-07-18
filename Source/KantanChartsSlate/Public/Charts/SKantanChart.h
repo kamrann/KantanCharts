@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include "KantanChartStyle.h"
+#include "Interfaces/IChartBase.h"
 #include "AxisUtility.h"
-#include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
-#include "IChartBase.h"
-#include "ChartEvents.h"
+#include "Charts/ChartEvents.h"
+#include "Charts/CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
+#include "Style/KantanChartStyle.h"
 
-#include "SLeafWidget.h"
-#include "DeclarativeSyntaxSupport.h"
-#include "GCObject.h"
+#include "Widgets/SLeafWidget.h"
+#include "Widgets/DeclarativeSyntaxSupport.h"
+#include "UObject/GCObject.h"
 
 
 enum class EKantanChartLabelClass : uint8 {
@@ -44,7 +44,7 @@ public:
 
 	/**
 	 * Construct the widget
-	 * 
+	 *
 	 * @param InArgs   A declaration from which to construct the widget
 	 */
 	void Construct(const FArguments& InArgs);
@@ -167,4 +167,3 @@ protected:
 
 	KantanCharts::FOnInteractionMouseDown OnChartMouseDown;
 };
-

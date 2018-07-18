@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "SKantanCategoryChart.h"
-#include "KantanBarChartStyle.h"
-#include "KantanChartsStyleSet.h"
+#include "Charts/SKantanCategoryChart.h"
+#include "Style/KantanBarChartStyle.h"
+#include "Style/KantanChartsStyleSet.h"
 #include "KantanCategoryTypes.h"
-#include "IBarChart.h"
+#include "Interfaces/IBarChart.h"
 
-#include "SlateWidgetStyleAsset.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 
 /** A bar chart widget. */

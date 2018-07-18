@@ -1,9 +1,13 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanTimeSeriesPlotCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanTimeSeriesPlotBase.h"
 #include "DetailHelpers.h"
+
+#include "DetailLayoutBuilder.h"
+#include "DetailCategoryBuilder.h"
+#include "IDetailGroup.h"
+#include "DetailWidgetRow.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 

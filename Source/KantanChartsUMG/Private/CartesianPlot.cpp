@@ -1,7 +1,6 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "CartesianPlot.h"
-#include "KantanCartesianDatasourceInterface.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 

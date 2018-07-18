@@ -1,8 +1,11 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SeriesStyleManualMappingCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCartesianChartBase.h"
+#include "Style/KantanSeriesStyle.h"
+
+#include "IDetailChildrenBuilder.h"
+#include "DetailWidgetRow.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 
@@ -12,7 +15,7 @@ TSharedRef< IPropertyTypeCustomization > FSeriesStyleManualMappingCustomization:
 	return MakeShareable(new FSeriesStyleManualMappingCustomization);
 }
 
-void FSeriesStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FSeriesStyleManualMappingCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	HeaderRow.NameContent()
 		[
@@ -20,7 +23,7 @@ void FSeriesStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class IP
 		];
 }
 
-void FSeriesStyleManualMappingCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FSeriesStyleManualMappingCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr< IPropertyHandle > PropCatId = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FSeriesStyleManualMapping, SeriesId));
 	StructBuilder.AddProperty(PropCatId.ToSharedRef());
