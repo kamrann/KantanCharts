@@ -3,10 +3,10 @@
 #include "SKantanChart.h"
 #include "KantanCartesianTypes.h"	// @TODO: refactor to avoid cartesian specific includes
 
-#include "SlateRotatedRect.h"
-#include "SlateColorBrush.h"
-#include "SlateApplication.h"
-#include "FontMeasure.h"
+#include "Layout/SlateRotatedRect.h"
+#include "Brushes/SlateColorBrush.h"
+#include "Framework/Application/SlateApplication.h"
+#include "Fonts/FontMeasure.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "SlateRect.h"
+#include "Layout/SlateRect.h"
 
 /*
 @TODO:

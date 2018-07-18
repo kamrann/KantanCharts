@@ -14,7 +14,7 @@
 #include "AxisUtility.h"
 #include "ICartesianChart.h"
 
-#include "SlateWidgetStyleAsset.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 
 /** A widget class implementing a cartesian chart. */

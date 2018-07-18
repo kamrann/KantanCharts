@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "SLeafWidget.h"
+#include "Widgets/SLeafWidget.h"
 #include "Interfaces/IChartLegend.h"
 #include "KantanChartStyle.h"
 
-#include "DeclarativeSyntaxSupport.h"
+#include "Widgets/DeclarativeSyntaxSupport.h"
 
 
 class SKantanCartesianChart;

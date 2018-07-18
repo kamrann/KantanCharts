@@ -4,8 +4,8 @@
 #include "KantanCategoryDatasourceInterface.h"
 #include "KantanCategoryStyleSet.h"
 
-#include "Package.h"
-#include "ConstructorHelpers.h"
+#include "UObject/Package.h"
+#include "UObject/ConstructorHelpers.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 

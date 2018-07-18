@@ -3,10 +3,10 @@
 #include "KantanBarChartStyle.h"
 #include "KantanCartesianChartStyle.h"
 
-#include "SlateGameResources.h"
-#include "SlateStyleRegistry.h"
-#include "IPluginManager.h"
-#include "SlateApplication.h"
+#include "Slate/SlateGameResources.h"
+#include "Styling/SlateStyleRegistry.h"
+#include "Interfaces/IPluginManager.h"
+#include "Framework/Application/SlateApplication.h"
 
 
 TSharedPtr< FSlateStyleSet > FKantanChartsStyleSet::StyleInstance = nullptr;

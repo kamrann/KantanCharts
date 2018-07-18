@@ -3,7 +3,7 @@
 #include "SKantanBarChart.h"
 #include "KantanCartesianTypes.h"
 #include "ChartConstants.h"
-#include "SlateApplication.h"
+#include "Framework/Application/SlateApplication.h"
 #include "Fonts/FontMeasure.h"
 
 

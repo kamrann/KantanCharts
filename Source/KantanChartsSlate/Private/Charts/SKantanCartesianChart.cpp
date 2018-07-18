@@ -4,19 +4,19 @@
 #include "KantanCartesianDatasourceInterface.h"
 #include "SimpleRenderTarget.h"
 #include "FloatRoundingLevel.h"
-#include "SlateRotatedRect.h"
+#include "Layout/SlateRotatedRect.h"
 #include "AxisUtility.h"
 #include "ChartConstants.h"
 #include "KantanSeriesStyleSet.h"
 #include "KantanChartsSlateModule.h"
 
-#include "SlateApplication.h"
+#include "Framework/Application/SlateApplication.h"
 #include "RenderingThread.h"
 #include "Engine/Texture2D.h"
 #include "RenderUtils.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
-#include "FontMeasure.h"
+#include "Fonts/FontMeasure.h"
 
 
 TSharedRef< IDataSeriesElement, ESPMode::ThreadSafe > MakeCustomSeriesElement(UTexture2D* Tex, FVector2D PntSz, FLinearColor Cl, FBox2D UVs);

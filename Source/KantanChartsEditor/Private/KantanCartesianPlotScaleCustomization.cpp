@@ -3,7 +3,7 @@
 #include "KantanCartesianPlotScaleCustomization.h"
 #include "PropertyEditing.h"
 #include "KantanCartesianTypes.h"
-#include "SNumericEntryBox.h"
+#include "Widgets/Input/SNumericEntryBox.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 

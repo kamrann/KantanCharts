@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "SharedPointer.h"
-#include "SlateRenderTransform.h"
+#include "Templates/SharedPointer.h"
+#include "Rendering/SlateRenderTransform.h"
 
 
 struct FGeometry;

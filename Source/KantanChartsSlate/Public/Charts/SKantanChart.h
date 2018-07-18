@@ -8,9 +8,9 @@
 #include "IChartBase.h"
 #include "ChartEvents.h"
 
-#include "SLeafWidget.h"
-#include "DeclarativeSyntaxSupport.h"
-#include "GCObject.h"
+#include "Widgets/SLeafWidget.h"
+#include "Widgets/DeclarativeSyntaxSupport.h"
+#include "UObject/GCObject.h"
 
 
 enum class EKantanChartLabelClass : uint8 {

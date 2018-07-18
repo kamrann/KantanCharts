@@ -2,7 +2,7 @@
 
 #include "KantanCartesianPlotBase.h"
 
-#include "Package.h"
+#include "UObject/Package.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 

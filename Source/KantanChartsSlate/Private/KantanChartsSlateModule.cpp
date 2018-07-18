@@ -3,8 +3,8 @@
 #include "KantanChartsSlateModule.h"
 #include "KantanChartsStyleSet.h"
 #include "KantanChartsImpl.h"
-#include "SlateStyleRegistry.h"
-#include "ConfigCacheIni.h"
+#include "Styling/SlateStyleRegistry.h"
+#include "Misc/ConfigCacheIni.h"
 
 
 namespace KantanCharts {

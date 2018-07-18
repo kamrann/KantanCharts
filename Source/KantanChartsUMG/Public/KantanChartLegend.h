@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Widget.h"
+#include "Components/Widget.h"
 #include "SKantanChartLegend.h"
 #include "KantanChartLegend.generated.h"
 

@@ -8,7 +8,7 @@
 #include "KantanCategoryTypes.h"
 #include "IBarChart.h"
 
-#include "SlateWidgetStyleAsset.h"
+#include "Styling/SlateWidgetStyleAsset.h"
 
 
 /** A bar chart widget. */

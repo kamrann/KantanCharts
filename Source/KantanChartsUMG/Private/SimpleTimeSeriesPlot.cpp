@@ -1,7 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SimpleTimeSeriesPlot.h"
-#include "WidgetTree.h"
+#include "Blueprint/WidgetTree.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 
