@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "KantanChartStyle.h"
-#include "AxisUtility.h"
-#include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
 #include "IChartBase.h"
+#include "AxisUtility.h"
 #include "ChartEvents.h"
+#include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
+#include "Style/KantanChartStyle.h"
 
 #include "Widgets/SLeafWidget.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
@@ -44,7 +44,7 @@ public:
 
 	/**
 	 * Construct the widget
-	 * 
+	 *
 	 * @param InArgs   A declaration from which to construct the widget
 	 */
 	void Construct(const FArguments& InArgs);
@@ -167,4 +167,3 @@ protected:
 
 	KantanCharts::FOnInteractionMouseDown OnChartMouseDown;
 };
-
