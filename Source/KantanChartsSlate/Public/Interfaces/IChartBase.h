@@ -14,6 +14,7 @@ Also, apparently should be suppressable in code via 'using base::method;', but t
 
 struct FKantanChartStyle;
 
+struct FMargin;
 class SWidget;
 
 namespace KantanCharts {
@@ -33,7 +34,7 @@ namespace KantanCharts {
 		virtual const FKantanChartStyle* GetChartStyle() const = 0;
 
 	public:
-		virtual ~IChartBase() {}
+		virtual ~IChartBase() = default;
 	};
 
 }

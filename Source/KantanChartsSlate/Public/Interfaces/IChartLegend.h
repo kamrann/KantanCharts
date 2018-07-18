@@ -2,6 +2,12 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
+
+
+struct FMargin;
+struct FSlateBrush;
+class SWidget;
 
 namespace KantanCharts {
 
@@ -19,6 +25,9 @@ namespace KantanCharts {
 		virtual void SetShowDataStyle(bool bShow) = 0;
 		virtual void SetBackgroundOverride(const FSlateBrush* Background) = 0;
 		virtual void SetFontSizeOverride(int32 FontSize) = 0;
+
+	public:
+		virtual ~IChartLegend() = default;
 	};
 
 }
