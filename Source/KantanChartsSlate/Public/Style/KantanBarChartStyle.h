@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "KantanChartStyle.h"
+#include "Style/KantanChartStyle.h"
 #include "Styling/SlateWidgetStyleContainerBase.h"
 #include "KantanBarChartStyle.generated.h"
 

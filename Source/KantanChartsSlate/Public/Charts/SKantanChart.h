@@ -4,8 +4,8 @@
 
 #include "Interfaces/IChartBase.h"
 #include "AxisUtility.h"
-#include "ChartEvents.h"
-#include "CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
+#include "Charts/ChartEvents.h"
+#include "Charts/CartesianAxisConfig.h"	// @TODO: Refactor so not including anything specific to cartesian charts
 #include "Style/KantanChartStyle.h"
 
 #include "Widgets/SLeafWidget.h"

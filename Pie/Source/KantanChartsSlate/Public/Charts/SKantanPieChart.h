@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "SKantanCategoryChart.h"
+#include "Charts/SKantanCategoryChart.h"
 #include "KantanPieChartStyle.h"
-#include "KantanChartsStyleSet.h"
+#include "Style/KantanChartsStyleSet.h"
 
 
 /** A pie chart widget. */

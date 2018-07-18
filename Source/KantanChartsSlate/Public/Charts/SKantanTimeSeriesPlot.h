@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "SKantanCartesianChart.h"
+#include "Charts/SKantanCartesianChart.h"
 #include "Style/KantanChartsStyleSet.h"
 #include "Interfaces/ITimeSeriesChart.h"
 

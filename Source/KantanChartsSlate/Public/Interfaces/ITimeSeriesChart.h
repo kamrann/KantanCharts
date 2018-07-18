@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "ICartesianChart.h"
+#include "Interfaces/ICartesianChart.h"
 
 
 namespace KantanCharts {

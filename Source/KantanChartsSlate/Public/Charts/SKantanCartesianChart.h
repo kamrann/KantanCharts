@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "SKantanChart.h"
+#include "Charts/SKantanChart.h"
 #include "KantanCartesianTypes.h"
-#include "CartesianAxisConfig.h"
+#include "Charts/CartesianAxisConfig.h"
 #include "KantanCartesianDatapoint.h"
 #include "CartesianData.h"
 #include "Style/KantanSeriesStyle.h"
