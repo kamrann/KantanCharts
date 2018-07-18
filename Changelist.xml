@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelist>
+	<versions>
+		<version number="6" name="1.6" timestamp="2018-03-15T19:00:00">
+			<entries>
+			</entries>
+		</version>
+		<version number="7" name="1.7" timestamp="2018-06-19T14:20:00">
+			<entries>
+				<entry priority="1" title="Datapoint drawing fix">Recent engine changes to clipping caused datapoints to not be clipped properly when charts are placed in scroll boxes.
+					This update fixes the problem, however there is a small decrease in performance. If this is more important, behaviour can be reverted by adding a [KantanCharts] section
+					to DefaultGame.ini containing the entry: CustomPointDrawing=true
+				</entry>
+				<entry title="Re-enabled iOS support in binary release"></entry>
+			</entries>
+		</version>
+	</versions>
+</changelist>

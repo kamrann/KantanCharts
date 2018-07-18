@@ -1,4 +1,4 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "ModuleManager.h"
 #include "PropertyEditorModule.h"
@@ -12,11 +12,15 @@
 #include "ClassIconFinder.h"
 #include "KantanChartsStyleSet.h"
 
+#include "KCIKantanPluginInstallation.h"
+
 //
 #include "KantanSimpleCategoryDatasource.h"
 #include "KantanSimpleCartesianDatasource.h"
 //
 
+
+const FString PluginName = TEXT("KantanCharts");
 
 class FKantanChartsEditorModule : public FDefaultModuleImpl
 {
@@ -85,10 +89,14 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 
 		// Chart preview data
 		CreatePreviewDatasources();
+
+		KCKantanInstallation::InitializeKantanPluginInstallation(PluginName, false);
 	}
 
 	virtual void ShutdownModule() override
 	{
+		KCKantanInstallation::ShutdownKantanPluginInstallation();
+
 		// Unregister customizations
 		if (FModuleManager::Get().IsModuleLoaded("PropertyEditor"))
 		{

@@ -1,4 +1,4 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SKantanChart.h"
 #include "KantanCartesianTypes.h"	// @TODO: refactor to avoid cartesian specific includes
@@ -743,7 +743,8 @@ int32 SKantanChart::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 		MakeAreaGeometries(ContentGeometry, AreaGeoms);
 		// @TODO: Using deprecated GetClippingRect which ignores render transforms.
 		// Not sure of better way to do this though.
-		auto ClipRect = InsetGeometry.GetLayoutBoundingRect();
+		auto ClipRect = SnappedClippingRect;
+		//InsetGeometry.GetLayoutBoundingRect();
 			//SnappedClippingRect;// ContentGeometry.GetClippingRect().IntersectionWith(SnappedClippingRect);
 		for (int32 AreaIdx = 0; AreaIdx < ChartContentAreaCount; ++AreaIdx)
 		{

@@ -1,12 +1,28 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanChartsSlateModule.h"
 #include "KantanChartsStyleSet.h"
 #include "KantanChartsImpl.h"
 #include "SlateStyleRegistry.h"
+#include "ConfigCacheIni.h"
 
 
 namespace KantanCharts {
+
+	// @NOTE: New drawing mode fixes clipping issue, but is actually slightly less performant with large datasets.
+	// Look at SMeshWidget if want to find a more optimal approach that (presumably) would also be properly clipped.
+	// Can be switched by adding the following to a project's [Default]Game.ini:
+	/*
+	[KantanCharts]
+	CustomPointDrawing=true/false
+	*/
+	bool FKantanChartsSlateModule::bCustomSeriesDrawing = false;
+
+	FKantanChartsSlateModule::FKantanChartsSlateModule(): CustomDrawingCmd(
+		TEXT("KantanCharts.CustomPoints"), TEXT("Toggle custom drawing of datapoints (legacy implementation)"), FConsoleCommandWithArgsDelegate::CreateStatic(&FKantanChartsSlateModule::OnCustomDrawingCommand)
+	)
+	{}
+
 
 	void FKantanChartsSlateModule::StartupModule()
 	{
@@ -15,6 +31,8 @@ namespace KantanCharts {
 		FKantanChartsStyleSet::Initialize();
 
 		KC_Interface = MakeUnique< FKantanChartsImpl >();
+
+		GConfig->GetBool(TEXT("KantanCharts"), TEXT("CustomPointDrawing"), bCustomSeriesDrawing, GGameIni);
 	}
 
 	void FKantanChartsSlateModule::ShutdownModule()
@@ -28,6 +46,15 @@ namespace KantanCharts {
 	{
 		check(KC_Interface.IsValid());
 		return *KC_Interface;
+	}
+
+	void FKantanChartsSlateModule::OnCustomDrawingCommand(const TArray<FString>& Arguments)
+	{
+		if (Arguments.Num())
+		{
+			bCustomSeriesDrawing = FCString::ToBool(*Arguments[0]);
+			UE_LOG(LogTemp, Log, TEXT("KantanCharts legacy point drawing %s."), bCustomSeriesDrawing ? TEXT("is enabled") : TEXT("is disabled"));
+		}
 	}
 
 }

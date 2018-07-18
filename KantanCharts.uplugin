@@ -1,10 +1,10 @@
 {
 	"FileVersion": 3,
-	"Version": 5,
-	"VersionName": "1.5",
+	"Version": 7,
+	"VersionName": "1.7",
 	"FriendlyName": "Kantan Charts",
 	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
-	"Category": "Kantan Dev",
+	"Category": "Kantan",
 	"CreatedBy": "Kantan Dev",
 	"CreatedByURL": "http://kantandev.com",
 	"DocsURL": "https://kamrann.github.io/KantanCharts-Docs/",

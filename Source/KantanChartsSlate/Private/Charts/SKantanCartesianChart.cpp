@@ -1,4 +1,4 @@
-// Copyright (C) 2015-2017 Cameron Angus. All Rights Reserved.
+// Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SKantanCartesianChart.h"
 #include "KantanCartesianDatasourceInterface.h"
@@ -8,6 +8,7 @@
 #include "AxisUtility.h"
 #include "ChartConstants.h"
 #include "KantanSeriesStyleSet.h"
+#include "KantanChartsSlateModule.h"
 
 #include "SlateApplication.h"
 #include "RenderingThread.h"
@@ -18,66 +19,13 @@
 #include "FontMeasure.h"
 
 
-class FDataSeriesElement : public ICustomSlateElement
-{
-public:
-	FDataSeriesElement();
-	~FDataSeriesElement();
-
-	struct FRenderData
-	{
-		FTexture* TextureResource;
-		FVector2D UV_0;
-		FVector2D UV_1;
-		FLinearColor Color;
-		FVector2D PointSize;
-		TArray< FVector2D > Points;
-	};
-
-	/**
-	* Sets up the canvas for rendering
-	*
-	* @param	InCanvasRect			Size of the canvas tile
-	* @param	InClippingRect			How to clip the canvas tile
-	* @param	InExpressionPreview		Render proxy for the Material preview
-	* @param	bInIsRealtime			Whether preview is using realtime values
-	*
-	* @return	Whether there is anything to render
-	*/
-	bool BeginRenderingCanvas(const FIntRect& InCanvasRect, const FIntRect& InClippingRect, /*FSlateRenderTransform const& RenderTransform,*/ UTexture2D* InTexture, FVector2D InUV_0, FVector2D InUV_1, FLinearColor InColor, FVector2D InPointSize, TArray< FVector2D >&& InPoints);
-
-private:
-	/**
-	* ICustomSlateElement interface
-	*/
-	virtual void DrawRenderThread(FRHICommandListImmediate& RHICmdList, const void* InWindowBackBuffer) override;
-
-private:
-	/** Render target that the canvas renders to */
-	TUniquePtr< class FSimpleRenderTarget > RenderTarget;
-
-	FRenderData RenderData;
-};
+TSharedRef< IDataSeriesElement, ESPMode::ThreadSafe > MakeCustomSeriesElement(UTexture2D* Tex, FVector2D PntSz, FLinearColor Cl, FBox2D UVs);
+TSharedRef< IDataSeriesElement, ESPMode::ThreadSafe > MakeSlateBoxSeriesElement(UTexture2D* Tex, FVector2D PntSz, FLinearColor Cl, FBox2D UVs);
 
 
 SKantanCartesianChart::~SKantanCartesianChart()
 {
-	// Pass ownership of the series elements to the render thread so that they're deleted when the
-	// render thread is done with them
-	TArray< FSeriesElemPtr > ElemList;
-	for (auto const& Elem : SeriesElements)
-	{
-		ElemList.Add(Elem.Value);
-	}
-
-	ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER
-		(
-		SafeDeleteSeriesElements,
-		TArray< FSeriesElemPtr >, Elements, ElemList,
-		{
-			Elements.Empty();
-		}
-	);
+	DiscardAllDrawingElements();
 }
 
 void SKantanCartesianChart::Construct(const FArguments& InArgs)
@@ -131,8 +79,8 @@ bool SKantanCartesianChart::SetDatasource(UObject* InDatasource)
 			DataSnapshot.Clear();
 		}
 
-		UpdateDrawingElementsFromDatasource();
 		UpdateSeriesConfigFromDatasource();
+		UpdateDrawingElementsFromDatasource();
 	}
 
 	return true;
@@ -340,24 +288,87 @@ bool SKantanCartesianChart::IsNullOrValidDatasource(UObject* Source)
 	return Source == nullptr || IsValidDatasource(Source);
 }
 
+void SKantanCartesianChart::DiscardDrawingElements(TArray< FSeriesElemPtr >& Elements)
+{
+	// Pass ownership of the series elements to the render thread so that they're deleted when the
+	// render thread is done with them
+
+	ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER
+	(
+		SafeDeleteSeriesElements,
+		TArray< FSeriesElemPtr >, ElemList, MoveTemp(Elements),
+		{
+			ElemList.Empty();
+		}
+	);
+
+	Elements.Empty();
+}
+
+void SKantanCartesianChart::DiscardAllDrawingElements()
+{
+	TArray< FSeriesElemPtr > Elems;
+	SeriesElements.GenerateValueArray(Elems);
+	SeriesElements.Empty();
+	DiscardDrawingElements(Elems);
+}
+
 void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 {
 	TArray< FName > Unused;
 	SeriesElements.GenerateKeyArray(Unused);
 
-	auto NumSeries = GetNumSeries();
+	const auto NumSeries = GetNumSeries();
 	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
 	{
-		auto SeriesId = GetSeriesId(Idx);
+		const auto SeriesId = GetSeriesId(Idx);
 
 		if (SeriesId.IsNone() == false)
 		{
 			if(SeriesElements.Contains(SeriesId) == false)
 			{
+				const bool bCustomPoints = KantanCharts::FKantanChartsSlateModule::bCustomSeriesDrawing;
+				
 				// Series not in map
 				// Create new slate rendering element and add to map
-				auto Element = MakeShareable< FDataSeriesElement >(new FDataSeriesElement());
-				SeriesElements.Add(SeriesId, Element);
+
+				const auto ChartStyle = GetChartStyle();
+				const auto& SeriesStyle = GetSeriesStyle(SeriesId);
+
+				const auto PointTexture = SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr;
+
+				const int32 DP_PixelSize = KantanDataPointPixelSizes[DataPointSize];
+				const auto PointSize = FVector2D(DP_PixelSize, DP_PixelSize);
+
+				const auto PointColor = SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity);
+
+				auto PointUVs = FBox2D(FVector2D(0.0f, 0.0f), FVector2D(1.0f, 1.0f));
+				if (SeriesStyle.HasValidPointStyle())
+				{
+					const auto PointStyle = SeriesStyle.PointStyle;
+					const FVector2D TextureSize = FVector2D(
+						PointStyle->DataPointTexture->GetSizeX(),
+						PointStyle->DataPointTexture->GetSizeY()
+					);
+
+					PointUVs.Min.Set(
+						PointStyle->PointSizeTextureOffsets[DataPointSize].X / TextureSize.X,
+						PointStyle->PointSizeTextureOffsets[DataPointSize].Y / TextureSize.Y
+					);
+					PointUVs.Max.Set(
+						(PointStyle->PointSizeTextureOffsets[DataPointSize].X + DP_PixelSize) / TextureSize.X,
+						(PointStyle->PointSizeTextureOffsets[DataPointSize].Y + DP_PixelSize) / TextureSize.Y
+					);
+				}
+
+				if (bCustomPoints)
+				{
+					SeriesElements.Add(SeriesId, MakeCustomSeriesElement(PointTexture, PointSize, PointColor, PointUVs));
+				}
+				else
+				{
+					SeriesElements.Add(SeriesId, MakeSlateBoxSeriesElement(PointTexture, PointSize, PointColor, PointUVs));
+				}
 			}
 
 			Unused.Remove(SeriesId);
@@ -365,10 +376,12 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 	}
 
 	// Remove unused elements
+	TArray< FSeriesElemPtr > UnusedElements;
 	for(auto const& Id : Unused)
 	{
-		SeriesElements.Remove(Id);
+		UnusedElements.Add(SeriesElements.FindAndRemoveChecked(Id));
 	}
+	DiscardDrawingElements(UnusedElements);
 }
 
 void SKantanCartesianChart::UpdateSeriesConfigFromDatasource()
@@ -377,10 +390,10 @@ void SKantanCartesianChart::UpdateSeriesConfigFromDatasource()
 	SeriesConfig.GenerateKeyArray(Unused);
 
 	// Loop through all series in the datasource
-	auto NumSeries = GetNumSeries();
+	const auto NumSeries = GetNumSeries();
 	for (int32 Idx = 0; Idx < NumSeries; ++Idx)
 	{
-		auto SeriesId = GetSeriesId(Idx);
+		const auto SeriesId = GetSeriesId(Idx);
 		if (SeriesId.IsNone() == false)
 		{
 			auto Cfg = SeriesConfig.Find(SeriesId);
@@ -647,7 +660,8 @@ int32 SKantanCartesianChart::DrawChartArea(
 
 		// Inflate slightly to avoid clipping plot lines lying exactly along the edges of the plot area.
 		// @NOTE: Bit random, but apparently 1.0 on the vertical is not sufficient to stop this.
-		const FSlateRect DataClipRect = PlotSpaceGeometry.GetRenderBoundingRect(FMargin(0.5f, 2.0f));
+		const FSlateRect DataClipRect = SnappedClippingRect.ExtendBy(FMargin(0.5f, 2.0f));
+			//PlotSpaceGeometry.GetRenderBoundingRect(FMargin(0.5f, 2.0f));
 		OutDrawElements.PushClip(FSlateClippingZone(DataClipRect));
 
 		auto ChartStyle = GetChartStyle();
@@ -673,7 +687,7 @@ int32 SKantanCartesianChart::DrawChartArea(
 				continue;
 			}
 
-			auto Points = GetSeriesDatapoints(Idx);
+			const auto Points = GetSeriesDatapoints(Idx);
 			auto const& SeriesStyle = GetSeriesStyle(SeriesId);
 
 			// @TODO: Sort out layers, maybe need to separate out DrawAxes into DrawAxisLines and DrawAxisLabels
@@ -719,8 +733,8 @@ void SKantanCartesianChart::OnActiveTick(double InCurrentTime, float InDeltaTime
 			PlotScale = OnUpdatePlotScaleDelegate.Execute(DataSnapshot, EnabledIndices);
 		}
 
-		UpdateDrawingElementsFromDatasource();
 		UpdateSeriesConfigFromDatasource();
+		UpdateDrawingElementsFromDatasource();
 	}
 }
 
@@ -786,83 +800,19 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 {
 	++LayerId;
 
+	auto& Element = SeriesElements.FindChecked(SeriesId);
+
 	const EKantanDataPointSize::Type DP_SizeType = DataPointSize;
 	const int32 DP_PixelSize = KantanDataPointPixelSizes[DP_SizeType];
 
-	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
-	auto const Transform = Concatenate(
-		CartesianToPlotXform,
-		PlotSpaceGeometry.GetAccumulatedRenderTransform()
-		);
-	auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
-	auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
+	const auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
+	const auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
 
 	TArray< FVector2D > DrawPoints;
 	GetPointsToDraw(Points, RangeX, RangeY, DrawPoints);
-	for (auto& Pnt : DrawPoints)
-	{
-		Pnt = Transform.TransformPoint(Pnt);
+	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
 
-		// Offset half of the tile size, so the point image is drawn centered on its coordinates
-		Pnt -= FVector2D(DP_PixelSize * 0.5f, DP_PixelSize * 0.5f);
-
-		// @NOTE: This seems to help avoid an infrequent issue with the tile being stretched/distorted slightly, however believe have still seen one distortion after adding this...
-		Pnt = FVector2D(
-			FMath::TruncToFloat(Pnt.X),
-			FMath::TruncToFloat(Pnt.Y)
-			);
-	}
-
-	FIntRect CanvasRect(
-		0,
-		0,
-		// @TODO: Hack, since we are rendering our tile later in absolute coords, seems that whatever we return from
-		// FSimpleRenderTarget::GetSizeXY needs to encompass our drawing area wrt absolute origin...
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Right)),
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Bottom))
-		);
-	FIntRect ClippingRect(
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Left)),
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Top)),
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Right)),
-		FMath::TruncToInt(FMath::Max(0.0f, ClipRect.Bottom))
-		);
-
-	FVector2D UV0(0.0f, 0.0f);
-	FVector2D UV1(1.0f, 1.0f);
-	if (SeriesStyle.HasValidPointStyle())
-	{
-		auto PointStyle = SeriesStyle.PointStyle;
-		FVector2D TextureSize = FVector2D(
-			PointStyle->DataPointTexture->GetSizeX(),
-			PointStyle->DataPointTexture->GetSizeY()
-			);
-
-		UV0.Set(
-			PointStyle->PointSizeTextureOffsets[DP_SizeType].X / TextureSize.X,
-			PointStyle->PointSizeTextureOffsets[DP_SizeType].Y / TextureSize.Y
-			);
-		UV1.Set(
-			(PointStyle->PointSizeTextureOffsets[DP_SizeType].X + DP_PixelSize) / TextureSize.X,
-			(PointStyle->PointSizeTextureOffsets[DP_SizeType].Y + DP_PixelSize) / TextureSize.Y
-			);
-	}
-
-	auto ChartStyle = GetChartStyle();
-
-	auto& Element = SeriesElements.FindChecked(SeriesId);
-	if (Element->BeginRenderingCanvas(
-		CanvasRect,
-		ClippingRect,
-		SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr,
-		UV0,
-		UV1,
-		SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
-		FVector2D(DP_PixelSize, DP_PixelSize),
-		MoveTemp(DrawPoints)))
-	{
-		FSlateDrawElement::MakeCustom(OutDrawElements, LayerId, Element);
-	}
+	Element->RenderSeries(PlotSpaceGeometry, ClipRect, CartesianToPlotXform, MoveTemp(DrawPoints), LayerId, OutDrawElements);
 
 	return LayerId;
 }
@@ -982,10 +932,10 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				);
 		}
 
-		auto XRounding = MarkerData.XAxis.RL;
+		const auto XRounding = MarkerData.XAxis.RL;
 
-		auto LabelMaxExtents = DetermineAxisValueLabelMaxExtents(EAxis::X, XAxisCfg.MaxValueDigits);
-		bool bFitsBelow = LabelMaxExtents.Y < (PlotSize.Y - Y0);
+		const auto LabelMaxExtents = DetermineAxisValueLabelMaxExtents(EAxis::X, XAxisCfg.MaxValueDigits);
+		const bool bFitsBelow = LabelMaxExtents.Y < (PlotSize.Y - Y0);
 
 		if (false)	// @TODO: if show axis multiplier and unit on axis
 		{
@@ -1011,7 +961,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 		}
 
 		// Axis markers and labels
-		auto XStart = XRounding.RoundUp(CartesianRangeMin.X);
+		const auto XStart = XRounding.RoundUp(CartesianRangeMin.X);
 		for (auto RoundedMarkerX = XStart; RoundedMarkerX.GetFloatValue() < CartesianRangeMax.X; ++RoundedMarkerX)
 		{
 			if (RoundedMarkerX.IsZero())	// @TODO: && other floating axis is drawn
@@ -1019,12 +969,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				continue;
 			}
 
-			auto MarkerX = RoundedMarkerX.GetFloatValue();
+			const auto MarkerX = RoundedMarkerX.GetFloatValue();
 			auto const MarkerYOffset = bFitsBelow ? ChartConstants::AxisMarkerLength : -ChartConstants::AxisMarkerLength;
 			auto const LabelYOffset = bFitsBelow ? 0.0f : -LabelMaxExtents.Y;
 
 			TArray< FVector2D > Points;
-			auto MarkerXPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(MarkerX, 0.0f)).X;
+			const auto MarkerXPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(MarkerX, 0.0f)).X;
 			Points.Add(FVector2D(
 				MarkerXPlotSpace,
 				Y0
@@ -1051,11 +1001,11 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 
 			if (XAxisCfg.FloatingAxis.bShowLabels)
 			{
-				FText UnsignedLabelText = FText::FromString(RoundedMarkerX.Abs().MultiplierAsString(MarkerData.XAxis.DisplayPower));
-				auto UnsignedLabelExtents = FontMeasureService->Measure(UnsignedLabelText, AxisMarkerFont);
-				FText LabelText = FText::FromString(RoundedMarkerX.MultiplierAsString(MarkerData.XAxis.DisplayPower));
-				auto LabelExtents = FontMeasureService->Measure(LabelText, AxisMarkerFont);
-				auto LabelGeometry = PlotSpaceGeometry.MakeChild(
+				const FText UnsignedLabelText = FText::FromString(RoundedMarkerX.Abs().MultiplierAsString(MarkerData.XAxis.DisplayPower));
+				const auto UnsignedLabelExtents = FontMeasureService->Measure(UnsignedLabelText, AxisMarkerFont);
+				const FText LabelText = FText::FromString(RoundedMarkerX.MultiplierAsString(MarkerData.XAxis.DisplayPower));
+				const auto LabelExtents = FontMeasureService->Measure(LabelText, AxisMarkerFont);
+				const auto LabelGeometry = PlotSpaceGeometry.MakeChild(
 					LabelExtents,
 					FSlateLayoutTransform(Points[1] + FVector2D(-UnsignedLabelExtents.X * 0.5f - (LabelExtents.X - UnsignedLabelExtents.X), LabelYOffset))
 					);
@@ -1106,72 +1056,13 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			);
 		}
 
-		auto YRounding = MarkerData.YAxis.RL;
+		const auto YRounding = MarkerData.YAxis.RL;
 
-		auto LabelMaxExtents = DetermineAxisValueLabelMaxExtents(EAxis::Y, YAxisCfg.MaxValueDigits);
-		bool bFitsLeft = LabelMaxExtents.X < X0;
-
-		if (false)
-		{
-			// Axis unit text
-			FText UnitText = FText::Format(
-				FText::FromString(TEXT("x{0}")),
-				FText::FromString(YRounding.ExponentAsString())
-				);
-			auto UnitExtents = FontMeasureService->Measure(UnitText, AxisMarkerFont);
-			auto const RenderXform = TransformCast< FSlateRenderTransform >(Concatenate(Inverse(FVector2D(UnitExtents.X, 0.0f)), FQuat2D(FMath::DegreesToRadians(-90.0f))));
-			auto UnitGeometry = PlotSpaceGeometry.MakeChild(
-				UnitExtents,
-				FSlateLayoutTransform(FVector2D(X0, 0)),
-				RenderXform,
-				FVector2D(0.0f, 0.0f)
-				);
-			FSlateRect BaseUnitClipRect1(
-				PlotSpaceGeometry.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(X0, 0)),
-				PlotSpaceGeometry.GetAccumulatedLayoutTransform().TransformPoint(FVector2D(X0 + UnitExtents.Y, UnitExtents.X))
-				);
-			FSlateRect BaseUnitClipRect2 =
-				TransformRect(
-				UnitGeometry.GetAccumulatedRenderTransform(),
-				FSlateRotatedRect2(FSlateRect(
-				FVector2D::ZeroVector,
-				UnitGeometry.GetLocalSize()
-				))
-				).ToBoundingRect();
-			auto IntersectedUnitClipRect1 = BaseUnitClipRect1.IntersectionWith(ClipRect);
-			//		auto IntersectedUnitClipRect2 = BaseUnitClipRect2.IntersectionWith(ClipRect);
-			auto PretransformUnitClipRect2 = BaseUnitClipRect2;// .IntersectionWith(ClipRect);
-			auto TransformedUnitClipRect1 = TransformRect(
-				Concatenate(
-				Inverse(UnitGeometry.GetAccumulatedLayoutTransform()),
-				Inverse(RenderXform),
-				UnitGeometry.GetAccumulatedLayoutTransform()
-				),
-				FSlateRotatedRect2(IntersectedUnitClipRect1)
-				).ToBoundingRect();
-			auto TransformedUnitClipRect2 = TransformRect(
-				Concatenate(
-				Inverse(UnitGeometry.GetAccumulatedLayoutTransform()),
-				Inverse(RenderXform),
-				UnitGeometry.GetAccumulatedLayoutTransform()
-				),
-				FSlateRotatedRect2(PretransformUnitClipRect2)
-				).ToBoundingRect();
-			auto FinalUnitClipRect1 = TransformedUnitClipRect1;
-			auto FinalUnitClipRect2 = TransformedUnitClipRect2.IntersectionWith(ClipRect);
-			FSlateDrawElement::MakeText(
-				OutDrawElements,
-				LabelLayerId,
-				UnitGeometry.ToPaintGeometry(),
-				UnitText,
-				AxisMarkerFont,
-				//FinalUnitClipRect1,
-				ESlateDrawEffect::None,
-				ChartStyle->FontColor);
-		}
+		const auto LabelMaxExtents = DetermineAxisValueLabelMaxExtents(EAxis::Y, YAxisCfg.MaxValueDigits);
+		const bool bFitsLeft = LabelMaxExtents.X < X0;
 
 		// Axis markers and labels
-		auto YStart = YRounding.RoundUp(CartesianRangeMin.Y);
+		const auto YStart = YRounding.RoundUp(CartesianRangeMin.Y);
 		for (auto RoundedMarkerY = YStart; RoundedMarkerY.GetFloatValue() < CartesianRangeMax.Y; ++RoundedMarkerY)
 		{
 			if (RoundedMarkerY.IsZero())	// @TODO: && other floating axis is drawn
@@ -1179,11 +1070,11 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				continue;
 			}
 
-			auto MarkerY = RoundedMarkerY.GetFloatValue();
+			const auto MarkerY = RoundedMarkerY.GetFloatValue();
 			auto const MarkerXOffset = bFitsLeft ? -ChartConstants::AxisMarkerLength : ChartConstants::AxisMarkerLength;
 
 			TArray< FVector2D > Points;
-			auto MarkerYPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(0.0f, MarkerY)).Y;
+			const auto MarkerYPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(0.0f, MarkerY)).Y;
 			Points.Add(FVector2D(
 				X0,
 				MarkerYPlotSpace
@@ -1210,8 +1101,8 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 
 			if (YAxisCfg.FloatingAxis.bShowLabels)
 			{
-				FText LabelText = FText::FromString(RoundedMarkerY.MultiplierAsString(MarkerData.YAxis.DisplayPower));
-				auto LabelExtents = FontMeasureService->Measure(LabelText, AxisMarkerFont);
+				const FText LabelText = FText::FromString(RoundedMarkerY.MultiplierAsString(MarkerData.YAxis.DisplayPower));
+				const auto LabelExtents = FontMeasureService->Measure(LabelText, AxisMarkerFont);
 				auto const LabelXOffset = bFitsLeft ? -LabelExtents.X : 0.0f;
 				auto LabelGeometry = PlotSpaceGeometry.MakeChild(
 					LabelExtents,
@@ -1346,126 +1237,6 @@ void SKantanCartesianChart::AddReferencedObjects(FReferenceCollector& Collector)
 	{
 		Collector.AddReferencedObject(Datasource);
 	}
-}
-
-
-FDataSeriesElement::FDataSeriesElement() : RenderTarget(MakeUnique< FSimpleRenderTarget >())
-{}
-
-FDataSeriesElement::~FDataSeriesElement()
-{}
-
-bool FDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect, const FIntRect& InClippingRect, /*FSlateRenderTransform const& RenderTransform,*/ UTexture2D* InTexture, FVector2D InUV_0, FVector2D InUV_1, FLinearColor InColor, FVector2D InPointSize, TArray< FVector2D >&& InPoints)
-{
-	if (InCanvasRect.Size().X > 0 && InCanvasRect.Size().Y > 0 && InClippingRect.Size().X > 0 && InClippingRect.Size().Y > 0 && InPoints.Num() > 0)
-	{
-		/**
-		* Struct to contain all info that needs to be passed to the render thread
-		*/
-		struct FSeriesRenderInfo
-		{
-			/** Size of the Canvas tile */
-			FIntRect CanvasRect;
-			/** How to clip the canvas tile */
-			FIntRect ClippingRect;
-
-			TSharedPtr< FRenderData > RenderData;
-//			FSlateRenderTransform RenderTransform;
-		};
-
-		FSeriesRenderInfo RenderInfo;
-		RenderInfo.CanvasRect = InCanvasRect;
-		RenderInfo.ClippingRect = InClippingRect;
-		RenderInfo.RenderData = MakeShareable< FRenderData >(new FRenderData);
-		RenderInfo.RenderData->TextureResource = InTexture ? InTexture->Resource : GWhiteTexture;
-		RenderInfo.RenderData->UV_0 = InUV_0;
-		RenderInfo.RenderData->UV_1 = InUV_1;
-		RenderInfo.RenderData->Color = InColor;
-		RenderInfo.RenderData->PointSize = InPointSize;
-		RenderInfo.RenderData->Points = MoveTemp(InPoints);
-//		RenderInfo.RenderTransform = RenderTransform;
-
-		ENQUEUE_UNIQUE_RENDER_COMMAND_TWOPARAMETER
-			(
-			BeginRenderingKantanCartesianSeriesCanvas,
-			FDataSeriesElement*, SeriesElement, this,
-			FSeriesRenderInfo, InRenderInfo, MoveTemp(RenderInfo),
-			{
-				SeriesElement->RenderTarget->SetViewRect(InRenderInfo.CanvasRect);
-				SeriesElement->RenderTarget->SetClippingRect(InRenderInfo.ClippingRect);
-				//SeriesElement->RenderTarget->SetRenderTransform(InRenderInfo.RenderTransform);
-				SeriesElement->RenderData = MoveTemp(*InRenderInfo.RenderData);
-			}
-		);
-		return true;
-	}
-
-	return false;
-}
-
-void FDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmdList, const void* InWindowBackBuffer)
-{
-	FIntRect ViewRect = RenderTarget->GetViewRect();
-	// Clip the canvas to avoid having to set UV values
-	FIntRect ClippingRect = RenderTarget->GetClippingRect();
-
-//	auto RenderTransform = RenderTarget->GetRenderTransform();
-
-	RHICmdList.SetScissorRect(
-		true,
-		ClippingRect.Min.X,
-		ClippingRect.Min.Y,
-		ClippingRect.Max.X,
-		ClippingRect.Max.Y
-		);
-	RenderTarget->SetRenderTargetTexture(*(FTexture2DRHIRef*)InWindowBackBuffer);
-	{
-		// Check realtime mode for whether to pass current time to canvas
-		float CurrentTime = FApp::GetCurrentTime() - GStartTime;
-		float DeltaTime = FApp::GetDeltaTime();
-
-		FCanvas Canvas(RenderTarget.Get(), nullptr, CurrentTime, CurrentTime, DeltaTime, GMaxRHIFeatureLevel);
-		{
-			Canvas.SetAllowedModes(0);
-			bool bTestIsScaled = Canvas.IsScaledToRenderTarget();
-			Canvas.SetScaledToRenderTarget(false);
-			//Canvas.SetRenderTargetRect(//RenderTarget->GetViewRect());
-
-/*			auto RenderTransform2D = RenderTarget->GetRenderTransform();
-			auto RotationScale2D = RenderTransform2D.GetMatrix();
-			auto Translation2D = RenderTransform2D.GetTranslation();
-			FMatrix RenderTransformMatrix = FMatrix::Identity;
-			RotationScale2D.GetMatrix(
-				RenderTransformMatrix.M[0][0],
-				RenderTransformMatrix.M[0][1],
-				RenderTransformMatrix.M[1][0],
-				RenderTransformMatrix.M[1][1]
-				);
-			RenderTransformMatrix.M[3][0] = Translation2D.X;
-			RenderTransformMatrix.M[3][1] = Translation2D.Y;
-			Canvas.PushRelativeTransform(RenderTransformMatrix);
-*/
-			FCanvasTileItem Tile(
-				FVector2D(),
-				RenderData.TextureResource,
-				RenderData.PointSize,
-				RenderData.UV_0,
-				RenderData.UV_1,
-				RenderData.Color);
-			Tile.BlendMode = ESimpleElementBlendMode::SE_BLEND_Masked;
-			for (auto const& Pnt : RenderData.Points)
-			{
-				Tile.Position = Pnt;
-				Canvas.DrawItem(Tile);
-			}
-
-//			Canvas.PopTransform();
-		}
-		Canvas.Flush_RenderThread(RHICmdList, true);
-	}
-	RenderTarget->ClearRenderTargetTexture();
-	
-	RHICmdList.SetScissorRect(false, 0, 0, 0, 0);
 }
 
 
