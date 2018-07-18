@@ -1,6 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "IDataSeriesElement.h"
+
 #include "Layout/Geometry.h"
 #include "Rendering/DrawElements.h"
 #include "Brushes/SlateImageBrush.h"

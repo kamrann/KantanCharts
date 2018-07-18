@@ -1,7 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
-#include "SKantanChartLegend.h"
-#include "SKantanCartesianChart.h"
+#include "Charts/SKantanChartLegend.h"
+#include "Charts/SKantanCartesianChart.h"
 
 #include "Framework/Application/SlateApplication.h"
 #include "Fonts/FontMeasure.h"

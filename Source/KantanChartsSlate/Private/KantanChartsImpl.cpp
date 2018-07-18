@@ -1,11 +1,11 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanChartsImpl.h"
-#include "SKantanCartesianChart.h"
-#include "SKantanTimeSeriesPlot.h"
-#include "SKantanBarChart.h"
-#include "SKantanChartLegend.h"
-#include "KantanChartsStyleSet.h"
+#include "Charts/SKantanCartesianChart.h"
+#include "Charts/SKantanTimeSeriesPlot.h"
+#include "Charts/SKantanBarChart.h"
+#include "Charts/SKantanChartLegend.h"
+#include "Style/KantanChartsStyleSet.h"
 #include "KantanSimpleCartesianDatasource.h"
 #include "KantanSimpleCategoryDatasource.h"
 

@@ -1,8 +1,9 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanChartsSlateModule.h"
-#include "KantanChartsStyleSet.h"
+#include "Style/KantanChartsStyleSet.h"
 #include "KantanChartsImpl.h"
+
 #include "Styling/SlateStyleRegistry.h"
 #include "Misc/ConfigCacheIni.h"
 

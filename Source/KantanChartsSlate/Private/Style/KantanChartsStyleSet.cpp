@@ -1,7 +1,7 @@
 
-#include "KantanChartsStyleSet.h"
-#include "KantanBarChartStyle.h"
-#include "KantanCartesianChartStyle.h"
+#include "Style/KantanChartsStyleSet.h"
+#include "Style/KantanBarChartStyle.h"
+#include "Style/KantanCartesianChartStyle.h"
 
 #include "Slate/SlateGameResources.h"
 #include "Styling/SlateStyleRegistry.h"
