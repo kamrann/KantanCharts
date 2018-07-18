@@ -1,7 +1,5 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
-#include "Modules/ModuleManager.h"
-#include "PropertyEditorModule.h"
 #include "KantanBarChartCustomization.h"
 #include "KantanCartesianPlotCustomization.h"
 #include "KantanCartesianPlotScaleCustomization.h"
@@ -9,15 +7,17 @@
 #include "CartesianAxisConfigCustomization.h"
 #include "CategoryStyleManualMappingCustomization.h"
 #include "SeriesStyleManualMappingCustomization.h"
-#include "ClassIconFinder.h"
-#include "KantanChartsStyleSet.h"
-
-#include "KCIKantanPluginInstallation.h"
 
 //
 #include "KantanSimpleCategoryDatasource.h"
 #include "KantanSimpleCartesianDatasource.h"
 //
+
+#include "Modules/ModuleManager.h"
+#include "PropertyEditorModule.h"
+#include "ClassIconFinder.h"
+
+#include "KCIKantanPluginInstallation.h"
 
 
 const FString PluginName = TEXT("KantanCharts");

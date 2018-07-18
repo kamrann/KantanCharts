@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KantanCartesianChartBase.h"
-#include "SKantanTimeSeriesPlot.h"
+#include "Charts/SKantanTimeSeriesPlot.h"
 #include "KantanTimeSeriesPlotBase.generated.h"
 
 

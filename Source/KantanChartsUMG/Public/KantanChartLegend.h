@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Components/Widget.h"
-#include "SKantanChartLegend.h"
+#include "Charts/SKantanChartLegend.h"
 #include "KantanChartLegend.generated.h"
 
 

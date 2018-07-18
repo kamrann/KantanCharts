@@ -3,9 +3,9 @@
 #pragma once
 
 #include "KantanChart.h"
-#include "SKantanCartesianChart.h"
+#include "Charts/SKantanCartesianChart.h"
 #include "KantanCartesianTypes.h"
-#include "KantanCartesianChartStyle.h"
+#include "Style/KantanCartesianChartStyle.h"
 #include "KantanCartesianChartBase.generated.h"
 
 

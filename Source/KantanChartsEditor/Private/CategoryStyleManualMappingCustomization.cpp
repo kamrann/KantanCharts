@@ -1,8 +1,12 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "CategoryStyleManualMappingCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCategoryChart.h"
+#include "Style/KantanCategoryStyle.h"
+
+#include "PropertyHandle.h"
+#include "IDetailChildrenBuilder.h"
+#include "DetailWidgetRow.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 
@@ -12,7 +16,7 @@ TSharedRef< IPropertyTypeCustomization > FCategoryStyleManualMappingCustomizatio
 	return MakeShareable(new FCategoryStyleManualMappingCustomization);
 }
 
-void FCategoryStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCategoryStyleManualMappingCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	HeaderRow.NameContent()
 		[
@@ -20,7 +24,7 @@ void FCategoryStyleManualMappingCustomization::CustomizeHeader(TSharedRef<class 
 		];
 }
 
-void FCategoryStyleManualMappingCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCategoryStyleManualMappingCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	TSharedPtr< IPropertyHandle > PropCatId = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FCategoryStyleManualMapping, CategoryId));
 	StructBuilder.AddProperty(PropCatId.ToSharedRef());

@@ -1,8 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanCategoryChart.h"
-#include "KantanCategoryDatasourceInterface.h"
-#include "KantanCategoryStyleSet.h"
+#include "Style/KantanCategoryStyleSet.h"
 
 #include "UObject/Package.h"
 #include "UObject/ConstructorHelpers.h"

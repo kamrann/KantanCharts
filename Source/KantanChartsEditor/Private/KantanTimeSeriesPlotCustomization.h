@@ -16,7 +16,7 @@ public:
 
 private:
 	// Keep a pointer for refreshing layout
-	IDetailLayoutBuilder* DetailBuilderPtr;
+	IDetailLayoutBuilder* DetailBuilderPtr = nullptr;
 };
 
 

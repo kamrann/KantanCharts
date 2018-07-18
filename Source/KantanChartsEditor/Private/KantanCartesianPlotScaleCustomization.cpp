@@ -1,8 +1,12 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanCartesianPlotScaleCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCartesianTypes.h"
+
+#include "PropertyCustomizationHelpers.h"
+#include "DetailLayoutBuilder.h"
+#include "IDetailChildrenBuilder.h"
+#include "DetailWidgetRow.h"
 #include "Widgets/Input/SNumericEntryBox.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
@@ -13,7 +17,7 @@ TSharedRef< IPropertyTypeCustomization > FKantanCartesianPlotScaleCustomization:
 	return MakeShareable(new FKantanCartesianPlotScaleCustomization);
 }
 
-void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	static const FName ScalingTypePropertyName = GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, Type);
 
@@ -50,7 +54,7 @@ void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<class IP
 		];
 }
 
-void FKantanCartesianPlotScaleCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FKantanCartesianPlotScaleCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	{
 		auto& Row = StructBuilder.AddProperty(StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, Scale)).ToSharedRef());
@@ -96,7 +100,7 @@ TSharedRef< IPropertyTypeCustomization > FCartesianAxisRangeCustomization::MakeI
 	return MakeShareable(new FCartesianAxisRangeCustomization);
 }
 
-void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<class IPropertyHandle> StructPropertyHandle, class FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	static const FName RangeMinPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisRange, Min);
 	static const FName RangeMaxPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisRange, Max);
@@ -136,7 +140,7 @@ void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<class IPropert
 		];
 }
 
-void FCartesianAxisRangeCustomization::CustomizeChildren(TSharedRef<class IPropertyHandle> StructPropertyHandle, class IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
+void FCartesianAxisRangeCustomization::CustomizeChildren(TSharedRef<IPropertyHandle> StructPropertyHandle, IDetailChildrenBuilder& StructBuilder, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
 	
 }

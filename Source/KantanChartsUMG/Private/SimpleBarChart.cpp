@@ -1,7 +1,6 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SimpleBarChart.h"
-#include "KantanSimpleCategoryDatasource.h"
 
 #define LOCTEXT_NAMESPACE "KantanCharts"
 

@@ -1,10 +1,10 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "SKantanCartesianChart.h"
+#include "IDataSeriesElement.h"
 #include "KantanCartesianDatasourceInterface.h"
 #include "SimpleRenderTarget.h"
 #include "FloatRoundingLevel.h"
-#include "Layout/SlateRotatedRect.h"
 #include "AxisUtility.h"
 #include "ChartConstants.h"
 #include "KantanSeriesStyleSet.h"

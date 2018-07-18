@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "PropertyEditing.h"
-#include "PropertyCustomizationHelpers.h"
+#include "IPropertyTypeCustomization.h"
 
 
 class FSeriesStyleManualMappingCustomization : public IPropertyTypeCustomization

@@ -1,9 +1,14 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "KantanCartesianPlotCustomization.h"
-#include "PropertyEditing.h"
 #include "KantanCartesianPlotBase.h"
 #include "DetailHelpers.h"
+
+#include "PropertyHandle.h"
+#include "DetailLayoutBuilder.h"
+#include "DetailCategoryBuilder.h"
+#include "DetailWidgetRow.h"
+#include "IDetailGroup.h"
 
 #define LOCTEXT_NAMESPACE "KantanChartsEditor"
 

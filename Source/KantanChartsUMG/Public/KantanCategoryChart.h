@@ -3,7 +3,7 @@
 #pragma once
 
 #include "KantanChart.h"
-#include "SKantanCategoryChart.h"
+#include "Charts/SKantanCategoryChart.h"
 #include "KantanCategoryChart.generated.h"
 
 

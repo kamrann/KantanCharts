@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "UObject/ObjectMacros.h"
 #include "CartesianAxisConfig.generated.h"
 
 
