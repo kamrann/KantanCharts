@@ -668,7 +668,7 @@ int32 SKantanChart::DrawYAxisTitle(const FGeometry& Geometry, const FSlateRect& 
 			Inverse(RenderXform),
 			RotatedGeometry.GetAccumulatedLayoutTransform()
 			),
-			FSlateRotatedRect2(IntersectedClipRect)
+			FSlateRotatedRect(IntersectedClipRect)
 			).ToBoundingRect();
 		auto FinalClipRect = TransformedClipRect;
 		FSlateDrawElement::MakeText(
