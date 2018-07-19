@@ -15,19 +15,19 @@
 			"Name": "KantanChartsDatasource",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+			"WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsSlate",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+      "WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsUMG",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+      "WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsEditor",
