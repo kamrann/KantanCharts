@@ -126,11 +126,8 @@ bool FCustomDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect
 		RenderInfo.RenderData->PointSize = InPointSize;
 		RenderInfo.RenderData->Points = MoveTemp(InPoints);
 
-		ENQUEUE_UNIQUE_RENDER_COMMAND_TWOPARAMETER
-			(
-			BeginRenderingKantanCartesianSeriesCanvas,
-			FCustomDataSeriesElement*, SeriesElement, this,
-			FSeriesRenderInfo, InRenderInfo, MoveTemp(RenderInfo),
+		ENQUEUE_RENDER_COMMAND(BeginRenderingKantanCartesianSeriesCanvas)(
+			[SeriesElement = this, InRenderInfo = MoveTemp(RenderInfo)](FRHICommandListImmediate& RHICmdList)
 			{
 				SeriesElement->RenderTarget->SetViewRect(InRenderInfo.CanvasRect);
 				SeriesElement->RenderTarget->SetClippingRect(InRenderInfo.ClippingRect);
