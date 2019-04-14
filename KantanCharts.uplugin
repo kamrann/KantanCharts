@@ -39,6 +39,5 @@
 	"EnabledByDefault": false,
 	"CanContainContent": true,
 	"IsBetaVersion": false,
-	"Installed": false,
-	"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+	"Installed": false
 }
