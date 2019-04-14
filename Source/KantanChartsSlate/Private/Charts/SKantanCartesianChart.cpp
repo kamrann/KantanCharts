@@ -293,12 +293,10 @@ void SKantanCartesianChart::DiscardDrawingElements(TArray< FSeriesElemPtr >& Ele
 	// Pass ownership of the series elements to the render thread so that they're deleted when the
 	// render thread is done with them
 
-	ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER
-	(
-		SafeDeleteSeriesElements,
-		TArray< FSeriesElemPtr >, ElemList, MoveTemp(Elements),
+	ENQUEUE_RENDER_COMMAND(SafeDeleteSeriesElements)(
+		[ElemList = MakeUnique<TArray< FSeriesElemPtr >>(MoveTemp(Elements))](FRHICommandListImmediate& RHICmdList)
 		{
-			ElemList.Empty();
+			ElemList->Empty();
 		}
 	);
 
