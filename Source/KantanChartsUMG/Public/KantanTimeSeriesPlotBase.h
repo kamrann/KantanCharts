@@ -37,31 +37,54 @@ public:
 	/*
 	Lower bound for the X (time) axis.
 	*/
-	UPROPERTY(EditAnywhere, Category = "Config", Meta = (EditCondition = "!bUseFixedTimeRange"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config", Meta = (EditCondition = "!bUseFixedTimeRange"))
 	FCartesianRangeBound LowerTimeBound;
 
 	/*
 	Upper bound for the X (time) axis.
 	*/
-	UPROPERTY(EditAnywhere, Category = "Config")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	FCartesianRangeBound UpperTimeBound;
 
 	/*
 	Lower bound for the Y (value) axis.
 	*/
-	UPROPERTY(EditAnywhere, Category = "Config")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	FCartesianRangeBound LowerValueBound;
 
 	/*
 	Upper bound for the Y (value) axis.
 	*/
-	UPROPERTY(EditAnywhere, Category = "Config")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	FCartesianRangeBound UpperValueBound;
 
 public:
 	UKantanTimeSeriesPlotBase(FObjectInitializer const&);
 
 public:
+	/*
+	Update lower time bound.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
+	void SetLowerTimeBound(FCartesianRangeBound InLowerBound);
+
+	/*
+	Update upper time bound.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
+	void SetUpperTimeBound(FCartesianRangeBound InUpperBound);
+
+	/*
+	Update lower value bound.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
+	void SetLowerValueBound(FCartesianRangeBound InLowerBound);
+
+	/*
+	Update upper value bound.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
+	void SetUpperValueBound(FCartesianRangeBound InUpperBound);
 
 public:
 	// UWidget interface
