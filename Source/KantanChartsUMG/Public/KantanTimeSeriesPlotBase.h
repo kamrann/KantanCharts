@@ -58,6 +58,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
 	FCartesianRangeBound UpperValueBound;
 
+	/*
+	If true and Fit to Data bounds are used for the Y axis, the axis range will be extended up or down as necessary, to include zero.
+	*/
+	UPROPERTY(EditAnywhere, Category = "Config")
+	bool bExtendValueRangeToZero = true;
+
 public:
 	UKantanTimeSeriesPlotBase(FObjectInitializer const&);
 

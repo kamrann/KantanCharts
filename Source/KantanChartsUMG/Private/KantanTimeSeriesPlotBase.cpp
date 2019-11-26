@@ -66,6 +66,7 @@ void UKantanTimeSeriesPlotBase::SynchronizeProperties()
 	TimeSeriesPlot->SetUpperTimeBound(UpperTimeBound);
 	TimeSeriesPlot->SetLowerValueBound(LowerValueBound);
 	TimeSeriesPlot->SetUpperValueBound(UpperValueBound);
+	TimeSeriesPlot->SetExtendValueRangeToZero(bExtendValueRangeToZero);
 }
 
 TSharedRef< SWidget > UKantanTimeSeriesPlotBase::RebuildWidget()
