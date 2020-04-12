@@ -30,7 +30,7 @@ void FSeriesStyleManualMappingCustomization::CustomizeChildren(TSharedRef<IPrope
 
 	auto SeriesStyleStruct = FKantanSeriesStyle::StaticStruct();
 	TSharedPtr< IPropertyHandle > PropStyle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FSeriesStyleManualMapping, Style));
-	for (TFieldIterator< FProperty > It(SeriesStyleStruct); It; ++It)
+	for (TFieldIterator< UProperty > It(SeriesStyleStruct); It; ++It)
 	{
 		auto ChildProp = *It;
 		auto ChildPropName = ChildProp->GetFName();

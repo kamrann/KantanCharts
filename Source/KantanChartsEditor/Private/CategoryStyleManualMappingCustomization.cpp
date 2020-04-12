@@ -31,7 +31,7 @@ void FCategoryStyleManualMappingCustomization::CustomizeChildren(TSharedRef<IPro
 
 	auto CatStyleStruct = FKantanCategoryStyle::StaticStruct();
 	TSharedPtr< IPropertyHandle > PropStyle = StructPropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FCategoryStyleManualMapping, Style));
-	for (TFieldIterator< FProperty > It(CatStyleStruct); It; ++It)
+	for (TFieldIterator< UProperty > It(CatStyleStruct); It; ++It)
 	{
 		auto ChildProp = *It;
 		auto ChildPropName = ChildProp->GetFName();
