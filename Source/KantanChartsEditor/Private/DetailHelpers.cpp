@@ -27,7 +27,7 @@ namespace DetailHelpers {
 
 		if (Property->IsValidHandle() == false ||
 			*InterfaceClass == nullptr ||
-			Property->GetPropertyClass() != UObjectProperty::StaticClass()
+			Property->GetPropertyClass() != FObjectProperty::StaticClass()
 			)
 		{
 			return SNullWidget::NullWidget;
