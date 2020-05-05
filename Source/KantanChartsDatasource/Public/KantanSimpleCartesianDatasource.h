@@ -20,6 +20,10 @@ class KANTANCHARTSDATASOURCE_API UKantanSimpleCartesianDatasource :
 	GENERATED_BODY()
 
 public:
+	/**
+	 * Creates a new datasource object, for use with Advanced versions of Cartesian Plot and Time Series Plot.
+	 * @param MaxDatapoints An optional cap on the number of datapoints. New points will replace old ones when the limit is reached. A value of 0 implies no limit.
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Kantan Charts")
 	static UKantanSimpleCartesianDatasource* NewSimpleCartesianDatasource(int32 MaxDatapoints = 0);
 
