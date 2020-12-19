@@ -18,6 +18,42 @@ UKantanTimeSeriesPlotBase::UKantanTimeSeriesPlotBase(FObjectInitializer const& O
 	UpperValueBound.SetFitToData();
 }
 
+void UKantanTimeSeriesPlotBase::SetLowerTimeBound(FCartesianRangeBound InLowerBound)
+{
+	LowerTimeBound = InLowerBound;
+	if (MyChart.IsValid())
+	{
+		GetTimeSeriesPlot()->SetLowerTimeBound(LowerTimeBound);
+	}
+}
+
+void UKantanTimeSeriesPlotBase::SetUpperTimeBound(FCartesianRangeBound InUpperBound)
+{
+	UpperTimeBound = InUpperBound;
+	if (MyChart.IsValid())
+	{
+		GetTimeSeriesPlot()->SetUpperTimeBound(UpperTimeBound);
+	}
+}
+
+void UKantanTimeSeriesPlotBase::SetLowerValueBound(FCartesianRangeBound InLowerBound)
+{
+	LowerValueBound = InLowerBound;
+	if (MyChart.IsValid())
+	{
+		GetTimeSeriesPlot()->SetLowerValueBound(LowerValueBound);
+	}
+}
+
+void UKantanTimeSeriesPlotBase::SetUpperValueBound(FCartesianRangeBound InUpperBound)
+{
+	UpperValueBound = InUpperBound;
+	if (MyChart.IsValid())
+	{
+		GetTimeSeriesPlot()->SetUpperValueBound(UpperValueBound);
+	}
+}
+
 void UKantanTimeSeriesPlotBase::SynchronizeProperties()
 {
 	Super::SynchronizeProperties();
@@ -30,6 +66,7 @@ void UKantanTimeSeriesPlotBase::SynchronizeProperties()
 	TimeSeriesPlot->SetUpperTimeBound(UpperTimeBound);
 	TimeSeriesPlot->SetLowerValueBound(LowerValueBound);
 	TimeSeriesPlot->SetUpperValueBound(UpperValueBound);
+	TimeSeriesPlot->SetExtendValueRangeToZero(bExtendValueRangeToZero);
 }
 
 TSharedRef< SWidget > UKantanTimeSeriesPlotBase::RebuildWidget()

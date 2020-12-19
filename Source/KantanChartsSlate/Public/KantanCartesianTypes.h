@@ -279,16 +279,16 @@ enum class ECartesianRangeBoundType : uint8
 };
 
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCartesianRangeBound
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Range")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Range")
 	ECartesianRangeBoundType Type;
 
 	// Fixed value for the bound
-	UPROPERTY(EditAnywhere, Category = "Range")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Range")
 	float FixedBoundValue;
 
 	FCartesianRangeBound():

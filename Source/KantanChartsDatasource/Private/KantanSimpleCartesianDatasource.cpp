@@ -8,9 +8,11 @@
 const FString FKantanSeriesDataList::SeriesIdPrefix = TEXT("KantanSimpleSeries");
 
 
-UKantanSimpleCartesianDatasource* UKantanSimpleCartesianDatasource::NewSimpleCartesianDatasource()
+UKantanSimpleCartesianDatasource* UKantanSimpleCartesianDatasource::NewSimpleCartesianDatasource(int32 MaxDatapoints)
 {
-	return NewObject< UKantanSimpleCartesianDatasource >(GetTransientPackage());
+	auto const Datasource = NewObject< UKantanSimpleCartesianDatasource >(GetTransientPackage());
+	Datasource->SetDatapointLimit(FMath::Max(MaxDatapoints, 0));
+	return Datasource;
 }
 
 
@@ -37,6 +39,11 @@ void UKantanSimpleCartesianDatasource::BP_RemoveSeries(FName Id, bool& bSuccess)
 void UKantanSimpleCartesianDatasource::BP_RemoveAllSeries()
 {
 	RemoveAllSeries();
+}
+
+void UKantanSimpleCartesianDatasource::BP_SetDatapointLimit(int32 Limit)
+{
+    SetDatapointLimit(FMath::Max(Limit, 0));
 }
 
 void UKantanSimpleCartesianDatasource::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess)

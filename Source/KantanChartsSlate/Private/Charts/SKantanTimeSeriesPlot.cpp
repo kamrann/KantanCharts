@@ -62,6 +62,11 @@ void SKantanTimeSeriesPlot::SetUpperTimeBound(FCartesianRangeBound const& InBoun
 	UpperTimeBound = InBound;
 }
 
+void SKantanTimeSeriesPlot::SetExtendValueRangeToZero(bool bExtendToZero)
+{
+	bExtendValueRangeToZero = bExtendToZero;
+}
+
 void SKantanTimeSeriesPlot::OnActiveTick(double InCurrentTime, float InDeltaTime)
 {
 	SKantanCartesianChart::OnActiveTick(InCurrentTime, InDeltaTime);
@@ -96,7 +101,7 @@ FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCarte
 			{
 				if(!DataYSpan.IsSet())
 				{
-					DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled);
+					DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled, bExtendValueRangeToZero);
 				}
 				YSpan.Min = DataYSpan->Min;
 			}
@@ -114,7 +119,7 @@ FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCarte
 			{
 				if(!DataYSpan.IsSet())
 				{
-					DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled);
+					DataYSpan = Snapshot.GetDataRange(EAxis::Y, false, Enabled, bExtendValueRangeToZero);
 				}
 				YSpan.Max = DataYSpan->Max;
 			}
@@ -161,7 +166,7 @@ FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCarte
 			{
 				if(!DataXSpan.IsSet())
 				{
-					DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled);
+					DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled, false);
 				}
 				XSpan.Max = DataXSpan->Max;
 			}
@@ -172,7 +177,7 @@ FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCarte
 		{
 			if(!DataXSpan.IsSet())
 			{
-				DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled);
+				DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled, false);
 			}
 
 			// For fixed time span, ensure the max is at least as big as the time span.
@@ -194,7 +199,7 @@ FKantanCartesianPlotScale SKantanTimeSeriesPlot::DeterminePlotScale(const FCarte
 				{
 					if(!DataXSpan.IsSet())
 					{
-						DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled);
+						DataXSpan = Snapshot.GetDataRange(EAxis::X, true, Enabled, false);
 					}
 					XSpan.Min = DataXSpan->Min;
 				}

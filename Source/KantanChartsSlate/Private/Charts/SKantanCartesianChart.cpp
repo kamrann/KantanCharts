@@ -447,16 +447,10 @@ FName SKantanCartesianChart::GetNextSeriesStyle() const
 
 FCartesianAxisRange SKantanCartesianChart::ValidateAxisDisplayRange(FCartesianAxisRange InRange)
 {
-	if(InRange.ContainsNaNOrInf())
+	if(InRange.ContainsNaNOrInf() || InRange.Min > InRange.Max)
 	{
 		// @TODO: Log error
 		return FCartesianAxisRange(-1.0f, 1.0f);
-	}
-
-	// Normalize
-	if(InRange.Min > InRange.Max)
-	{
-		Swap(InRange.Min, InRange.Max);
 	}
 
 	// Disallow zero sized range

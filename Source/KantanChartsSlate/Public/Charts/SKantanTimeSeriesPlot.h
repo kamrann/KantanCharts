@@ -45,6 +45,8 @@ public:
 	virtual void SetUpperValueBound(FCartesianRangeBound const& InBound) override;
 	virtual void SetLowerTimeBound(FCartesianRangeBound const& InBound) override;
 	virtual void SetUpperTimeBound(FCartesianRangeBound const& InBound) override;
+	
+	void SetExtendValueRangeToZero(bool bExtendToZero);
 
 	// @NOTE: All the following are needed only because VC++ doesn't support the use of the 'using' keyword
 	// for resolving inheritance via dominance warnings, and for some reason the pragma is failing to suppress
@@ -102,6 +104,7 @@ protected:
 	FCartesianRangeBound UpperValueBound;
 	FCartesianRangeBound LowerTimeBound;
 	FCartesianRangeBound UpperTimeBound;
+	bool bExtendValueRangeToZero = true;
 	TOptional< float > FixedTimeRange;
 	//bool bRoundTimeRange;
 };
