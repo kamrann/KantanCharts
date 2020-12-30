@@ -31,7 +31,8 @@ public:
 		const FSlateRenderTransform& CartesianToPlotXform,
 		TArray< FVector2D >&& Points,
 		int32 LayerId,
-		FSlateWindowElementList& OutDrawElements
+		FSlateWindowElementList& OutDrawElements,
+		TArray <FKantanDrawColor> && DrawColors
 	) override;
 
 private:
@@ -194,7 +195,8 @@ void FCustomDataSeriesElement::RenderSeries(
 	const FSlateRenderTransform& CartesianToPlotXform,
 	TArray< FVector2D >&& Points,
 	int32 LayerId,
-	FSlateWindowElementList& OutDrawElements
+	FSlateWindowElementList& OutDrawElements,
+	TArray <FKantanDrawColor> &&DrawColors
 )
 {
 	const FIntRect CanvasRect(

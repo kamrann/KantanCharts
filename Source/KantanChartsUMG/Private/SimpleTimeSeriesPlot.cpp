@@ -51,18 +51,21 @@ void USimpleTimeSeriesPlot::BP_RemoveAllSeries()
 	RemoveAllSeries();
 }
 
-void USimpleTimeSeriesPlot::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess)
+void USimpleTimeSeriesPlot::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess, FLinearColor const OverrideByColor,
+                                           bool const DoOverrideByColor)
 {
-	bSuccess = AddDatapoint(SeriesId, Point);
+	bSuccess = AddDatapoint(SeriesId, Point, OverrideByColor, DoOverrideByColor);
 }
 
-void USimpleTimeSeriesPlot::BP_AddDatapointNow(FName SeriesId, float Value, bool& bSuccess)
+void USimpleTimeSeriesPlot::BP_AddDatapointNow(FName SeriesId, float Value, bool& bSuccess,
+											   FLinearColor const OverrideByColor,
+											   bool const DoOverrideByColor)
 {
 	// Our outer is the UWidgetTree, and that has access to the UWorld (via UUserWidget, which is its outer)
 	auto const World = Cast< UWidgetTree >(GetOuter())->GetWorld();
 	auto const Time = World->GetTimeSeconds();
 	auto const Point = FVector2D(Time, Value);
-	bSuccess = AddDatapoint(SeriesId, Point);
+	bSuccess = AddDatapoint(SeriesId, Point, OverrideByColor, DoOverrideByColor);
 }
 
 

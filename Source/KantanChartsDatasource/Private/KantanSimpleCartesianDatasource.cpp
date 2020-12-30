@@ -46,9 +46,10 @@ void UKantanSimpleCartesianDatasource::BP_SetDatapointLimit(int32 Limit)
     SetDatapointLimit(FMath::Max(Limit, 0));
 }
 
-void UKantanSimpleCartesianDatasource::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess)
+void UKantanSimpleCartesianDatasource::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess,
+	FLinearColor const& Color = FLinearColor::Green, bool const& OverrideColor = false)
 {
-	bSuccess = AddDatapoint(SeriesId, Point);
+	bSuccess = AddDatapoint(SeriesId, Point, Color, OverrideColor);
 }
 
 

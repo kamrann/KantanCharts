@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "KantanCartesianDatapoint.h"
 #include "Templates/SharedPointer.h"
 #include "Rendering/SlateRenderTransform.h"
 
@@ -19,7 +20,8 @@ public:
 		const FSlateRenderTransform& CartesianToPlotXform,
 		TArray< FVector2D >&& Points,
 		int32 LayerId,
-		FSlateWindowElementList& OutDrawElements
+		FSlateWindowElementList& OutDrawElements,
+		TArray <FKantanDrawColor> && DrawColors
 	) = 0;
 
 	virtual ~IDataSeriesElement() = default;

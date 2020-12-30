@@ -95,7 +95,8 @@ protected:
 		TArray< FKantanCartesianDatapoint > const& InPoints,
 		FCartesianAxisRange const& RangeX,
 		FCartesianAxisRange const& RangeY,
-		TArray< FVector2D >& OutPoints) const override;
+		TArray< FVector2D >& OutPoints,
+		TArray <FKantanDrawColor> &OutColors) const override;
 
 	FKantanCartesianPlotScale DeterminePlotScale(const FCartesianDataSnapshot& Snapshot, const TArray< int32 >& Enabled) const;
 

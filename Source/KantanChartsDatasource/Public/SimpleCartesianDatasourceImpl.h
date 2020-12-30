@@ -64,13 +64,20 @@ struct KANTANCHARTSDATASOURCE_API FKantanSeriesDataList :
 		}
 	}
 
-	bool AddDatapoint(FName const& SeriesId, FVector2D const& Point)
+	bool AddDatapoint(FName const& SeriesId, FVector2D const& Point, FLinearColor const Color, bool const OverrideColor)
 	{
 		auto S = Find(SeriesId);
 		if (S)
 		{
+			// Here we add the information about color override
+			FKantanDrawColor NewColor;
+			NewColor.Color = Color;
+			NewColor.DoOverrideColor = OverrideColor;
+			
 			FKantanCartesianDatapoint Datapoint;
 			Datapoint.Coords = Point;
+			Datapoint.OverrideColor = NewColor;
+			
 			int32 const CurrentCount = S->Points.Num();
 			if (DatapointLimit != 0 && CurrentCount == DatapointLimit)
 			{

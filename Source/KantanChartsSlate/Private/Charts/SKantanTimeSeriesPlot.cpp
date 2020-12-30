@@ -253,7 +253,8 @@ void SKantanTimeSeriesPlot::GetLinePointsToDraw(
 	TArray< FKantanCartesianDatapoint > const& InPoints,
 	FCartesianAxisRange const& RangeX,
 	FCartesianAxisRange const& RangeY,
-	TArray< FVector2D >& OutPoints) const
+	TArray< FVector2D >& OutPoints,
+	TArray <FKantanDrawColor> &OutColors) const
 {
 	// Assume points are ordered by x value, and search for first and last points within the plot range
 	struct ComparePred
@@ -297,9 +298,11 @@ void SKantanTimeSeriesPlot::GetLinePointsToDraw(
 
 	auto const Count = Upper - Lower;
 	OutPoints.SetNumUninitialized(Count);
+	OutColors.SetNumUninitialized(Count);
 	for (int32 Idx = 0; Idx < Count; ++Idx)
 	{
 		OutPoints[Idx] = InPoints[Lower + Idx].Coords;
+		OutColors[Idx] = InPoints[Lower + Idx].OverrideColor;
 	}
 }
 

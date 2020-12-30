@@ -51,13 +51,13 @@ public:
 	Add a datapoint to the specified series.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Add Datapoint", Keywords = "Kantan Charts"))
-	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess);
+	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess, FLinearColor const OverrideByColor = FLinearColor::Green, bool const DoOverrideByColor = false);
 
 	/*
 	Add a datapoint using the current game time as the x-axis value.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Add Datapoint Now", Keywords = "Kantan Charts"))
-	void BP_AddDatapointNow(FName SeriesId, float Value, bool& bSuccess);
+	void BP_AddDatapointNow(FName SeriesId, float Value, bool& bSuccess, FLinearColor const OverrideByColor = FLinearColor::Green, bool const DoOverrideByColor = false);
 
 public:
 	// IKantanCartesianDatasourceInterface
