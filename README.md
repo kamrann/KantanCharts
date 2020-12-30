@@ -19,7 +19,7 @@ Specifically, the `Add Datapoint` and `Add Datapoint Now` blueprint functions ha
 
 ![override_by_color](.docs/override_by_color.png)
 
-The `Override by Color` input expects a `FLinearColor` with the desired color. This will be used to override the default style. The `Do Override by Color` input expects a boolean that, for every sample, will determine whether the original color or the point or line segment should be overridden or not by the specified color. Hence, there is complete control over every point and every line segment which gives a lot of flexibility in drawing the plot.
+The `Override by Color` input expects a `FLinearColor` with the desired color. This will be used to override the default style. The `Do Override by Color` input expects a boolean that, for every sample, will determine whether the original color or the point or line segment should be overridden or not by the specified color. Hence, there is complete control over the color of every point and every line segment which gives a lot of flexibility in drawing the plot.
 
 #### Original author's note:
 
