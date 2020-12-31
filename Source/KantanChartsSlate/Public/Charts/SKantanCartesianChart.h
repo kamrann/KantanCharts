@@ -166,12 +166,14 @@ protected:
 		TArray< FKantanCartesianDatapoint > const& InPoints,
 		FCartesianAxisRange const& RangeX,
 		FCartesianAxisRange const& RangeY,
-		TArray< FVector2D >& OutPoints) const;
+		TArray< FVector2D >& OutPoints,
+		TArray <FKantanDrawColor> &OutPointColors) const;
 	virtual void GetLinePointsToDraw(
 		TArray< FKantanCartesianDatapoint > const& InPoints,
 		FCartesianAxisRange const& RangeX,
 		FCartesianAxisRange const& RangeY,
-		TArray< FVector2D >& OutPoints) const;
+		TArray< FVector2D >& OutPoints,
+		TArray <FKantanDrawColor> &OutPointColors) const;
 
 	int32 DrawAxes(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 AxisLayerId, int32 LabelLayerId, FPlotMarkerData const& MarkerData) const;
 	int32 DrawPoints(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const;

@@ -1,6 +1,7 @@
 // Copyright (C) 2015-2018 Cameron Angus. All Rights Reserved.
 
 #include "IDataSeriesElement.h"
+#include "KantanCartesianDatapoint.h"
 
 #include "Layout/Geometry.h"
 #include "Rendering/DrawElements.h"
@@ -19,7 +20,8 @@ public:
 		const FSlateRenderTransform& CartesianToPlotXform,
 		TArray< FVector2D >&& Points,
 		int32 LayerId,
-		FSlateWindowElementList& OutDrawElements
+		FSlateWindowElementList& OutDrawElements,
+		TArray <FKantanDrawColor> && DrawColors
 	) override;
 
 public:
@@ -40,7 +42,8 @@ void FSlateBoxSeriesElement::RenderSeries(
 	const FSlateRenderTransform& CartesianToPlotXform,
 	TArray< FVector2D >&& Points,
 	int32 LayerId,
-	FSlateWindowElementList& OutDrawElements
+	FSlateWindowElementList& OutDrawElements,
+	TArray <FKantanDrawColor> && DrawColors
 )
 {
 	const auto Transform = CartesianToPlotXform;
@@ -50,13 +53,18 @@ void FSlateBoxSeriesElement::RenderSeries(
 	const auto ExistingScale = PlotSpaceGeometry.GetAccumulatedLayoutTransform().GetScale();
 	const auto ScaleAdjustment = (ExistingScale == 0.0f ? 0.0f : (1.0f / ExistingScale));
 
-	for (const auto& SrcPnt : Points)
+	auto const Count = Points.Num();
+	
+	for (int32 Idx = 0; Idx < Count; ++Idx)
+	// for (const auto& SrcPnt : Points)
 	{
-		const auto Pnt = Transform.TransformPoint(SrcPnt);
+		const auto Pnt = Transform.TransformPoint(Points[Idx]);
 		auto Geom = PlotSpaceGeometry.MakeChild(PointSize, FSlateLayoutTransform(Pnt));
 		Geom = Geom.MakeChild(Geom.GetLocalSize(), FSlateLayoutTransform(ScaleAdjustment));
 		// Offset to draw the box centered at the correct coordinates
 		Geom = Geom.MakeChild(Geom.GetLocalSize(), FSlateLayoutTransform(-PointSize * 0.5f));
+
+		FLinearColor PointColor = (DrawColors[Idx].DoOverrideColor ? DrawColors[Idx].Color : Color);
 
 		FSlateDrawElement::MakeBox(
 			OutDrawElements,
@@ -64,7 +72,7 @@ void FSlateBoxSeriesElement::RenderSeries(
 			Geom.ToPaintGeometry(),
 			&PointBrush,
 			ESlateDrawEffect::None,
-			Color
+			PointColor
 		);
 	}
 }

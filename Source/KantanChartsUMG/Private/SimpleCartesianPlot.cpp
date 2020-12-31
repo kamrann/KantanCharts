@@ -49,9 +49,10 @@ void USimpleCartesianPlot::BP_RemoveAllSeries()
 	RemoveAllSeries();
 }
 
-void USimpleCartesianPlot::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess)
+void USimpleCartesianPlot::BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess,
+                                           FLinearColor const Color, bool const OverrideColor)
 {
-	bSuccess = AddDatapoint(SeriesId, Point);
+	bSuccess = AddDatapoint(SeriesId, Point, Color, OverrideColor);
 }
 
 

@@ -744,7 +744,8 @@ void SKantanCartesianChart::GetPointsToDraw(
 	TArray< FKantanCartesianDatapoint > const& InPoints,
 	FCartesianAxisRange const& RangeX,
 	FCartesianAxisRange const& RangeY,
-	TArray< FVector2D >& OutPoints) const
+	TArray< FVector2D >& OutPoints,
+	TArray <FKantanDrawColor> &OutPointColors) const
 {
 	// Cull points outside the plot range
 	
@@ -757,6 +758,10 @@ void SKantanCartesianChart::GetPointsToDraw(
 
 	auto const Count = InPoints.Num();
 	OutPoints.Reset(Count);
+
+	// Color information
+	OutPointColors.Reset(Count);
+	
 	for (auto const& Pnt : InPoints)
 	{
 		if (
@@ -767,6 +772,7 @@ void SKantanCartesianChart::GetPointsToDraw(
 			)
 		{
 			OutPoints.Add(Pnt.Coords);
+			OutPointColors.Add(Pnt.OverrideColor);
 		}
 	}
 }
@@ -775,16 +781,19 @@ void SKantanCartesianChart::GetLinePointsToDraw(
 	TArray< FKantanCartesianDatapoint > const& InPoints,
 	FCartesianAxisRange const& RangeX,
 	FCartesianAxisRange const& RangeY,
-	TArray< FVector2D >& OutPoints) const
+	TArray< FVector2D >& OutPoints,
+    TArray <FKantanDrawColor> &OutPointColors) const
 {
 	// @TODO: Can't cull so easily - would need to output multiple line batches, and cull based on whether
 	// consecutive points are outside the range on the same side (eg. both > RangeY.Max)
 
 	auto const Count = InPoints.Num();
 	OutPoints.SetNumUninitialized(Count);
+	OutPointColors.SetNumUninitialized(Count);
 	for (int32 Idx = 0; Idx < Count; ++Idx)
 	{
 		OutPoints[Idx] = InPoints[Idx].Coords;
+		OutPointColors[Idx] = InPoints[Idx].OverrideColor;
 	}
 }
 
@@ -801,15 +810,20 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 	const auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
 
 	TArray< FVector2D > DrawPoints;
-	GetPointsToDraw(Points, RangeX, RangeY, DrawPoints);
+	TArray< FKantanDrawColor > DrawPointColors;
+	GetPointsToDraw(Points, RangeX, RangeY, DrawPoints, DrawPointColors);
 	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
 
-	Element->RenderSeries(PlotSpaceGeometry, ClipRect, CartesianToPlotXform, MoveTemp(DrawPoints), LayerId, OutDrawElements);
+	Element->RenderSeries(PlotSpaceGeometry, ClipRect, CartesianToPlotXform, MoveTemp(DrawPoints), LayerId,
+	                      OutDrawElements, MoveTemp(DrawPointColors));
 
 	return LayerId;
 }
 
-int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId, TArray< FKantanCartesianDatapoint > const& Points, FKantanSeriesStyle const& SeriesStyle) const
+int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const FSlateRect& ClipRect,
+                                       FSlateWindowElementList& OutDrawElements, int32 LayerId, FName const& SeriesId,
+                                       TArray<FKantanCartesianDatapoint> const& Points,
+                                       FKantanSeriesStyle const& SeriesStyle) const
 {
 	++LayerId;
 
@@ -818,7 +832,9 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 	auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
 
 	TArray< FVector2D > DrawPoints;
-	GetLinePointsToDraw(Points, RangeX, RangeY, DrawPoints);
+	TArray <FKantanDrawColor> DrawPointColors;
+	
+	GetLinePointsToDraw(Points, RangeX, RangeY, DrawPoints, DrawPointColors);
 	for (auto& Pnt : DrawPoints)
 	{
 		// @TODO: If transform points like this and draw via plot space geometry, all works.
@@ -842,6 +858,9 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 		SegmentPoints[0] = DrawPoints[Idx];
 		SegmentPoints[1] = DrawPoints[Idx + 1];
 
+		// Figure out segment color
+		FLinearColor SegmentColor = ( DrawPointColors[Idx].DoOverrideColor ? DrawPointColors[Idx].Color : SeriesStyle.Color ); 
+
 		FSlateDrawElement::MakeLines(
 			OutDrawElements,
 			LayerId,
@@ -849,7 +868,7 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 			SegmentPoints,//DrawPoints,
 			//ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
 			ESlateDrawEffect::None,
-			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
+			SegmentColor * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
 			bAntialiasDataLines,
 			GetChartStyle()->DataLineThickness
 			);

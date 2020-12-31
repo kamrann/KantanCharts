@@ -169,15 +169,15 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 
 			{
 				auto Id = PreviewCartesianPlotDatasource->AddSeries(FText::FromString(TEXT("Series 1")));
-				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(50.0f, 50.0f));
-				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(100.0f, 0.0f));
+				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(50.0f, 50.0f), FLinearColor::Green, false);
+				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(100.0f, 0.0f), FLinearColor::Green, false);
 			}
 
 			{
 				auto Id = PreviewCartesianPlotDatasource->AddSeries(FText::FromString(TEXT("Series 2")));
-				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, 0.0f));
-				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, -200.0f));
-				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(-100.0f, -250.0f));
+				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, 0.0f), FLinearColor::Green, false);
+				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, -200.0f), FLinearColor::Green, false);
+				PreviewCartesianPlotDatasource->AddDatapoint(Id, FVector2D(-100.0f, -250.0f), FLinearColor::Green, false);
 			}
 
 			PreviewCartesianPlotDatasource->AddToRoot();
@@ -193,16 +193,16 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 
 			{
 				auto Id = PreviewTimeSeriesPlotDatasource->AddSeries(FText::FromString(TEXT("Series 1")));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(50.0f, 50.0f));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(100.0f, 0.0f));
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(50.0f, 50.0f), FLinearColor::Green, false);
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(100.0f, 0.0f), FLinearColor::Green, false);
 			}
 
 			{
 				auto Id = PreviewTimeSeriesPlotDatasource->AddSeries(FText::FromString(TEXT("Series 2")));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, 0.0f));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(20.0f, 10.0f));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(40.0f, 40.0f));
-				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(60.0f, 100.0f));
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(0.0f, 0.0f), FLinearColor::Green, false);
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(20.0f, 10.0f), FLinearColor::Green, false);
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(40.0f, 40.0f), FLinearColor::Green, false);
+				PreviewTimeSeriesPlotDatasource->AddDatapoint(Id, FVector2D(60.0f, 100.0f), FLinearColor::Green, false);
 			}
 
 			PreviewTimeSeriesPlotDatasource->AddToRoot();

@@ -51,7 +51,8 @@ public:
 	Adds a datapoint to the given series.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Add Datapoint", Keywords = "Kantan Charts"))
-	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess);
+	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess,
+                                           FLinearColor const OverrideByColor = FLinearColor::Green, bool const DoOverrideByColor = false);
 
 public:
 	// IKantanCartesianDatasourceInterface

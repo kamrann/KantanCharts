@@ -68,7 +68,7 @@ public:
 	 * Adds a datapoint to the given series.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Add Datapoint"))
-	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess);
+	void BP_AddDatapoint(FName SeriesId, FVector2D const& Point, bool& bSuccess, FLinearColor const& Color, bool const& OverrideColor);
 
 public:
 	// IKantanCartesianDatasourceInterface
