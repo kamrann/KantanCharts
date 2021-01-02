@@ -21,6 +21,13 @@ Specifically, the `Add Datapoint` and `Add Datapoint Now` blueprint functions ha
 
 The `Override by Color` input expects a `FLinearColor` with the desired color. This will be used to override the default style. The `Do Override by Color` input expects a boolean that, for every sample, will determine whether the original color or the point or line segment should be overridden or not by the specified color. Hence, there is complete control over the color of every point and every line segment which gives a lot of flexibility in drawing the plot.
 
-#### Original author's note:
+#### Feature update: Line Thickness for Series Style
 
-@NOTE: Due to changes specific to my personal build scripts, the 'develop' branch is now the one to use rather than 'master' if you want to work with this repository.
+Another useful feature is that series line thickness is now accessible per-series instead of per-chart. This is of course only applicable to Cartesian and Time Series charts.
+
+You can set line thickness with the corresponding `float` input in the `Add Series Style Override` function:
+
+![LineThickness](.docs/LineThickness.png)
+
+Remember that this will also override the default color (which, though, you typically want to do anyway).
+
