@@ -22,7 +22,7 @@ What this gives you is the ability to do something like this:
 
 
 
-In the animation, every time the spacebar is pressed, the color changes from the default red color to blue; on the left there is an example of a time series chart with markers, on the right there is a cartesian plot drawn with line segments.  Additionally, on the Cartesian chart the line thickness of the corresponding series has been set to 2.0.
+In the animation, every time the spacebar is pressed, the color changes from the default red color to blue; on the left there is an example of a time series chart with markers, on the right there is a cartesian plot drawn with line segments.  Additionally, on the Cartesian chart the line thickness of the corresponding series has been set to `2.0`.
 
 How is this useful? Well, think about cases when the color of a plot needs to be changed at runtime, at an arbitrary moment. For example, one can use it to display “safe” operating ranges of a certain variable. Specific use cases that drove the development of this feature include real-time control systems where UE4 serves as a kind of Supervisory, Control and Data Acquisition (SCADA) system and the color change might then signify an alarm state of an observed variable.
 
@@ -45,4 +45,6 @@ You can set line thickness with the corresponding `float` input in the `Add Seri
 ![LineThickness](.docs/LineThickness.png)
 
 Remember that this will also override the default color (which, though, you typically want to do anyway).
+
+If the `Line Thickness` value is less than zero, e.g., `-1.0`, then line thickness will be inherited from the Chart Style.
 
