@@ -90,13 +90,14 @@ void UKantanCartesianChartBase::SetAxisTitlePadding(FMargin const& InPadding)
 	}
 }
 
-void UKantanCartesianChartBase::AddSeriesStyleOverride(FName SeriesId, UKantanPointStyle* PointStyle, FLinearColor Color)
+void UKantanCartesianChartBase::AddSeriesStyleOverride(FName SeriesId, UKantanPointStyle* PointStyle, FLinearColor Color, float LineThickness)
 {
 	FSeriesStyleManualMapping NewMapping;
 	NewMapping.SeriesId = SeriesId;
 	NewMapping.Style.StyleId = GenerateSeriesStyleId();
 	NewMapping.Style.PointStyle = PointStyle;
 	NewMapping.Style.Color = Color;
+	NewMapping.Style.LineThickness = LineThickness;
 	ManualStyleMappings.Add(NewMapping);
 
 	if (MyChart.IsValid())

@@ -64,10 +64,17 @@ struct FKantanSeriesStyle
 	UPROPERTY(EditAnywhere, Category = "Style")
 	FLinearColor Color;
 
+	/*
+	Line thickness
+	*/
+	UPROPERTY(EditAnywhere, Category = "Style")
+	float LineThickness;
+
 	FKantanSeriesStyle() :
 		StyleId(NAME_None)
 		, PointStyle(nullptr)
 		, Color(FLinearColor::White)
+		, LineThickness(-1.0)
 	{}
 
 	inline bool HasValidPointStyle() const
