@@ -138,7 +138,7 @@ public:
 	default and auto styles.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Series Styles", Meta = (Keywords = "Kantan Charts"))
-	void AddSeriesStyleOverride(FName SeriesId, UKantanPointStyle* PointStyle, FLinearColor Color);
+	void AddSeriesStyleOverride(FName SeriesId, UKantanPointStyle* PointStyle, FLinearColor Color, float LineThickness = -1);
 
 public:
 	/*

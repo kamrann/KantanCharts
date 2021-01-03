@@ -859,7 +859,10 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 		SegmentPoints[1] = DrawPoints[Idx + 1];
 
 		// Figure out segment color
-		FLinearColor SegmentColor = ( DrawPointColors[Idx].DoOverrideColor ? DrawPointColors[Idx].Color : SeriesStyle.Color ); 
+		FLinearColor SegmentColor = ( DrawPointColors[Idx].DoOverrideColor ? DrawPointColors[Idx].Color : SeriesStyle.Color );
+
+		// Get line thickness
+		const float LineThickness = ( SeriesStyle.LineThickness > 0 ? SeriesStyle.LineThickness : ChartStyle->DataLineThickness);  
 
 		FSlateDrawElement::MakeLines(
 			OutDrawElements,
@@ -870,7 +873,7 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 			ESlateDrawEffect::None,
 			SegmentColor * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
 			bAntialiasDataLines,
-			GetChartStyle()->DataLineThickness
+			LineThickness
 			);
 	}
 
