@@ -2,6 +2,10 @@
 
 #pragma once
 
+#include "UObject/ObjectMacros.h"
+#include "CoreMinimal.h"
+#include "KantanCategoryTypes.generated.h"
+
 
 UENUM(BlueprintType)
 enum class EKantanBarChartOrientation: uint8 {
@@ -22,5 +26,3 @@ enum class EKantanBarValueExtents: uint8 {
 	ZeroLineOnly,
 	ZeroAndMaxLines,
 };
-
-
