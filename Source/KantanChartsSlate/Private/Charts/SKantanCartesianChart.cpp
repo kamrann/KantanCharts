@@ -120,7 +120,7 @@ void SKantanCartesianChart::SetPlotScale(FKantanCartesianPlotScale const& Scalin
 	PlotScale = Scaling;
 }
 
-void SKantanCartesianChart::SetDataPointSize(EKantanDataPointSize::Type InSize)
+void SKantanCartesianChart::SetDataPointSize(EKantanDataPointSize InSize)
 {
 	DataPointSize = InSize;
 }
@@ -335,7 +335,8 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 
 				const auto PointTexture = SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr;
 
-				const int32 DP_PixelSize = KantanDataPointPixelSizes[DataPointSize];
+				const auto DPSizeIndex = (int32)DataPointSize;
+				const int32 DP_PixelSize = KantanDataPointPixelSizes[DPSizeIndex];
 				const auto PointSize = FVector2D(DP_PixelSize, DP_PixelSize);
 
 				const auto PointColor = SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity);
@@ -350,12 +351,12 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 					);
 
 					PointUVs.Min.Set(
-						PointStyle->PointSizeTextureOffsets[DataPointSize].X / TextureSize.X,
-						PointStyle->PointSizeTextureOffsets[DataPointSize].Y / TextureSize.Y
+						PointStyle->PointSizeTextureOffsets[DPSizeIndex].X / TextureSize.X,
+						PointStyle->PointSizeTextureOffsets[DPSizeIndex].Y / TextureSize.Y
 					);
 					PointUVs.Max.Set(
-						(PointStyle->PointSizeTextureOffsets[DataPointSize].X + DP_PixelSize) / TextureSize.X,
-						(PointStyle->PointSizeTextureOffsets[DataPointSize].Y + DP_PixelSize) / TextureSize.Y
+						(PointStyle->PointSizeTextureOffsets[DPSizeIndex].X + DP_PixelSize) / TextureSize.X,
+						(PointStyle->PointSizeTextureOffsets[DPSizeIndex].Y + DP_PixelSize) / TextureSize.Y
 					);
 				}
 
@@ -794,8 +795,8 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 
 	auto& Element = SeriesElements.FindChecked(SeriesId);
 
-	const EKantanDataPointSize::Type DP_SizeType = DataPointSize;
-	const int32 DP_PixelSize = KantanDataPointPixelSizes[DP_SizeType];
+	const EKantanDataPointSize DP_SizeType = DataPointSize;
+	const int32 DP_PixelSize = KantanDataPointPixelSizes[(int32)DP_SizeType];
 
 	const auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
 	const auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());

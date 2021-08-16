@@ -25,7 +25,7 @@ namespace KantanCharts {
 		virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) = 0;
 		virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) = 0;
 		virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) = 0;
-		virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) = 0;
+		virtual void SetDataPointSize(EKantanDataPointSize InSize) = 0;
 		virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) = 0;
 		virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) = 0;
 		virtual void SetAxisTitlePadding(FMargin const& InPadding) = 0;

@@ -69,7 +69,7 @@ public:
 	virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) override { SKantanCartesianChart::LoadSeriesStylesList(Styles); }
 	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override { SKantanCartesianChart::SetManualSeriesStyleMappings(Mappings); }
 	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override { SKantanCartesianChart::SetPlotScale(Scaling); }
-	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override { SKantanCartesianChart::SetDataPointSize(InSize); }
+	virtual void SetDataPointSize(EKantanDataPointSize InSize) override { SKantanCartesianChart::SetDataPointSize(InSize); }
 	virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) override { SKantanCartesianChart::SetXAxisConfig(InConfig); }
 	virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) override { SKantanCartesianChart::SetYAxisConfig(InConfig); }
 	virtual void SetAxisTitlePadding(FMargin const& InPadding) override { SKantanCartesianChart::SetAxisTitlePadding(InPadding); }

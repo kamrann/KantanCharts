@@ -54,7 +54,7 @@ void UKantanCartesianChartBase::SetPlotScaleByRange(FCartesianAxisRange const& I
 	}
 }
 
-void UKantanCartesianChartBase::SetDataPointSize(TEnumAsByte< EKantanDataPointSize::Type > InSize)
+void UKantanCartesianChartBase::SetDataPointSize(EKantanDataPointSize InSize)
 {
 	DataPointSize = InSize;
 	if (MyChart.IsValid())
