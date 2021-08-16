@@ -6,9 +6,12 @@
 
 
 struct FKantanCategoryStyle;
+enum class EKantanBarChartOrientation : uint8;
+enum class EKantanBarLabelPosition : uint8;
+enum class EKantanBarValueExtents : uint8;
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class ICategoryChart: public virtual IChartBase
 	{
 	public:
@@ -19,6 +22,4 @@ namespace KantanCharts {
 		virtual void SetManualCategoryStyleMappings(TMap< FName, FName > const& Mappings) = 0;
 		virtual void ResetCategoryStyleMappings() = 0;
 	};
-
 }
-

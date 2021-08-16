@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Interfaces/IChartBase.h"
-#include "KantanCartesianTypes.h"
 
 
 struct FKantanCartesianChartStyle;
@@ -12,8 +11,12 @@ struct FKantanCartesianPlotScale;
 struct FCartesianAxisConfig;
 struct FCartesianDataSnapshot;
 
-namespace KantanCharts {
+DECLARE_DELEGATE_RetVal_TwoParams(FKantanCartesianPlotScale, FOnUpdatePlotScale, const FCartesianDataSnapshot&, const TArray< int32 >&);
 
+enum class EKantanDataPointSize : uint8;
+
+namespace KantanCharts
+{
 	class ICartesianChart: public virtual IChartBase
 	{
 	public:
@@ -45,6 +48,4 @@ namespace KantanCharts {
 		virtual FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const = 0;
 		virtual FCartesianDataSnapshot const& GetCurrentSnapshot() const = 0;
 	};
-
 }
-

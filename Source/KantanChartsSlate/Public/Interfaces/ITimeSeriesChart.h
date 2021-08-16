@@ -5,8 +5,8 @@
 #include "Interfaces/ICartesianChart.h"
 
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class ITimeSeriesChart: public virtual ICartesianChart
 	{
 	public:
@@ -17,6 +17,4 @@ namespace KantanCharts {
 		virtual void SetLowerTimeBound(FCartesianRangeBound const& InBound) = 0;
 		virtual void SetUpperTimeBound(FCartesianRangeBound const& InBound) = 0;
 	};
-
 }
-
