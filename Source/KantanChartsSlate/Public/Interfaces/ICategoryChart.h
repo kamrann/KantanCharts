@@ -10,6 +10,9 @@ enum class EKantanBarChartOrientation : uint8;
 enum class EKantanBarLabelPosition : uint8;
 enum class EKantanBarValueExtents : uint8;
 
+class UObject;
+struct FSoftObjectPath;
+
 namespace KantanCharts
 {
 	class ICategoryChart: public virtual IChartBase

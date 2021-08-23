@@ -5,6 +5,8 @@
 #include "Interfaces/ICartesianChart.h"
 
 
+struct FCartesianRangeBound;
+
 namespace KantanCharts
 {
 	class ITimeSeriesChart: public virtual ICartesianChart

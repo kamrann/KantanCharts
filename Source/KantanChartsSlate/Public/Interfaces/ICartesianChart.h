@@ -15,6 +15,10 @@ DECLARE_DELEGATE_RetVal_TwoParams(FKantanCartesianPlotScale, FOnUpdatePlotScale,
 
 enum class EKantanDataPointSize : uint8;
 
+class UObject;
+class USlateWidgetStyleContainerBase;
+struct FSoftObjectPath;
+
 namespace KantanCharts
 {
 	class ICartesianChart: public virtual IChartBase
