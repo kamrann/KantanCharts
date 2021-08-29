@@ -43,7 +43,7 @@ public:
 
 		SLATE_ARGUMENT(FKantanCartesianPlotScale, PlotScale)
 
-		SLATE_ARGUMENT(EKantanDataPointSize::Type, DataPointSize)
+		SLATE_ARGUMENT(EKantanDataPointSize, DataPointSize)
 
 		SLATE_EVENT(FOnUpdatePlotScale, OnUpdatePlotScale)
 
@@ -67,7 +67,7 @@ public:
 	virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) override;
 	virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) override;
 	virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) override;
-	virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) override;
+	virtual void SetDataPointSize(EKantanDataPointSize InSize) override;
 	virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) override;
 	virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) override;
 	virtual void SetAxisTitlePadding(FMargin const& InPadding) override;
@@ -192,7 +192,7 @@ protected:
 	FCartesianAxisConfig YAxisCfg;
 	FMargin AxisTitlePadding;
 	FKantanCartesianPlotScale PlotScale;
-	EKantanDataPointSize::Type DataPointSize = EKantanDataPointSize::Medium;
+	EKantanDataPointSize DataPointSize = EKantanDataPointSize::Medium;
 	bool bAntialiasDataLines = false;
 
 	FOnUpdatePlotScale OnUpdatePlotScaleDelegate;

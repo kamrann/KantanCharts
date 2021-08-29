@@ -12,8 +12,8 @@ class UKantanSimpleCategoryDatasource;
 struct FKantanCartesianChartStyle;
 struct FKantanBarChartStyle;
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class ICartesianChart;
 	class ITimeSeriesChart;
 	class IBarChart;
@@ -59,6 +59,4 @@ namespace KantanCharts {
 
 		virtual FName GetEditorStyleSetName() const = 0;
 	};
-
 }
-

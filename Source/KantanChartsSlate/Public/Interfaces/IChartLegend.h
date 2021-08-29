@@ -9,8 +9,8 @@ struct FMargin;
 struct FSlateBrush;
 class SWidget;
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class ICartesianChart;
 
 	class IChartLegend
@@ -29,6 +29,4 @@ namespace KantanCharts {
 	public:
 		virtual ~IChartLegend() = default;
 	};
-
 }
-

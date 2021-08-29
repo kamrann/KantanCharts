@@ -120,7 +120,7 @@ void SKantanCartesianChart::SetPlotScale(FKantanCartesianPlotScale const& Scalin
 	PlotScale = Scaling;
 }
 
-void SKantanCartesianChart::SetDataPointSize(EKantanDataPointSize::Type InSize)
+void SKantanCartesianChart::SetDataPointSize(EKantanDataPointSize InSize)
 {
 	DataPointSize = InSize;
 }
@@ -335,7 +335,8 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 
 				const auto PointTexture = SeriesStyle.HasValidPointStyle() ? SeriesStyle.PointStyle->DataPointTexture : nullptr;
 
-				const int32 DP_PixelSize = KantanDataPointPixelSizes[DataPointSize];
+				const auto DPSizeIndex = (int32)DataPointSize;
+				const int32 DP_PixelSize = KantanDataPointPixelSizes[DPSizeIndex];
 				const auto PointSize = FVector2D(DP_PixelSize, DP_PixelSize);
 
 				const auto PointColor = SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity);
@@ -350,12 +351,12 @@ void SKantanCartesianChart::UpdateDrawingElementsFromDatasource()
 					);
 
 					PointUVs.Min.Set(
-						PointStyle->PointSizeTextureOffsets[DataPointSize].X / TextureSize.X,
-						PointStyle->PointSizeTextureOffsets[DataPointSize].Y / TextureSize.Y
+						PointStyle->PointSizeTextureOffsets[DPSizeIndex].X / TextureSize.X,
+						PointStyle->PointSizeTextureOffsets[DPSizeIndex].Y / TextureSize.Y
 					);
 					PointUVs.Max.Set(
-						(PointStyle->PointSizeTextureOffsets[DataPointSize].X + DP_PixelSize) / TextureSize.X,
-						(PointStyle->PointSizeTextureOffsets[DataPointSize].Y + DP_PixelSize) / TextureSize.Y
+						(PointStyle->PointSizeTextureOffsets[DPSizeIndex].X + DP_PixelSize) / TextureSize.X,
+						(PointStyle->PointSizeTextureOffsets[DPSizeIndex].Y + DP_PixelSize) / TextureSize.Y
 					);
 				}
 
@@ -794,8 +795,8 @@ int32 SKantanCartesianChart::DrawPoints(const FGeometry& PlotSpaceGeometry, cons
 
 	auto& Element = SeriesElements.FindChecked(SeriesId);
 
-	const EKantanDataPointSize::Type DP_SizeType = DataPointSize;
-	const int32 DP_PixelSize = KantanDataPointPixelSizes[DP_SizeType];
+	const EKantanDataPointSize DP_SizeType = DataPointSize;
+	const int32 DP_PixelSize = KantanDataPointPixelSizes[(int32)DP_SizeType];
 
 	const auto RangeX = PlotScale.GetXRange(PlotSpaceGeometry.GetLocalSize());
 	const auto RangeY = PlotScale.GetYRange(PlotSpaceGeometry.GetLocalSize());
@@ -831,28 +832,47 @@ int32 SKantanCartesianChart::DrawLines(const FGeometry& PlotSpaceGeometry, const
 		//
 	}
 
-	auto ChartStyle = GetChartStyle();
+	auto const ChartStyle = GetChartStyle();
+	bool const bShouldAntialias = bAntialiasDataLines || (ChartStyle->DataLineThickness == 0.0f);
 
-	// @TODO: Drawing individual segments in attempt to workaround antialiasing issue
-	TArray< FVector2D > SegmentPoints;
-	SegmentPoints.SetNumUninitialized(2);
-
-	for (int32 Idx = 0; Idx < DrawPoints.Num() - 1; ++Idx)
+	// @TODO: Drawing individual segments in attempt to workaround antialiasing issue. Check if still relevant.
+	if (bAntialiasDataLines)
 	{
-		SegmentPoints[0] = DrawPoints[Idx];
-		SegmentPoints[1] = DrawPoints[Idx + 1];
+		TArray< FVector2D > SegmentPoints;
+		SegmentPoints.SetNumUninitialized(2);
 
+		auto const PaintGeom = PlotSpaceGeometry.ToPaintGeometry();
+		auto const Color = SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity);
+		auto const Thickness = ChartStyle->DataLineThickness;
+		for (int32 Idx = 0; Idx < DrawPoints.Num() - 1; ++Idx)
+		{
+			SegmentPoints[0] = DrawPoints[Idx];
+			SegmentPoints[1] = DrawPoints[Idx + 1];
+
+			FSlateDrawElement::MakeLines(
+				OutDrawElements,
+				LayerId,
+				PaintGeom,
+				SegmentPoints,
+				ESlateDrawEffect::None,
+				Color,
+				bShouldAntialias,
+				Thickness
+			);
+		}
+	}
+	else
+	{
 		FSlateDrawElement::MakeLines(
 			OutDrawElements,
 			LayerId,
 			PlotSpaceGeometry.ToPaintGeometry(),
-			SegmentPoints,//DrawPoints,
-			//ClipRect.ExtendBy(ChartConstants::ChartClipRectExtension),
+			DrawPoints,
 			ESlateDrawEffect::None,
 			SeriesStyle.Color * FLinearColor(1, 1, 1, ChartStyle->DataOpacity),
-			bAntialiasDataLines,
-			GetChartStyle()->DataLineThickness
-			);
+			bShouldAntialias,
+			ChartStyle->DataLineThickness
+		);
 	}
 
 	return LayerId;
@@ -895,6 +915,8 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 
 	FSlateFontInfo AxisMarkerFont = GetLabelFont(ChartStyle, EKantanChartLabelClass::AxisMarkerLabel);
 
+	bool const bShouldAntialias = (ChartStyle->ChartLineThickness == 0.0f);
+
 	// Horizontal axis
 	if (XAxisCfg.FloatingAxis.bEnabled)
 	{
@@ -916,10 +938,9 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false,
+				bShouldAntialias,
 				ChartStyle->ChartLineThickness
 				);
 		}
@@ -947,7 +968,6 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				UnitGeometry.ToPaintGeometry(),
 				UnitText,
 				AxisMarkerFont,
-				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->FontColor);
 		}
@@ -983,10 +1003,9 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					//ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
-					true,
+					bShouldAntialias,
 					ChartStyle->ChartLineThickness
 				);
 			}
@@ -1011,7 +1030,6 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						//ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}
@@ -1040,10 +1058,9 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				AxisLayerId,
 				PlotSpaceGeometry.ToPaintGeometry(),
 				Points,
-				//ClipRect,
 				ESlateDrawEffect::None,
 				ChartStyle->ChartLineColor,
-				false,
+				bShouldAntialias,
 				ChartStyle->ChartLineThickness
 			);
 		}
@@ -1083,10 +1100,9 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 					AxisLayerId,
 					PlotSpaceGeometry.ToPaintGeometry(),
 					Points,
-					//ClipRect,
 					ESlateDrawEffect::None,
 					ChartStyle->ChartLineColor,
-					true,
+					bShouldAntialias,
 					ChartStyle->ChartLineThickness
 				);
 			}
@@ -1110,7 +1126,6 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 						LabelGeometry.ToPaintGeometry(),
 						LabelText,
 						AxisMarkerFont,
-						//ClipRect,
 						ESlateDrawEffect::None,
 						ChartStyle->FontColor);
 				}
@@ -1174,13 +1189,13 @@ float SKantanCartesianChart::GetChartAreaSize(EChartContentArea::Type Area, EAxi
 	case EChartContentArea::YAxisRightTitle:
 		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled && YAxisCfg.RightTopAxis.bShowTitle ? DetermineAxisTitleSize(YAxisCfg, EAxis::Y).X : 0.0f;
 	case EChartContentArea::XAxisBottom:
-		return ReqComp == EAxis::Y && XAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::Y && XAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap, XAxisCfg.LeftBottomAxis) : 0.0f;
 	case EChartContentArea::XAxisTop:
-		return ReqComp == EAxis::Y && XAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::Y && XAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::X, XAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap, XAxisCfg.RightTopAxis) : 0.0f;
 	case EChartContentArea::YAxisLeft:
-		return ReqComp == EAxis::X && YAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::X && YAxisCfg.LeftBottomAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap, YAxisCfg.LeftBottomAxis) : 0.0f;
 	case EChartContentArea::YAxisRight:
-		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap) : 0.0f;
+		return ReqComp == EAxis::X && YAxisCfg.RightTopAxis.bEnabled ? DetermineAxisRequiredWidth(EAxis::Y, YAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap, YAxisCfg.RightTopAxis) : 0.0f;
 
 	default:
 		return 0.0f;

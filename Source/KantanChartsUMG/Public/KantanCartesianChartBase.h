@@ -55,7 +55,7 @@ public:
 	This allows the desired size to be configured.
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
-	TEnumAsByte< EKantanDataPointSize::Type > DataPointSize;
+	EKantanDataPointSize DataPointSize;
 
 	/*
 	X axis configuration.
@@ -113,7 +113,7 @@ public:
 	Set data point size, in pixels.
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
-	void SetDataPointSize(TEnumAsByte< EKantanDataPointSize::Type > InSize);
+	void SetDataPointSize(EKantanDataPointSize InSize);
 
 	/*
 	Set X axis configuration.

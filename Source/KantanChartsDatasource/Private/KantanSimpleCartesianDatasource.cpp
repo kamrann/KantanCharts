@@ -4,10 +4,6 @@
 #include "UObject/Package.h"
 
 
-// @TODO: Should really be in separate cpp file
-const FString FKantanSeriesDataList::SeriesIdPrefix = TEXT("KantanSimpleSeries");
-
-
 UKantanSimpleCartesianDatasource* UKantanSimpleCartesianDatasource::NewSimpleCartesianDatasource(int32 MaxDatapoints)
 {
 	auto const Datasource = NewObject< UKantanSimpleCartesianDatasource >(GetTransientPackage());

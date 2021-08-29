@@ -315,16 +315,13 @@ struct FCartesianRangeBound
 
 
 UENUM()
-namespace EKantanDataPointSize
+enum class EKantanDataPointSize : uint8
 {
-	enum Type
-	{
-		// Values correspond to pixel size in the texture
-		Small,
-		Medium,
-		Large,
-	};
-}
+	// Values correspond to pixel size in the texture
+	Small,
+	Medium,
+	Large,
+};
 
 static const int32 KantanDataPointSizeCount = 3;
 
@@ -333,5 +330,3 @@ static const int32 KantanDataPointPixelSizes[KantanDataPointSizeCount] = {
 	7,
 	9,
 };
-
-

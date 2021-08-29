@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Interfaces/IChartBase.h"
-#include "KantanCartesianTypes.h"
 
 
 struct FKantanCartesianChartStyle;
@@ -12,8 +11,16 @@ struct FKantanCartesianPlotScale;
 struct FCartesianAxisConfig;
 struct FCartesianDataSnapshot;
 
-namespace KantanCharts {
+DECLARE_DELEGATE_RetVal_TwoParams(FKantanCartesianPlotScale, FOnUpdatePlotScale, const FCartesianDataSnapshot&, const TArray< int32 >&);
 
+enum class EKantanDataPointSize : uint8;
+
+class UObject;
+class USlateWidgetStyleContainerBase;
+struct FSoftObjectPath;
+
+namespace KantanCharts
+{
 	class ICartesianChart: public virtual IChartBase
 	{
 	public:
@@ -25,7 +32,7 @@ namespace KantanCharts {
 		virtual void LoadSeriesStylesList(const FSoftObjectPath& Styles) = 0;
 		virtual void SetManualSeriesStyleMappings(TMap< FName, FName > const& Mappings) = 0;
 		virtual void SetPlotScale(FKantanCartesianPlotScale const& Scaling) = 0;
-		virtual void SetDataPointSize(EKantanDataPointSize::Type InSize) = 0;
+		virtual void SetDataPointSize(EKantanDataPointSize InSize) = 0;
 		virtual void SetXAxisConfig(FCartesianAxisConfig const& InConfig) = 0;
 		virtual void SetYAxisConfig(FCartesianAxisConfig const& InConfig) = 0;
 		virtual void SetAxisTitlePadding(FMargin const& InPadding) = 0;
@@ -45,6 +52,4 @@ namespace KantanCharts {
 		virtual FKantanSeriesStyle const& GetSeriesStyle(FName SeriesId) const = 0;
 		virtual FCartesianDataSnapshot const& GetCurrentSnapshot() const = 0;
 	};
-
 }
-

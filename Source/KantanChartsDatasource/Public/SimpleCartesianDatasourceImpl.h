@@ -8,7 +8,7 @@
 #include "CoreMinimal.h"
 
 
-struct KANTANCHARTSDATASOURCE_API FKantanSeriesDataList :
+struct FKantanSeriesDataList :
 	public FIdBasedList< FKantanSeriesData >
 {
 	bool AddSeries(FName const& Id, FText const& Name)
@@ -28,6 +28,8 @@ struct KANTANCHARTSDATASOURCE_API FKantanSeriesDataList :
 
 	FName AddSeries(FText const& Name)
 	{
+		static constexpr auto SeriesIdPrefix = TEXT("KantanSimpleSeries");
+
 		auto AutoId = GenerateId(SeriesIdPrefix);
 		AddSeries(AutoId, Name);
 		return AutoId;
@@ -106,8 +108,6 @@ struct KANTANCHARTSDATASOURCE_API FKantanSeriesDataList :
 	
 private:
 	int32 DatapointLimit = 0;
-
-	static const FString SeriesIdPrefix;
 };
 
 

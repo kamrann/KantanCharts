@@ -2,12 +2,6 @@
 
 #pragma once
 
-/* @TODO:
-Inheritance via dominance - seems strange that this warning is raised even when there is only a single base that has an *implementation* of the method in question.
-Also, apparently should be suppressable in code via 'using base::method;', but this is not implemented by VC++ (as of VS2015).
-*/
-//#pragma warning(disable:4250)
-
 #include "Charts/ChartEvents.h"
 #include "CoreMinimal.h"
 
@@ -17,8 +11,8 @@ struct FKantanChartStyle;
 struct FMargin;
 class SWidget;
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class IChartBase
 	{
 	public:
@@ -36,6 +30,4 @@ namespace KantanCharts {
 	public:
 		virtual ~IChartBase() = default;
 	};
-
 }
-

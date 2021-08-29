@@ -8,7 +8,7 @@
 
 
 USTRUCT(BlueprintType)
-struct KANTANCHARTSSLATE_API FKantanCartesianChartStyle : public FKantanChartStyle
+struct FKantanCartesianChartStyle : public FKantanChartStyle
 {
 	GENERATED_BODY()
 
@@ -30,10 +30,13 @@ struct KANTANCHARTSSLATE_API FKantanCartesianChartStyle : public FKantanChartSty
 		, DataLineThickness(1.0f)
 	{}
 
-	static const FName TypeName;
-	virtual const FName GetTypeName() const override { return TypeName; };
+	static inline TCHAR const* const TypeName = TEXT("FKantanCartesianChartStyle");
+	FName const GetTypeName() const override
+	{
+		return TypeName;
+	}
 
-	static const FKantanCartesianChartStyle& GetDefault();
+	KANTANCHARTSSLATE_API static FKantanCartesianChartStyle const& GetDefault();
 };
 
 

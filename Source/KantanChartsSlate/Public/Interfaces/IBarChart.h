@@ -3,14 +3,13 @@
 #pragma once
 
 #include "Interfaces/ICategoryChart.h"
-#include "KantanCategoryTypes.h"
 
 
 struct FKantanBarChartStyle;
 struct FCartesianAxisConfig;
 
-namespace KantanCharts {
-
+namespace KantanCharts
+{
 	class IBarChart: public virtual ICategoryChart
 	{
 	public:
@@ -24,6 +23,4 @@ namespace KantanCharts {
 		virtual void SetValueExtentsDisplay(EKantanBarValueExtents InExtents) = 0;
 		virtual void SetValueAxisConfig(FCartesianAxisConfig const& InConfig) = 0;
 	};
-
 }
-

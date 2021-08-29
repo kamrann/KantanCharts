@@ -250,7 +250,12 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.LeftBottomAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(
+					EAxis::Y,
+					ValueAxisCfg.MaxValueDigits,
+					ChartConstants::AxisMarkerLength,
+					ChartConstants::AxisMarkerLabelGap,
+					ValueAxisCfg.LeftBottomAxis);
 			}
 			else if (Orientation == EKantanBarChartOrientation::Horizontal)
 			{
@@ -268,7 +273,12 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Vertical && ValueAxisCfg.RightTopAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::Y, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(
+					EAxis::Y,
+					ValueAxisCfg.MaxValueDigits,
+					ChartConstants::AxisMarkerLength,
+					ChartConstants::AxisMarkerLabelGap,
+					ValueAxisCfg.RightTopAxis);
 			}
 		}
 		break;
@@ -277,7 +287,12 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.LeftBottomAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(
+					EAxis::X,
+					ValueAxisCfg.MaxValueDigits,
+					ChartConstants::AxisMarkerLength, 
+					ChartConstants::AxisMarkerLabelGap,
+					ValueAxisCfg.LeftBottomAxis);
 			}
 			else if (Orientation == EKantanBarChartOrientation::Vertical)
 			{
@@ -292,7 +307,12 @@ float SKantanBarChart::GetChartAreaSize(EChartContentArea::Type Area, EAxis::Typ
 		{
 			if (Orientation == EKantanBarChartOrientation::Horizontal && ValueAxisCfg.RightTopAxis.bEnabled)
 			{
-				return DetermineAxisRequiredWidth(EAxis::X, ValueAxisCfg.MaxValueDigits, ChartConstants::AxisMarkerLength, ChartConstants::AxisMarkerLabelGap);
+				return DetermineAxisRequiredWidth(
+					EAxis::X,
+					ValueAxisCfg.MaxValueDigits,
+					ChartConstants::AxisMarkerLength,
+					ChartConstants::AxisMarkerLabelGap,
+					ValueAxisCfg.RightTopAxis);
 			}
 		}
 		break;
