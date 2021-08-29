@@ -356,21 +356,33 @@ float SKantanChart::DetermineAxisRequiredWidth(
 	EAxis::Type Axis,
 	int32 MaxLabelDigits,
 	float AxisMarkerLength,
-	float AxisMarkerLabelGap
+	float AxisMarkerLabelGap,
+	FCartesianAxisInstanceConfig const& AxisCfg
 	) const
 {
-	float Required = AxisMarkerLength + AxisMarkerLabelGap;
-
-	auto MaxLabelExtents = DetermineAxisValueLabelMaxExtents(Axis, MaxLabelDigits);
-	switch (Axis)
+	float Required = 0.0f;
+	if (AxisCfg.bShowMarkers)
 	{
-	case EAxis::X:
-		Required += MaxLabelExtents.Y;
-		break;
+		Required += AxisMarkerLength;
+	}
+	if (AxisCfg.bShowLabels)
+	{
+		if (AxisCfg.bShowMarkers)
+		{
+			Required += AxisMarkerLabelGap;
+		}
 
-	case EAxis::Y:
-		Required += MaxLabelExtents.X;
-		break;
+		auto MaxLabelExtents = DetermineAxisValueLabelMaxExtents(Axis, MaxLabelDigits);
+		switch (Axis)
+		{
+		case EAxis::X:
+			Required += MaxLabelExtents.Y;
+			break;
+
+		case EAxis::Y:
+			Required += MaxLabelExtents.X;
+			break;
+		}
 	}
 
 	return Required;

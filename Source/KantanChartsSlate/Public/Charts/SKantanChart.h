@@ -130,7 +130,8 @@ protected:
 		EAxis::Type Axis,
 		int32 MaxLabelDigits,
 		float AxisMarkerLength,
-		float AxisMarkerLabelGap
+		float AxisMarkerLabelGap,
+		FCartesianAxisInstanceConfig const& AxisCfg
 		) const;
 
 	static bool WillGeometryGetClipped(FGeometry const& Geom, FSlateRect const& ClipRect);
