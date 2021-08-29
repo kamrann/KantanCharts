@@ -4,14 +4,7 @@
 #include "Style/KantanCartesianChartStyle.h"
 
 
-const FName FKantanBarChartStyle::TypeName(TEXT("FKantanBarChartStyle"));
-
-const FName FKantanBarChartStyle::GetTypeName() const
-{
-	return TypeName;
-};
-
-const FKantanBarChartStyle& FKantanBarChartStyle::GetDefault()
+FKantanBarChartStyle const& FKantanBarChartStyle::GetDefault()
 {
 	static TUniquePtr< FKantanBarChartStyle > Default;
 
@@ -29,9 +22,7 @@ const FKantanBarChartStyle& FKantanBarChartStyle::GetDefault()
 };
 
 
-const FName FKantanCartesianChartStyle::TypeName(TEXT("FKantanCartesianChartStyle"));
-
-const FKantanCartesianChartStyle& FKantanCartesianChartStyle::GetDefault()
+FKantanCartesianChartStyle const& FKantanCartesianChartStyle::GetDefault()
 {
 	static TUniquePtr< FKantanCartesianChartStyle > Default;
 
@@ -47,5 +38,3 @@ const FKantanCartesianChartStyle& FKantanCartesianChartStyle::GetDefault()
 
 	return *Default;
 };
-
-

@@ -9,7 +9,7 @@
 
 
 USTRUCT(BlueprintType)
-struct KANTANCHARTSSLATE_API FKantanChartStyle : public FSlateWidgetStyle
+struct FKantanChartStyle : public FSlateWidgetStyle
 {
 	GENERATED_BODY()
 
