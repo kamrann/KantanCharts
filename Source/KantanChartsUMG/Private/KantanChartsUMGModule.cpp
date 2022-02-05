@@ -6,4 +6,3 @@
 IMPLEMENT_MODULE(FDefaultModuleImpl, KantanChartsUMG);
 
 
-

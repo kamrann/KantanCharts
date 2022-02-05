@@ -18,6 +18,17 @@ UKantanTimeSeriesPlotBase::UKantanTimeSeriesPlotBase(FObjectInitializer const& O
 	UpperValueBound.SetFitToData();
 }
 
+void UKantanTimeSeriesPlotBase::SetFixedTimeRange(bool bEnableFixedRange, float TimeRange)
+{
+	bUseFixedTimeRange = bEnableFixedRange;
+	if (bUseFixedTimeRange)
+	{
+		DisplayTimeRange = TimeRange;
+	}
+
+	GetTimeSeriesPlot()->SetFixedTimeRange(bUseFixedTimeRange ? TOptional< float >{ DisplayTimeRange } : TOptional< float >{});
+}
+
 void UKantanTimeSeriesPlotBase::SetLowerTimeBound(FCartesianRangeBound InLowerBound)
 {
 	LowerTimeBound = InLowerBound;
