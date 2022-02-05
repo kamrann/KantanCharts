@@ -5,4 +5,3 @@
 
 IMPLEMENT_MODULE(FDefaultModuleImpl, KantanChartsDatasource);
 
-

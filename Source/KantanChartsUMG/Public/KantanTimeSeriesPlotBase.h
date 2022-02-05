@@ -68,6 +68,9 @@ public:
 	UKantanTimeSeriesPlotBase(FObjectInitializer const&);
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Config", Meta = (Keywords = "Kantan Charts"))
+	void SetFixedTimeRange(bool bEnableFixedRange, float TimeRange);
+
 	/*
 	Update lower time bound.
 	*/

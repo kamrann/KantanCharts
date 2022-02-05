@@ -92,24 +92,22 @@ class FKantanChartsEditorModule : public FDefaultModuleImpl
 	virtual void ShutdownModule() override
 	{
 		// Unregister customizations
-		if (FModuleManager::Get().IsModuleLoaded("PropertyEditor"))
+		if (auto const PropertyModule = FModuleManager::GetModulePtr< FPropertyEditorModule >("PropertyEditor"))
 		{
-			auto& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
-			
-			PropertyModule.UnregisterCustomClassLayout("BarChart");
-			PropertyModule.UnregisterCustomClassLayout("SimpleBarChart");
-			PropertyModule.UnregisterCustomClassLayout("CartesianPlot");
-			PropertyModule.UnregisterCustomClassLayout("SimpleCartesianPlot");
-			PropertyModule.UnregisterCustomClassLayout("TimeSeriesPlot");
-			PropertyModule.UnregisterCustomClassLayout("SimpleTimeSeriesPlot");
+			PropertyModule->UnregisterCustomClassLayout("BarChart");
+			PropertyModule->UnregisterCustomClassLayout("SimpleBarChart");
+			PropertyModule->UnregisterCustomClassLayout("CartesianPlot");
+			PropertyModule->UnregisterCustomClassLayout("SimpleCartesianPlot");
+			PropertyModule->UnregisterCustomClassLayout("TimeSeriesPlot");
+			PropertyModule->UnregisterCustomClassLayout("SimpleTimeSeriesPlot");
 
-			PropertyModule.UnregisterCustomPropertyTypeLayout("KantanCartesianPlotScale");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("CartesianAxisRange");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("CartesianAxisInstanceConfig");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("CartesianAxisConfig");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("CartesianRangeBound");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("CategoryStyleManualMapping");
-			PropertyModule.UnregisterCustomPropertyTypeLayout("SeriesStyleManualMapping");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("KantanCartesianPlotScale");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("CartesianAxisRange");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("CartesianAxisInstanceConfig");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("CartesianAxisConfig");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("CartesianRangeBound");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("CategoryStyleManualMapping");
+			PropertyModule->UnregisterCustomPropertyTypeLayout("SeriesStyleManualMapping");
 		}
 
 		if (PreviewCategoryDatasource.IsValid())
