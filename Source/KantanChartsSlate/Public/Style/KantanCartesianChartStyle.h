@@ -30,7 +30,7 @@ struct FKantanCartesianChartStyle : public FKantanChartStyle
 		, DataLineThickness(1.0f)
 	{}
 
-	static inline TCHAR const* const TypeName = TEXT("FKantanCartesianChartStyle");
+	static CONSTEXPR TCHAR const* const TypeName = TEXT("FKantanCartesianChartStyle");
 	FName const GetTypeName() const override
 	{
 		return TypeName;
