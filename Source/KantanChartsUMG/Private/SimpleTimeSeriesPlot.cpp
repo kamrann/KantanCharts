@@ -65,6 +65,10 @@ void USimpleTimeSeriesPlot::BP_AddDatapointNow(FName SeriesId, float Value, bool
 	bSuccess = AddDatapoint(SeriesId, Point);
 }
 
+void USimpleTimeSeriesPlot::BP_SetDatapointLimit(int32 Limit /*= 0*/)
+{
+	SetDatapointLimit(FMath::Max(Limit, 0));
+}
 
 int32 USimpleTimeSeriesPlot::GetNumSeries_Implementation() const
 {
