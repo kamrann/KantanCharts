@@ -119,7 +119,7 @@ bool FCustomDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect
 		RenderInfo.CanvasRect = InCanvasRect;
 		RenderInfo.ClippingRect = InClippingRect;
 		RenderInfo.RenderData = MakeShareable< FRenderData >(new FRenderData);
-		RenderInfo.RenderData->TextureResource = InTexture ? InTexture->Resource : GWhiteTexture;
+		RenderInfo.RenderData->TextureResource = InTexture ? InTexture->GetResource() : GWhiteTexture;
 		RenderInfo.RenderData->UV_0 = InUV_0;
 		RenderInfo.RenderData->UV_1 = InUV_1;
 		RenderInfo.RenderData->Color = InColor;
@@ -158,10 +158,12 @@ void FCustomDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmd
 	RenderTarget->SetRenderTargetTexture(*(FTexture2DRHIRef*)InWindowBackBuffer);
 	{
 		// Check realtime mode for whether to pass current time to canvas
-		const float CurrentTime = FApp::GetCurrentTime() - GStartTime;
+		const float RealTime = FApp::GetCurrentTime();
+		const float WorldTime = RealTime - GStartTime;
 		const float DeltaTime = FApp::GetDeltaTime();
+		const auto GameTime = FGameTime::CreateDilated(RealTime, DeltaTime, WorldTime, DeltaTime);
 
-		FCanvas Canvas(RenderTarget.Get(), nullptr, CurrentTime, CurrentTime, DeltaTime, GMaxRHIFeatureLevel);
+		FCanvas Canvas(RenderTarget.Get(), nullptr, GameTime, GMaxRHIFeatureLevel);
 		{
 			Canvas.SetAllowedModes(0);
 			bool bTestIsScaled = Canvas.IsScaledToRenderTarget();
