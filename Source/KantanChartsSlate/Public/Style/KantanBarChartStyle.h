@@ -37,7 +37,7 @@ struct FKantanBarChartStyle : public FKantanChartStyle
 		, BarOutlineThickness(1.0f)
 	{}
 
-	static inline TCHAR const* const TypeName = TEXT("FKantanBarChartStyle");
+	static CONSTEXPR TCHAR const* const TypeName = TEXT("FKantanBarChartStyle");
 	FName const GetTypeName() const override
 	{
 		return TypeName;
