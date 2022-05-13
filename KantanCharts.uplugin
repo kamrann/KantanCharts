@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 8,
-	"VersionName": "1.8",
+	"Version": 9,
+	"VersionName": "1.9",
 	"FriendlyName": "Kantan Charts",
 	"Description": "Simple UMG/Slate charts for debugging and basic UI.",
 	"Category": "Kantan",
@@ -15,19 +15,19 @@
 			"Name": "KantanChartsDatasource",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+			"WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsSlate",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+      "WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsUMG",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-      "WhitelistPlatforms": [ "Win64", "Win32", "Android", "Mac", "IOS", "Linux" ]
+      "WhitelistPlatforms": [ "Win64", "Android", "Mac", "IOS", "Linux" ]
 		},
 		{
 			"Name": "KantanChartsEditor",
