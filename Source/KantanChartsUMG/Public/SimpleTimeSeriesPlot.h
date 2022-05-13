@@ -59,6 +59,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Add Datapoint Now", Keywords = "Kantan Charts"))
 	void BP_AddDatapointNow(FName SeriesId, float Value, bool& bSuccess);
 
+	/**
+	* Sets a limit for max the number of allowed datapoints in any series.
+	* A value of 0 implies no maximum.
+	* With a limit set, adding points when at the limit will cause previously added points to be dropped,
+	* in a first in first out manner.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Data", Meta = (DisplayName = "Set Datapoint Limit"))
+	void BP_SetDatapointLimit(int32 Limit = 0);
+
 public:
 	// IKantanCartesianDatasourceInterface
 	virtual int32 GetNumSeries_Implementation() const;
