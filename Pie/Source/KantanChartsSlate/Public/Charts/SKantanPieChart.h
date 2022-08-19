@@ -6,6 +6,8 @@
 #include "KantanPieChartStyle.h"
 #include "Style/KantanChartsStyleSet.h"
 
+#include "UObject/StrongObjectPtr.h"
+
 
 /** A pie chart widget. */
 class KANTANCHARTSSLATE_API SKantanPieChart :
@@ -68,20 +70,13 @@ protected:
 		return PieMaterial != nullptr;
 	}
 
-public:
-	// FGCObject implementation
-	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
-	//
-
 private:
 	/** The style */
 	const FKantanPieChartStyle* Style;
 
-	UMaterialInterface* PieMaterial;
-	TArray< UMaterialInstanceDynamic* > SegmentMaterialInstances;
+	TStrongObjectPtr< UMaterialInterface > PieMaterial;
+	TArray< TStrongObjectPtr< UMaterialInstanceDynamic > > SegmentMaterialInstances;
 
 	typedef TSharedPtr< class FKantanPieElement, ESPMode::ThreadSafe > FPieElementPtr;
 	FPieElementPtr PieElement;
 };
-
-

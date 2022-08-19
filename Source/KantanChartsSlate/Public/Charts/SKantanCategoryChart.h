@@ -7,6 +7,8 @@
 #include "Style/KantanCategoryStyle.h"
 #include "Interfaces/ICategoryChart.h"
 
+#include "UObject/StrongObjectPtr.h"
+
 
 /** A base class for category chart widgets. */
 class KANTANCHARTSSLATE_API SKantanCategoryChart:
@@ -75,13 +77,8 @@ protected:
 	void UpdateDynamicCategoryStyleMappings();
 	FName GetNextCategoryStyle() const;
 
-public:
-	// FGCObject implementation
-	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
-	//
-
 protected:
-	UObject* Datasource;
+	TStrongObjectPtr< UObject > Datasource;
 	FCategoryDataSnapshot DataSnapshot;
 
 	bool bAutoPerCategoryStyles;

@@ -10,7 +10,6 @@
 
 #include "Widgets/SLeafWidget.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
-#include "UObject/GCObject.h"
 
 
 enum class EKantanChartLabelClass : uint8 {
@@ -22,7 +21,6 @@ enum class EKantanChartLabelClass : uint8 {
 /** A base class for chart widgets. */
 class KANTANCHARTSSLATE_API SKantanChart :
 	public SLeafWidget
-	, public FGCObject
 	, public virtual KantanCharts::IChartBase
 {
 public:
