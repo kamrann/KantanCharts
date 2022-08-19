@@ -23,14 +23,14 @@ bool SKantanCategoryChart::SetDatasource(UObject* InDatasource)
 		return false;
 	}
 
-	if (Datasource != InDatasource)
+	if (Datasource.Get() != InDatasource)
 	{
-		Datasource = InDatasource;
+		Datasource.Reset(InDatasource);
 
 		if (Datasource)
 		{
 			// Immediately update the data snapshot
-			DataSnapshot.UpdateFromDatasource(Datasource);
+			DataSnapshot.UpdateFromDatasource(Datasource.Get());
 		}
 		else
 		{
@@ -173,9 +173,9 @@ FVector2D SKantanCategoryChart::ComputeDesiredSize( float ) const
 
 void SKantanCategoryChart::OnActiveTick(double InCurrentTime, float InDeltaTime)
 {
-	if (Datasource != nullptr)
+	if (Datasource.IsValid())
 	{
-		DataSnapshot.UpdateFromDatasource(Datasource);
+		DataSnapshot.UpdateFromDatasource(Datasource.Get());
 
 		if (bAutoPerCategoryStyles)
 		{
@@ -188,14 +188,3 @@ void SKantanCategoryChart::Tick(const FGeometry& AllottedGeometry, const double 
 {
 	SKantanChart::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
 }
-
-void SKantanCategoryChart::AddReferencedObjects(FReferenceCollector& Collector)
-{
-	if (Datasource)
-	{
-		Collector.AddReferencedObject(Datasource);
-	}
-}
-
-
-

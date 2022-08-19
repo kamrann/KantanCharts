@@ -15,6 +15,7 @@
 #include "Interfaces/ICartesianChart.h"
 
 #include "Styling/SlateWidgetStyleAsset.h"
+#include "UObject/StrongObjectPtr.h"
 
 
 /** A widget class implementing a cartesian chart. */
@@ -181,11 +182,6 @@ protected:
 	void InvalidateCachedMarkerData(EAxis::Type Axis) const;
 	const AxisUtil::FAxisMarkerData& GetCachedMarkerData(EAxis::Type Axis, FGeometry const& PlotSpaceGeometry) const;
 
-public:
-	// FGCObject implementation
-	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
-	//
-
 protected:
 	// General config
 	FCartesianAxisConfig XAxisCfg;
@@ -198,7 +194,7 @@ protected:
 	FOnUpdatePlotScale OnUpdatePlotScaleDelegate;
 
 	// Data
-	UObject* Datasource = nullptr;
+	TStrongObjectPtr< UObject > Datasource = nullptr;
 	FCartesianDataSnapshot DataSnapshot;
 
 	// Chart style

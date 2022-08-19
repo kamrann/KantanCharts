@@ -65,14 +65,14 @@ bool SKantanCartesianChart::SetDatasource(UObject* InDatasource)
 		return false;
 	}
 
-	if (Datasource != InDatasource)
+	if (Datasource.Get() != InDatasource)
 	{
-		Datasource = InDatasource;
+		Datasource.Reset(InDatasource);
 
 		if (Datasource)
 		{
 			// Immediately update the data snapshot
-			DataSnapshot.UpdateFromDatasource(Datasource);
+			DataSnapshot.UpdateFromDatasource(Datasource.Get());
 		}
 		else
 		{
@@ -707,10 +707,10 @@ FVector2D SKantanCartesianChart::ComputeDesiredSize( float ) const
 
 void SKantanCartesianChart::OnActiveTick(double InCurrentTime, float InDeltaTime)
 {
-	if (Datasource != nullptr)
+	if (Datasource.IsValid())
 	{
 		// @TODO: Can't we get away with only updating enabled series here?
-		DataSnapshot.UpdateFromDatasource(Datasource);
+		DataSnapshot.UpdateFromDatasource(Datasource.Get());
 
 		if(OnUpdatePlotScaleDelegate.IsBound())
 		{
@@ -1237,13 +1237,3 @@ AxisUtil::FAxisMarkerData SKantanCartesianChart::DetermineAxisMarkerData(FGeomet
 		AxisCfg.MaxValueDigits
 		);
 }
-
-void SKantanCartesianChart::AddReferencedObjects(FReferenceCollector& Collector)
-{
-	if (Datasource)
-	{
-		Collector.AddReferencedObject(Datasource);
-	}
-}
-
-

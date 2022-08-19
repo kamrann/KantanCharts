@@ -119,7 +119,7 @@ void SKantanPieChart::SetStyle(const FKantanPieChartStyle* InStyle)
 
 void SKantanPieChart::SetPieMaterial(UMaterialInterface* InMaterial)
 {
-	PieMaterial = InMaterial;
+	PieMaterial.Reset(InMaterial);
 
 	// @TODO: If this is done dynamically, do we need to somehow keep these old instances alive to prevent the
 	// unlikely scenario of them being GCd in the small delay before the render thread catches up?
@@ -371,19 +371,3 @@ void FKantanPieElement::DrawRenderThread(FRHICommandListImmediate& RHICmdList, c
 	RenderTarget->ClearRenderTargetTexture();
 	RHICmdList.SetScissorRect(false, 0, 0, 0, 0);
 }
-
-void SKantanPieChart::AddReferencedObjects(FReferenceCollector& Collector)
-{
-	SKantanCategoryChart::AddReferencedObjects(Collector);
-
-	if (PieMaterial)
-	{
-		Collector.AddReferencedObject(PieMaterial);
-	}
-
-	// Reference our dynamic material instances to prevent garbage collection
-	Collector.AddReferencedObjects(SegmentMaterialInstances);
-}
-
-
-
