@@ -6,6 +6,7 @@
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
 #include "IContentBrowserSingleton.h"
+#include "EditorStyleSet.h"
 
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Input/SComboButton.h"
@@ -112,7 +113,7 @@ namespace DetailHelpers {
 			[
 				// Show the name of the asset or actor
 				SNew(STextBlock)
-				.Font(FEditorStyle::GetFontStyle(TEXT("PropertyWindow.NormalFont")))
+				.Font(FCoreStyle::GetFontStyle(TEXT("PropertyWindow.NormalFont")))
 				.Text_Lambda(OnGetCurrentName)
 			];
 
@@ -120,5 +121,3 @@ namespace DetailHelpers {
 	}
 
 }
-
-
