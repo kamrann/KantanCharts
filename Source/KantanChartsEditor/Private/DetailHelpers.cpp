@@ -65,7 +65,7 @@ namespace DetailHelpers {
 
 			FAssetPickerConfig AssetPickerConfig;
 			// We want any valid object implementing the interface, so any child of UObject as the filter
-			AssetPickerConfig.Filter.ClassNames.Add(UObject::StaticClass()->GetFName());
+			AssetPickerConfig.Filter.ClassPaths.Add(UObject::StaticClass()->GetClassPathName());
 			// Allow child classes
 			AssetPickerConfig.Filter.bRecursiveClasses = true;
 			// Set a delegate for setting the asset from the picker
