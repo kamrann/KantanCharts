@@ -112,7 +112,7 @@ namespace DetailHelpers {
 			[
 				// Show the name of the asset or actor
 				SNew(STextBlock)
-				.Font(FEditorStyle::GetFontStyle(TEXT("PropertyWindow.NormalFont")))
+				.Font(FAppStyle::GetFontStyle(TEXT("PropertyWindow.NormalFont")))
 				.Text_Lambda(OnGetCurrentName)
 			];
 
