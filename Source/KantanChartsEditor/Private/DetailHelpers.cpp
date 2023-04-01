@@ -6,6 +6,7 @@
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
 #include "IContentBrowserSingleton.h"
+#include "EditorStyleSet.h"
 
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Input/SComboButton.h"
@@ -120,5 +121,3 @@ namespace DetailHelpers {
 	}
 
 }
-
-
