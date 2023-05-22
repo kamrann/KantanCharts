@@ -896,11 +896,11 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 	auto ChartStyle = GetChartStyle();
 	auto const CartesianToPlotXform = CartesianToPlotTransform(PlotSpaceGeometry);
 
-	auto const LocalOrigin = CartesianToPlotXform.TransformPoint(FVector2D::ZeroVector);
+	auto const LocalOrigin = CartesianToPlotXform.TransformPoint(FVector2f::ZeroVector);
 	auto const PlotSize = PlotSpaceGeometry.GetLocalSize();
 
 	// Determine cartesian range covered by plot space
-	auto CartesianRangeMin = ::Inverse(CartesianToPlotXform).TransformPoint(FVector2D::ZeroVector);
+	auto CartesianRangeMin = ::Inverse(CartesianToPlotXform).TransformPoint(FVector2f::ZeroVector);
 	auto CartesianRangeMax = ::Inverse(CartesianToPlotXform).TransformPoint(PlotSpaceGeometry.GetLocalSize());
 	if (CartesianRangeMin.X > CartesianRangeMax.X)
 	{
@@ -923,12 +923,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 		const float Y0 = FMath::Clamp(LocalOrigin.Y, 0.0f, PlotSize.Y);
 
 		{
-			TArray< FVector2D > Points;
-			Points.Add(FVector2D(
+			TArray< FVector2f > Points;
+			Points.Add(FVector2f(
 				0.0f,
 				Y0
 				));
-			Points.Add(FVector2D(
+			Points.Add(FVector2f(
 				PlotSize.X,
 				Y0
 				));
@@ -960,7 +960,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			auto UnitExtents = FontMeasureService->Measure(UnitText, AxisMarkerFont);
 			auto UnitGeometry = PlotSpaceGeometry.MakeChild(
 				UnitExtents,
-				FSlateLayoutTransform(FVector2D(PlotSize.X - UnitExtents.X, Y0 - UnitExtents.Y))
+				FSlateLayoutTransform(FVector2f(PlotSize.X - UnitExtents.X, Y0 - UnitExtents.Y))
 				);
 			FSlateDrawElement::MakeText(
 				OutDrawElements,
@@ -985,13 +985,13 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			auto const MarkerYOffset = bFitsBelow ? ChartConstants::AxisMarkerLength : -ChartConstants::AxisMarkerLength;
 			auto const LabelYOffset = bFitsBelow ? 0.0f : -LabelMaxExtents.Y;
 
-			TArray< FVector2D > Points;
-			const auto MarkerXPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(MarkerX, 0.0f)).X;
-			Points.Add(FVector2D(
+			TArray< FVector2f > Points;
+			const auto MarkerXPlotSpace = CartesianToPlotXform.TransformPoint(FVector2f(MarkerX, 0.0f)).X;
+			Points.Add(FVector2f(
 				MarkerXPlotSpace,
 				Y0
 				));
-			Points.Add(FVector2D(
+			Points.Add(FVector2f(
 				MarkerXPlotSpace,
 				Y0 + MarkerYOffset
 				));
@@ -1018,7 +1018,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				const auto LabelExtents = FontMeasureService->Measure(LabelText, AxisMarkerFont);
 				const auto LabelGeometry = PlotSpaceGeometry.MakeChild(
 					LabelExtents,
-					FSlateLayoutTransform(Points[1] + FVector2D(-UnsignedLabelExtents.X * 0.5f - (LabelExtents.X - UnsignedLabelExtents.X), LabelYOffset))
+					FSlateLayoutTransform(Points[1] + FVector2f(-UnsignedLabelExtents.X * 0.5f - (LabelExtents.X - UnsignedLabelExtents.X), LabelYOffset))
 					);
 
 				// Test if the text can be fully displayed within the clip bounds, and if not, don't draw it at all
@@ -1043,12 +1043,12 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 		const float X0 = FMath::Clamp(LocalOrigin.X, 0.0f, PlotSize.X);
 		
 		{
-			TArray< FVector2D > Points;
-			Points.Add(FVector2D(
+			TArray< FVector2f > Points;
+			Points.Add(FVector2f(
 				X0,
 				0.0f
 				));
-			Points.Add(FVector2D(
+			Points.Add(FVector2f(
 				X0,
 				PlotSize.Y
 				));
@@ -1082,13 +1082,13 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 			const auto MarkerY = RoundedMarkerY.GetFloatValue();
 			auto const MarkerXOffset = bFitsLeft ? -ChartConstants::AxisMarkerLength : ChartConstants::AxisMarkerLength;
 
-			TArray< FVector2D > Points;
-			const auto MarkerYPlotSpace = CartesianToPlotXform.TransformPoint(FVector2D(0.0f, MarkerY)).Y;
-			Points.Add(FVector2D(
+			TArray< FVector2f > Points;
+			const auto MarkerYPlotSpace = CartesianToPlotXform.TransformPoint(FVector2f(0.0f, MarkerY)).Y;
+			Points.Add(FVector2f(
 				X0,
 				MarkerYPlotSpace
 				));
-			Points.Add(FVector2D(
+			Points.Add(FVector2f(
 				X0 + MarkerXOffset,
 				MarkerYPlotSpace
 				));
@@ -1114,7 +1114,7 @@ int32 SKantanCartesianChart::DrawAxes(const FGeometry& PlotSpaceGeometry, const 
 				auto const LabelXOffset = bFitsLeft ? -LabelExtents.X : 0.0f;
 				auto LabelGeometry = PlotSpaceGeometry.MakeChild(
 					LabelExtents,
-					FSlateLayoutTransform(Points[1] + FVector2D(LabelXOffset, -LabelExtents.Y * 0.5f))
+					FSlateLayoutTransform(Points[1] + FVector2f(LabelXOffset, -LabelExtents.Y * 0.5f))
 					);
 
 				// Test if the text can be fully displayed within the clip bounds, and if not, don't draw it at all
