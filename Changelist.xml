@@ -5,5 +5,22 @@
 			<entries>
 			</entries>
 		</version>
+		<version number="7" name="1.7" timestamp="2018-06-19T14:20:00">
+			<entries>
+				<entry priority="1" title="Datapoint drawing fix">Recent engine changes to clipping caused datapoints to not be clipped properly when charts are placed in scroll boxes.
+					This update fixes the problem, however there is a small decrease in performance. If this is more important, behaviour can be reverted by adding a [KantanCharts] section
+					to DefaultGame.ini containing the entry: CustomPointDrawing=true
+				</entry>
+				<entry title="Re-enabled iOS support in binary release"></entry>
+			</entries>
+		</version>
+		<version number="8" name="1.8" timestamp="2020-05-05T19:24:00">
+			<entries>
+				<entry title="Datapoint limit">Added new optional limit for the number of datapoints in a Cartesian datasource. When the number of datapoints hits this limit,
+					subsequent points will take the place of the oldest existing point, putting a cap on memory consumption. Only applies when using Advanced versions of Cartesian
+					or Time Series plots with the KantanSimpleCartesianDatasource.
+				</entry>
+			</entries>
+		</version>
 	</versions>
 </changelist>
