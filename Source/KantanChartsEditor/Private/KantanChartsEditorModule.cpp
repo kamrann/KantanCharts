@@ -17,7 +17,7 @@
 #include "PropertyEditorModule.h"
 #include "ClassIconFinder.h"
 
-
+#include "KCIKantanPluginInstallation.h"
 
 
 class FKantanChartsEditorModule : public FDefaultModuleImpl
