@@ -15,7 +15,7 @@
 
 TSharedRef< IDetailCustomization > FKantanCartesianPlotCustomization::MakeInstance()
 {
-	return MakeShareable(new FKantanCartesianPlotCustomization);
+	return MakeShared< FKantanCartesianPlotCustomization >();
 }
 
 void FKantanCartesianPlotCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)

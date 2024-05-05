@@ -12,7 +12,7 @@
 
 TSharedRef< IPropertyTypeCustomization > FSeriesStyleManualMappingCustomization::MakeInstance()
 {
-	return MakeShareable(new FSeriesStyleManualMappingCustomization);
+	return MakeShared< FSeriesStyleManualMappingCustomization >();
 }
 
 void FSeriesStyleManualMappingCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)

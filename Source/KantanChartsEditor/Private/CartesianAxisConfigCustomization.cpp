@@ -14,7 +14,7 @@
 
 TSharedRef< IPropertyTypeCustomization > FCartesianAxisInstanceConfigCustomization::MakeInstance()
 {
-	return MakeShareable(new FCartesianAxisInstanceConfigCustomization);
+	return MakeShared< FCartesianAxisInstanceConfigCustomization >();
 }
 
 void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
@@ -97,7 +97,7 @@ void FCartesianAxisInstanceConfigCustomization::CustomizeChildren(TSharedRef<IPr
 
 TSharedRef< IPropertyTypeCustomization > FCartesianAxisConfigCustomization::MakeInstance()
 {
-	return MakeShareable(new FCartesianAxisConfigCustomization);
+	return MakeShared< FCartesianAxisConfigCustomization >();
 }
 
 void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
@@ -175,7 +175,7 @@ void FCartesianAxisConfigCustomization::CustomizeChildren(TSharedRef<IPropertyHa
 
 TSharedRef< IPropertyTypeCustomization > FCartesianRangeBoundCustomization::MakeInstance()
 {
-	return MakeShareable(new FCartesianRangeBoundCustomization);
+	return MakeShared< FCartesianRangeBoundCustomization >();
 }
 
 void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)

@@ -4,11 +4,14 @@
 #include "SimpleRenderTarget.h"
 
 #include "Rendering/RenderingCommon.h"
+#include "RenderingThread.h"
 #include "Engine/Texture2D.h"
+#include "TextureResource.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
 #include "Layout/Geometry.h"
 #include "Rendering/DrawElements.h"
+#include "GlobalRenderResources.h"
 
 
 class FTexture;
@@ -118,7 +121,7 @@ bool FCustomDataSeriesElement::BeginRenderingCanvas(const FIntRect& InCanvasRect
 		FSeriesRenderInfo RenderInfo;
 		RenderInfo.CanvasRect = InCanvasRect;
 		RenderInfo.ClippingRect = InClippingRect;
-		RenderInfo.RenderData = MakeShareable< FRenderData >(new FRenderData);
+		RenderInfo.RenderData = MakeShared< FRenderData >();
 		RenderInfo.RenderData->TextureResource = InTexture ? InTexture->GetResource() : GWhiteTexture;
 		RenderInfo.RenderData->UV_0 = InUV_0;
 		RenderInfo.RenderData->UV_1 = InUV_1;
@@ -237,6 +240,6 @@ void FCustomDataSeriesElement::RenderSeries(
 
 TSharedRef< IDataSeriesElement, ESPMode::ThreadSafe > MakeCustomSeriesElement(UTexture2D* Tex, FVector2D PntSz, FLinearColor Cl, FBox2D UVs)
 {
-	return MakeShareable(new FCustomDataSeriesElement(Tex, PntSz, Cl, UVs));
+	return MakeShared< FCustomDataSeriesElement >(Tex, PntSz, Cl, UVs);
 }
 

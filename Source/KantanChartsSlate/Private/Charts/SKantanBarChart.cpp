@@ -24,8 +24,8 @@ void SKantanBarChart::Construct(const FArguments& InArgs)
 	SetDrawCategoryBoundaries(InArgs._DrawCategoryBoundaries);
 	SetValueExtentsDisplay(InArgs._ValueExtentsDisplay);
 
-	BarInteriorBrush = MakeShareable< FSlateBrush >(new FSlateColorBrush(FColor::White));
-	BarBorderBrush = MakeShareable< FSlateBrush >(new FSlateBorderBrush(NAME_None, FMargin(1.0f), FLinearColor::White, ESlateBrushImageType::NoImage));
+	BarInteriorBrush = MakeShared< FSlateColorBrush >(FColor::White);
+	BarBorderBrush = MakeShared< FSlateBorderBrush >(NAME_None, FMargin(1.0f), FLinearColor::White, ESlateBrushImageType::NoImage);
 }
 
 void SKantanBarChart::SetStyle(const FKantanBarChartStyle* InStyle)

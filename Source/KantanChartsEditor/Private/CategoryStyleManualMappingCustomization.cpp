@@ -13,7 +13,7 @@
 
 TSharedRef< IPropertyTypeCustomization > FCategoryStyleManualMappingCustomization::MakeInstance()
 {
-	return MakeShareable(new FCategoryStyleManualMappingCustomization);
+	return MakeShared< FCategoryStyleManualMappingCustomization >();
 }
 
 void FCategoryStyleManualMappingCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)

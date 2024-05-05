@@ -12,7 +12,7 @@
 
 TSharedRef< IDetailCustomization > FKantanCategoryChartCustomization::MakeInstance()
 {
-	return MakeShareable(new FKantanCategoryChartCustomization);
+	return MakeShared< FKantanCategoryChartCustomization >();
 }
 
 void FKantanCategoryChartCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
