@@ -10,6 +10,7 @@ public class KantanChartsEditor : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
+        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Imported/KantanInstallation/Include"));
 
         PrivateDependencyModuleNames.AddRange(
             new string[] {
@@ -55,5 +56,5 @@ public class KantanChartsEditor : ModuleRules
                 "AssetRegistry",
             }
             );
-	}
+    }
 }
