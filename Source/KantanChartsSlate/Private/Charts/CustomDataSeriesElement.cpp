@@ -4,11 +4,14 @@
 #include "SimpleRenderTarget.h"
 
 #include "Rendering/RenderingCommon.h"
+#include "RenderingThread.h"
 #include "Engine/Texture2D.h"
+#include "TextureResource.h"
 #include "CanvasTypes.h"
 #include "CanvasItem.h"
 #include "Layout/Geometry.h"
 #include "Rendering/DrawElements.h"
+#include "GlobalRenderResources.h"
 
 
 class FTexture;
