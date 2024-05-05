@@ -8,12 +8,10 @@ public class KantanChartsDatasource : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(
-            new string[] {
-                "Core",
-                "CoreUObject"
-            }
-        );
+		PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+        });
 	}
 }
 

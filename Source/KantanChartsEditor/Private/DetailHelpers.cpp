@@ -6,7 +6,6 @@
 #include "PropertyHandle.h"
 #include "ContentBrowserModule.h"
 #include "IContentBrowserSingleton.h"
-#include "EditorStyleSet.h"
 
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Input/SComboButton.h"
@@ -102,12 +101,7 @@ namespace DetailHelpers {
 		};
 
 		auto ComboButton = SNew(SComboButton)
-			//		.ToolTipText(this, &SPropertyEditorAsset::OnGetToolTip)
-			//		.ButtonStyle(FEditorStyle::Get(), "PropertyEditor.AssetComboStyle")
-			//		.ForegroundColor(FEditorStyle::GetColor("PropertyEditor.AssetName.ColorAndOpacity"))
 			.OnGetMenuContent_Lambda(OnGetMenuContent)
-			//.OnMenuOpenChanged(this, &SPropertyEditorAsset::OnMenuOpenChanged)
-			//.IsEnabled(IsEnabledAttribute)
 			.ContentPadding(2.0f)
 			.ButtonContent()
 			[
