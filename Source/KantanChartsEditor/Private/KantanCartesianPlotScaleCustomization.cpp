@@ -14,7 +14,7 @@
 
 TSharedRef< IPropertyTypeCustomization > FKantanCartesianPlotScaleCustomization::MakeInstance()
 {
-	return MakeShareable(new FKantanCartesianPlotScaleCustomization);
+	return MakeShared< FKantanCartesianPlotScaleCustomization >();
 }
 
 void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
@@ -96,7 +96,7 @@ EVisibility FKantanCartesianPlotScaleCustomization::GetFixedRangeVisibility() co
 
 TSharedRef< IPropertyTypeCustomization > FCartesianAxisRangeCustomization::MakeInstance()
 {
-	return MakeShareable(new FCartesianAxisRangeCustomization);
+	return MakeShared< FCartesianAxisRangeCustomization >();
 }
 
 void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)

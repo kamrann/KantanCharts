@@ -14,7 +14,7 @@
 
 TSharedRef< IDetailCustomization > FKantanBarChartCustomization::MakeInstance()
 {
-	return MakeShareable(new FKantanBarChartCustomization);
+	return MakeShared< FKantanBarChartCustomization >();
 }
 
 void FKantanBarChartCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)

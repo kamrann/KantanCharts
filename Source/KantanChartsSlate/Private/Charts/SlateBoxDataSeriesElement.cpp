@@ -72,7 +72,7 @@ void FSlateBoxSeriesElement::RenderSeries(
 
 TSharedRef< IDataSeriesElement, ESPMode::ThreadSafe > MakeSlateBoxSeriesElement(UTexture2D* Tex, FVector2D PntSz, FLinearColor Cl, FBox2D UVs)
 {
-	return MakeShareable(new FSlateBoxSeriesElement(Tex, PntSz, Cl, UVs));
+	return MakeShared< FSlateBoxSeriesElement >(Tex, PntSz, Cl, UVs);
 }
 
 

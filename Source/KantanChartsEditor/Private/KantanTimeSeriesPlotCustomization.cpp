@@ -14,7 +14,7 @@
 
 TSharedRef< IDetailCustomization > FKantanTimeSeriesPlotCustomization::MakeInstance()
 {
-	return MakeShareable(new FKantanTimeSeriesPlotCustomization);
+	return MakeShared< FKantanTimeSeriesPlotCustomization >();
 }
 
 void FKantanTimeSeriesPlotCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
