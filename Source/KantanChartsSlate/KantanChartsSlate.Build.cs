@@ -11,23 +11,20 @@ public class KantanChartsSlate : ModuleRules
 
 		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
-		PublicDependencyModuleNames.AddRange(
-            new string[] {
-                "Core",
-                "CoreUObject",
-                "Engine",
-                "RHI",
-				"RenderCore",
-                "Projects",     // For IPluginManager
-                "KantanChartsDatasource"
-            }
-        );
+		PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "Slate",
+            "SlateCore",
 
-		PrivateDependencyModuleNames.AddRange(
-			new string[] {
-				"Slate",
-				"SlateCore"
-			}
-		);
+            "KantanChartsDatasource",
+        });
+
+		PrivateDependencyModuleNames.AddRange(new string[] {
+            "RHI",
+            "RenderCore",
+            "Projects",     // For IPluginManager
+		});
 	}
 }

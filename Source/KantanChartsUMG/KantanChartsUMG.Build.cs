@@ -8,17 +8,16 @@ public class KantanChartsUMG : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(
-            new string[] {
-                "Core",
-                "CoreUObject",
-                "Engine",
-                "UMG",
-				"KantanChartsSlate",
-                "KantanChartsDatasource"
-            }
-        );
+		PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "Slate",
+            "SlateCore",
+            "UMG",
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+			"KantanChartsSlate",
+            "KantanChartsDatasource",
+        });
 	}
 }

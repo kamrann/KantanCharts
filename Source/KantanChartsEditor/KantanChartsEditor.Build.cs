@@ -11,49 +11,36 @@ public class KantanChartsEditor : ModuleRules
 
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
-        PrivateDependencyModuleNames.AddRange(
-            new string[] {
-                "UnrealEd",
-                "PropertyEditor",
-                "EditorStyle",
-                "Projects",
-                "XmlParser",
-            }
-            );
+        PrivateDependencyModuleNames.AddRange(new string[] {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",        // Seemingly needed for SNumericEntryBox
+            "Slate",
+            "SlateCore",
+            "UnrealEd",
+            "PropertyEditor",
+            "Projects",
+            "XmlParser",
 
-        PublicDependencyModuleNames.AddRange(
-            new string[] {
-                "Core",
-                "CoreUObject",
-                "Engine",
-                "InputCore",        // Seemingly needed for SNumericEntryBox
-                "KantanChartsDatasource",
-                "KantanChartsSlate",
-				"KantanChartsUMG"
-            }
-            );
+            "KantanChartsDatasource",
+            "KantanChartsSlate",
+            "KantanChartsUMG",
+        });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+        DynamicallyLoadedModuleNames.AddRange(new string[] {
+			// ... add any modules that your module loads dynamically here ...
+            "MainFrame",
+            "ContentBrowser",
+            "AssetTools",
+            "AssetRegistry",
+        });
 
-        DynamicallyLoadedModuleNames.AddRange(
-            new string[]
-            {
-				// ... add any modules that your module loads dynamically here ...
-                "MainFrame",
-                "ContentBrowser",
-                "AssetTools",
-                "AssetRegistry",
-            }
-            );
-
-        PrivateIncludePathModuleNames.AddRange(
-            new string[]
-            {
-                "MainFrame",
-                "ContentBrowser",
-                "AssetTools",
-                "AssetRegistry",
-            }
-            );
+        PrivateIncludePathModuleNames.AddRange(new string[] {
+            "MainFrame",
+            "ContentBrowser",
+            "AssetTools",
+            "AssetRegistry",
+        });
 	}
 }
