@@ -21,7 +21,6 @@ void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<IPropert
 {
 	static const FName ScalingTypePropertyName = GET_MEMBER_NAME_CHECKED(FKantanCartesianPlotScale, Type);
 
-	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
 	const FText DisplayToolTipOverride = FText::GetEmpty();
 
@@ -40,7 +39,7 @@ void FKantanCartesianPlotScaleCustomization::CustomizeHeader(TSharedRef<IPropert
 	HeaderRow
 		.NameContent()
 		[
-			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride, bDisplayResetToDefault)
+			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride)
 		]
 		.ValueContent()
 		[
@@ -105,7 +104,6 @@ void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<IPropertyHandl
 	static const FName RangeMinPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisRange, Min);
 	static const FName RangeMaxPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisRange, Max);
 
-	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
 	const FText DisplayToolTipOverride = FText::GetEmpty();
 
@@ -117,7 +115,7 @@ void FCartesianAxisRangeCustomization::CustomizeHeader(TSharedRef<IPropertyHandl
 	HeaderRow
 		.NameContent()
 		[
-			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride, bDisplayResetToDefault)
+			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride)
 		]
 		.ValueContent()
 		.MinDesiredWidth(125.0f * 2)

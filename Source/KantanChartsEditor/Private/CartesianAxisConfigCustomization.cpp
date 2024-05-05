@@ -24,7 +24,6 @@ void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<IProp
 	static const FName MarkersPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisInstanceConfig, bShowMarkers);
 	static const FName LabelsPropertyName = GET_MEMBER_NAME_CHECKED(FCartesianAxisInstanceConfig, bShowLabels);
 
-	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
 	const FText DisplayToolTipOverride = FText::GetEmpty();
 
@@ -66,7 +65,7 @@ void FCartesianAxisInstanceConfigCustomization::CustomizeHeader(TSharedRef<IProp
 			]
 			+ SHorizontalBox::Slot().Padding(4.0f, 0.0f)
 			[
-				StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride, bDisplayResetToDefault)
+				StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride)
 			]
 		];
 			
@@ -103,7 +102,6 @@ TSharedRef< IPropertyTypeCustomization > FCartesianAxisConfigCustomization::Make
 
 void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
-	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
 	const FText DisplayToolTipOverride = FText::GetEmpty();
 
@@ -113,7 +111,7 @@ void FCartesianAxisConfigCustomization::CustomizeHeader(TSharedRef<IPropertyHand
 	HeaderRow
 		.NameContent()
 		[
-			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride, bDisplayResetToDefault)
+			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride)
 		]
 		.ValueContent()
 		[
@@ -182,7 +180,6 @@ TSharedRef< IPropertyTypeCustomization > FCartesianRangeBoundCustomization::Make
 
 void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<IPropertyHandle> StructPropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& StructCustomizationUtils)
 {
-	const bool bDisplayResetToDefault = false;
 	const FText DisplayNameOverride = FText::GetEmpty();
 	const FText DisplayToolTipOverride = FText::GetEmpty();
 
@@ -192,7 +189,7 @@ void FCartesianRangeBoundCustomization::CustomizeHeader(TSharedRef<IPropertyHand
 	HeaderRow
 		.NameContent()
 		[
-			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride, bDisplayResetToDefault)
+			StructPropertyHandle->CreatePropertyNameWidget(DisplayNameOverride, DisplayToolTipOverride)
 		]
 		.ValueContent()
 		.HAlign(EHorizontalAlignment::HAlign_Fill)
