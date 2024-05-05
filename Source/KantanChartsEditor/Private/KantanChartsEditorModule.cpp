@@ -8,8 +8,6 @@
 #include "CategoryStyleManualMappingCustomization.h"
 #include "SeriesStyleManualMappingCustomization.h"
 
-#include "KCIKantanPluginInstallation.h"
-
 //
 #include "KantanSimpleCategoryDatasource.h"
 #include "KantanSimpleCartesianDatasource.h"
