@@ -16,8 +16,7 @@
 #include "Modules/ModuleManager.h"
 #include "PropertyEditorModule.h"
 #include "ClassIconFinder.h"
-
-
+#include "UObject/Package.h"
 
 
 class FKantanChartsEditorModule : public FDefaultModuleImpl
