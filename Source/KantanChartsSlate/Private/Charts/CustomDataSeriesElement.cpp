@@ -158,7 +158,7 @@ void FCustomDataSeriesElement::DrawRenderThread(FRHICommandListImmediate& RHICmd
 		ClippingRect.Max.X,
 		ClippingRect.Max.Y
 		);
-	RenderTarget->SetRenderTargetTexture(*(FTexture2DRHIRef*)InWindowBackBuffer);
+	RenderTarget->SetRenderTargetTexture(*(FTextureRHIRef*)InWindowBackBuffer);
 	{
 		// Check realtime mode for whether to pass current time to canvas
 		const float RealTime = FApp::GetCurrentTime();

@@ -19,7 +19,7 @@ public:
 	}
 
 	/** Sets the texture that this target renders to */
-	void SetRenderTargetTexture(FTexture2DRHIRef& InRHIRef)
+	void SetRenderTargetTexture(FTextureRHIRef& InRHIRef)
 	{
 		RenderTargetTextureRHI = InRHIRef;
 	}
